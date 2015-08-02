@@ -1,0 +1,3 @@
+[submodule "julia/julia-homg"]
+	path = julia/julia-homg
+	url = https://github.com/hsundar/julia-homg.git

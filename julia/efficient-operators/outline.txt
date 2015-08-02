@@ -1,0 +1,56 @@
+# Main outline of iterative multigrid stokes solver
+
+# wrapper for setting up and solving stokes problem
+solve_stokes_mg
+
+	# sets up flow problem in unit square domain
+	square_stokes
+
+		# stokes q2-p1 matrix generator
+		stokes_q2p1
+
+	# imposes boundary conditions 
+	flowbc
+
+	# sets up GMG preconditioner for diffusion problem
+	mg_diff
+
+		# GMG prolongation operator for square domain
+		mg_prolong 
+
+		# for each level of grid
+		# sets up GMG preconditioner for diffusion problem
+		mg_diff_setup
+
+			# bilinear element grid generator for GMG
+			mg_q1grid 
+
+			# bilinear diffusion matrix generator for GMG
+			mg_q1diff
+
+			# imposes zero boundary condition
+			mg_zerobc
+
+		# GMG prolongation operator for square domain
+		mg_prolong
+
+		# smoothers for GMG
+		mg_smooth
+
+	# block MG preconditioner
+	m_st_mg
+
+		# performs one GMG iteration
+		mg_iter
+
+			# presmoothing for GMG
+			mg_pre
+
+			# performs one GMG iteration
+			mg_iter
+
+			# postsmoothing for GMG
+			mg_post 
+
+	# solve problem with gmres
+	gmres

@@ -470,7 +470,8 @@ end
 		end
 
 		# loop over elements
-		@parallel for e=1:ne
+		# @parallel for e=1:ne
+		for e = 1:ne
 			idx =  get_node_indices(self, e, order);
 			ind1 = repmat(idx,NP,1);
 			ind2 = reshape(repmat(idx',NP,1),NPNP,1);

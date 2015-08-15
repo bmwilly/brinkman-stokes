@@ -1,9 +1,12 @@
-using Gadfly
+# using Gadfly
 # using PyPlot
 include("hos_homg.jl")
 include("mv_fun.jl")
 
-orders = [2,3,4,5,6,7,8]; msizes = [5, 6, 7, 8];
+# orders = [2,3,4,5,6,7,8];
+orders = [2];
+orders = [21];
+msizes = [5, 6, 7, 8];
 
 # # mesh sizes
 # mtimes = Float64[]
@@ -35,7 +38,7 @@ end
 #   Guide.title("100 matvec operations for 32x32 grid for different order elements")
 # )
 
-# # mesh sizes
+# mesh sizes
 # mtimes = Float64[];
 # for msize in msizes
 #   t = hos_homg(2, msize-1)

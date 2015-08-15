@@ -19,7 +19,8 @@ function hos_homg(order, msize, dim)
 
   m = Mesh.Hexmesh(tuple(repmat(nelems, 1, dim)...), Xform.identity)
   dof = prod([m.nelems...]*order + 1)
-  K,M,iK = Mesh.assemble_poisson(m, order)
+  # K,M,iK = Mesh.assemble_poisson(m, order)
+  K = Mesh.assemble_poisson(m, order)
   k1,k2 = size(K)
   A = [K spzeros(k1,k2); spzeros(k1,k2) K]
   tic()

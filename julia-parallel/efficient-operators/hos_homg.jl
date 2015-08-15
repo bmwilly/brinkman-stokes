@@ -5,13 +5,13 @@
 # reload("../julia-homg/Grids.jl")
 # reload("../julia-homg/Tensor.jl")
 # reload("../julia-homg/Refel.jl")
-include("helpers/helper_functions.jl")
-include("../julia-homg/Basis.jl")
-include("../julia-homg/Hexmesh.jl")
-include("../julia-homg/Xform.jl")
-include("../julia-homg/Grids.jl")
-include("../julia-homg/Tensor.jl")
-include("../julia-homg/Refel.jl")
+@everywhere include("helpers/helper_functions.jl")
+@everywhere include("../julia-homg/Basis.jl")
+@everywhere include("../julia-homg/Hexmesh.jl")
+@everywhere include("../julia-homg/Xform.jl")
+@everywhere include("../julia-homg/Grids.jl")
+@everywhere include("../julia-homg/Tensor.jl")
+@everywhere include("../julia-homg/Refel.jl")
 
 function hos_homg(order, msize, dim)
   # dim = 2
@@ -23,6 +23,6 @@ function hos_homg(order, msize, dim)
   k1,k2 = size(K)
   A = [K spzeros(k1,k2); spzeros(k1,k2) K]
   tic()
-  for cnt = 1:100; u = rand(2dof); w = A*u; end
+  for cnt = 1:100; u = rand(2dof); @parallel w = A*u; end
   etoc = toc()
 end

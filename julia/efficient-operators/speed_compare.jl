@@ -1,13 +1,15 @@
 # include("matvec.jl")
 # include("hos-homg.jl")
-using Gadfly
+# using Gadfly
 # using PyPlot
 include("hos_homg.jl")
 include("mv_fun.jl")
 
-orders = [9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]; msizes = [5, 6, 7, 8];
+# orders = [9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+orders = [8];
+msizes = [8];
 
-# # mesh sizes
+# mesh sizes
 # mtimes = Float64[]
 # for msize in msizes
 #   t = mv_fun(msize)
@@ -38,7 +40,7 @@ end
 
 # mtimes = Float64[];
 # for msize in msizes
-#   t = hos_homg(2, msize)
+#   t = hos_homg(2, msize, dim)
 #   push!(mtimes, t)
 # end
 # Gadfly.plot(

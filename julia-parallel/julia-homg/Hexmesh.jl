@@ -449,9 +449,12 @@ end
 
 		I = zeros(ne * NPNP, 1);
 		J = zeros(ne * NPNP, 1);
-		mass_val = zeros(ne * NPNP, 1);
-		stiff_val = zeros(ne * NPNP, 1);
-		inv_stiff_val = zeros(ne * NPNP, 1);
+		# mass_val = zeros(ne * NPNP, 1);
+		# stiff_val = zeros(ne * NPNP, 1);
+		# inv_stiff_val = zeros(ne * NPNP, 1);
+		mass_val = SharedArray(Float64, (ne * NPNP, 1), pids = workers());
+		stiff_val = SharedArray(Float64, (ne * NPNP, 1), pids = workers());
+		inv_stiff_val = SharedArray(Float64, (ne * NPNP, 1), pids = workers());
 		ind_inner1D = repmat((2:order), 1, order-1);
 		if self.dim == 2
 
@@ -467,7 +470,7 @@ end
 		end
 
 		# loop over elements
-		for e=1:ne
+		@parallel for e=1:ne
 			idx =  get_node_indices(self, e, order);
 			ind1 = repmat(idx,NP,1);
 			ind2 = reshape(repmat(idx',NP,1),NPNP,1);
@@ -805,7 +808,7 @@ end
 		# get euclidean distances between nodal points and centers of brinkman obstacles
 		R = pairwise(Euclidean(), pts', centers')
 		R = minimum(R, 2)
-		brinkman_pts[find(R .< 0.05)] = 1e6 
+		brinkman_pts[find(R .< 0.05)] = 1e6
 		brinkman_pts
 	end
 

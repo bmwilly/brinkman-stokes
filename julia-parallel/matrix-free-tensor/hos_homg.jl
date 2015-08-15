@@ -5,15 +5,15 @@
 # reload("../julia-homg/Grids.jl")
 # reload("../julia-homg/Tensor.jl")
 # reload("../julia-homg/Refel.jl")
-using LinearOperators
-include("helpers/helper_functions.jl")
-include("../julia-homg/Basis.jl")
-include("../julia-homg/Hexmesh.jl")
-include("../julia-homg/Xform.jl")
-include("../julia-homg/Grids.jl")
-include("../julia-homg/Tensor.jl")
-include("../julia-homg/Refel.jl")
-include("stokes_flow/ho_afun.jl")
+@everywhere using LinearOperators
+@everywhere include("helpers/helper_functions.jl")
+@everywhere include("../julia-homg/Basis.jl")
+@everywhere include("../julia-homg/Hexmesh.jl")
+@everywhere include("../julia-homg/Xform.jl")
+@everywhere include("../julia-homg/Grids.jl")
+@everywhere include("../julia-homg/Tensor.jl")
+@everywhere include("../julia-homg/Refel.jl")
+@everywhere include("stokes_flow/ho_afun.jl")
 
 function hos_homg(order, msize, dim)
   # dim = 2

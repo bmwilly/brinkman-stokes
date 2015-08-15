@@ -1,11 +1,10 @@
 # using Gadfly
 # using PyPlot
 include("hos_homg.jl")
-include("mv_fun.jl")
+# include("mv_fun.jl")
 
-# orders = [2,3,4,5,6,7,8];
-orders = [2];
-orders = [21];
+orders = [2,3,4,5,6,7,8];
+# orders = [21];
 msizes = [5, 6, 7, 8];
 
 # # mesh sizes

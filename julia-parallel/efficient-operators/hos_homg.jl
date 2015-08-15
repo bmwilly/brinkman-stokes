@@ -1,3 +1,4 @@
+using ParallelSparseMatMul
 # reload("helpers/helper_functions.jl")
 # reload("../julia-homg/Basis.jl")
 # reload("../julia-homg/Hexmesh.jl")
@@ -23,6 +24,6 @@ function hos_homg(order, msize, dim)
   k1,k2 = size(K)
   A = [K spzeros(k1,k2); spzeros(k1,k2) K]
   tic()
-  for cnt = 1:100; u = rand(2dof); @parallel w = A*u; end
+  for cnt = 1:100; u = rand(2dof); w = A*u; end
   etoc = toc()
 end

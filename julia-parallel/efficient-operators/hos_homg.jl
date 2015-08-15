@@ -23,7 +23,8 @@ function hos_homg(order, msize, dim)
   K,M,iK = Mesh.assemble_poisson(m, order)
   k1,k2 = size(K)
   A = [K spzeros(k1,k2); spzeros(k1,k2) K]
+  S = share(A)
   tic()
-  for cnt = 1:100; u = rand(2dof); w = A*u; end
+  for cnt = 1:100; u = rand(2dof); w = S*u; end
   etoc = toc()
 end

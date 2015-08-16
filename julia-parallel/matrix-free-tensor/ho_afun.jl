@@ -43,8 +43,8 @@ function ho_afun(u, params)
   Uy = dzeros(NP, ne)
   Ux_chunks = map(fetch, { (@spawnat p localpart(Ux)) for p = procs(Ux) })
   Uy_chunks = map(fetch, { (@spawnat p localpart(Uy)) for p = procs(Uy) })
-  # U_mats = map(loop_u_chunk, Ux_chunks, Uy_chunks)
-  U_mats = pmap(loop_u_chunk, Ux_chunks, Uy_chunks)
+  U_mats = map(loop_u_chunk, Ux_chunks, Uy_chunks)
+  # U_matsp = pmap(loop_u_chunk, Ux_chunks, Uy_chunks)
   Ux_mats = [ x[1] for x in U_mats ]
   Uy_mats = [ x[2] for x in U_mats ]
   Ux = reduce(hcat, Ux_mats)

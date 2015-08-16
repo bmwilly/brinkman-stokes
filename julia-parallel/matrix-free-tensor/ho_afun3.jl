@@ -20,17 +20,24 @@ NP = params["NP"];
 bdy = params["bdy"];
 eMat = params["eMat"];
 
-u = SharedArray(Float64, 2dof)
-u += rand(2dof)
-w = SharedArray(Float64, length(u))
+# u = SharedArray(Float64, 2dof)
+# u += rand(2dof)
+# u = drand(2dof)
+u = rand(2dof)
+@everywhere u = rand(2dof)
+# w = SharedArray(Float64, length(u))
+# w = dzeros(2dof)
+w = zeros(2dof)
 
 # zero dirichlet bdy conditions
 uu = copy(u)
 u[bdy] = zeros(length(bdy))
 u[bdy+dof] = zeros(length(bdy))
 
-Ux = SharedArray(Float64, (NP, ne))
-Uy = SharedArray(Float64, (NP, ne))
+# Ux = SharedArray(Float64, (NP, ne))
+# Uy = SharedArray(Float64, (NP, ne))
+Ux = dzeros(NP, ne)
+Uy = dzeros(NP, ne)
 
 # @everywhere nchunks = length(procs())
 # @everywhere splits = [iround(s) for s in linspace(0, ne, nchunks + 1)]
@@ -48,6 +55,22 @@ erange = splits[idx]+1:splits[idx+1]
   Ux[:, e] = u[idx]
   Uy[:, e] = u[idx+dof]
 end
+
+# u_chunks = map(fetch, { (@spawnat p localpart(u)) for p = procs(u) })
+Ux_chunks = map(fetch, { (@spawnat p localpart(Ux)) for p = procs(Ux) })
+U = pmap(loop_u_chunk, Ux_chunks)
+
+@sync begin
+  for (i,w) in enumerate(workers())
+    irange,jrange = Ux.indexes[i]
+    Uxw = fetch(Ux.chunks[i])
+    for e in jrange
+      idx = Mesh.get_node_indices(mesh, e, order)
+      Uxw[:,e] = u[idx]
+    end
+  end
+end
+
 #
 # # @sync begin
 # #   for p in procs()

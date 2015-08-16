@@ -1,13 +1,19 @@
 # using Gadfly
 # using PyPlot
-# @everywhere include("hos_homg.jl")
-include("hos_homg.jl")
+@everywhere include("hos_homg.jl")
+# include("hos_homg.jl")
 # @everywhere include("mv_fun.jl")
 
-# orders = [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+@everywhere orders = [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
 # orders = [2,3,4,5,6,7,8];
-orders = [15,16,17];
-msizes = [5, 6, 7, 8];
+# @everywhere orders = [4,5];
+# msizes = [5, 6, 7, 8];
+
+# @everywhere order = 4
+@everywhere msize = 5
+@everywhere dim = 2
+
+# t = hos_homg(order, msize, dim)
 
 # # mesh sizes
 # mtimes = Float64[]
@@ -23,13 +29,13 @@ msizes = [5, 6, 7, 8];
 
 # orders
 otimes = Float64[];
-# dim = int(input("Dimension: "))
-dim = 2
-if dim == 2
-  msize = 5
-elseif dim == 3
-  msize = 3
-end
+# # dim = int(input("Dimension: "))
+# dim = 2
+# if dim == 2
+#   msize = 5
+# elseif dim == 3
+#   msize = 3
+# end
 for order in orders
   t = hos_homg(order, msize, dim)
   push!(otimes, t)

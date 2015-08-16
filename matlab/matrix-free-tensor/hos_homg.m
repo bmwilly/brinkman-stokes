@@ -1,6 +1,6 @@
 function etoc = hos_homg(order, msize, dim)
   nelems = [2^msize];
-  m = homg.hexmesh(repmat(nelems, 1, dim), homg.xform.identity);
+  m = homg.hexmesh(repmat(nelems, 1, dim), @homg.xform.identity);
   refel = homg.refel(m.dim, order);
   dof = prod(m.nelems*order + 1);
   ne = prod(m.nelems);

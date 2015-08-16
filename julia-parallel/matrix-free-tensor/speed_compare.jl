@@ -23,7 +23,8 @@ msizes = [5, 6, 7, 8];
 
 # orders
 otimes = Float64[];
-dim = int(input("Dimension: "))
+# dim = int(input("Dimension: "))
+dim = 2
 if dim == 2
   msize = 5
 elseif dim == 3

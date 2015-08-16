@@ -1,4 +1,5 @@
-push!(LOAD_PATH, "/Users/bwilliams/Documents/brinkman-stokes/julia-parallel/julia-homg")
+# push!(LOAD_PATH, "/Users/bwilliams/Documents/brinkman-stokes/julia-parallel/julia-homg")
+push!(LOAD_PATH, "/home/bmw313/Documents/brinkman-stokes/julia-parallel/julia-homg")
 
 @everywhere using Basis
 @everywhere using Mesh

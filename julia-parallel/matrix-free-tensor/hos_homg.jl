@@ -1,5 +1,5 @@
 # @everywhere using ParallelSparseMatMul
-# @everywhere include("helpers/helper_functions.jl")
+@everywhere include("helpers/helper_functions.jl")
 # @everywhere include("../julia-homg/Basis.jl")
 # @everywhere include("../julia-homg/Hexmesh.jl")
 # @everywhere include("../julia-homg/Xform.jl")
@@ -7,15 +7,21 @@
 # @everywhere include("../julia-homg/Tensor.jl")
 # @everywhere include("../julia-homg/Refel.jl")
 # @everywhere include("stokes_flow/ho_afun.jl")
-using ParallelSparseMatMul
-include("helpers/helper_functions.jl")
-include("../julia-homg/Basis.jl")
-include("../julia-homg/Hexmesh.jl")
-include("../julia-homg/Xform.jl")
-include("../julia-homg/Grids.jl")
-include("../julia-homg/Tensor.jl")
-include("../julia-homg/Refel.jl")
-include("stokes_flow/ho_afun.jl")
+# using ParallelSparseMatMul
+# include("helpers/helper_functions.jl")
+# include("../julia-homg/Basis.jl")
+# include("../julia-homg/Hexmesh.jl")
+# include("../julia-homg/Xform.jl")
+# include("../julia-homg/Grids.jl")
+# include("../julia-homg/Tensor.jl")
+# include("../julia-homg/Refel.jl")
+# include("stokes_flow/ho_afun.jl")
+# using Basis
+# using Mesh
+# using Xform
+# using Grids
+# using Tensor
+# using HexMeshGrids
 
 function hos_homg(order, msize, dim)
   # dim = 2

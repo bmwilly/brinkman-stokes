@@ -1,3 +1,4 @@
+using ParallelSparseMatMul
 # reload("helpers/helper_functions.jl")
 # reload("../julia-homg/Basis.jl")
 # reload("../julia-homg/Hexmesh.jl")
@@ -5,7 +6,7 @@
 # reload("../julia-homg/Grids.jl")
 # reload("../julia-homg/Tensor.jl")
 # reload("../julia-homg/Refel.jl")
-@everywhere using LinearOperators
+# @everywhere using LinearOperators
 @everywhere include("helpers/helper_functions.jl")
 @everywhere include("../julia-homg/Basis.jl")
 @everywhere include("../julia-homg/Hexmesh.jl")
@@ -18,15 +19,6 @@
 function hos_homg(order, msize, dim)
   # dim = 2
   nelems = [2^msize]
-
-  # m = Mesh.Hexmesh(tuple(repmat(nelems, 1, dim)...), Xform.identity)
-  # dof = prod([m.nelems...]*order + 1)
-  # K,M,iK = Mesh.assemble_poisson(m, order)
-  # k1,k2 = size(K)
-  # A = [K spzeros(k1,k2); spzeros(k1,k2) K]
-  # tic()
-  # for cnt = 1:100; u = vec(rand(2dof, 1)); w = A*u; end
-  # etoc = toc()
 
   m = Mesh.Hexmesh(tuple(repmat(nelems, 1, dim)...), Xform.identity)
   Mesh.set_order(m,order);
@@ -51,8 +43,11 @@ function hos_homg(order, msize, dim)
     "eMat" => eMat
   }
 
-  A = LinearOperator(2dof, Float64, u -> ho_afun(u, params))
+  # A = LinearOperator(2dof, Float64, u -> ho_afun(u, params))
   tic()
-  for cnt = 1:100; u = rand(2dof); w = A*u; end
+  for cnt = 1:100
+    u = rand(2dof)
+    w = ho_afun(u, params)
+  end
   etoc = toc()
 end

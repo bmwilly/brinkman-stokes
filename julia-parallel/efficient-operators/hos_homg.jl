@@ -24,10 +24,12 @@ function hos_homg(order, msize, dim)
   k1,k2 = size(K)
   A = [K spzeros(k1,k2); spzeros(k1,k2) K]
   S = share(A)
+  L = operator(A)
   tic()
   for cnt = 1:100
-    u = share(rand(2dof)); 
-    w = S*u;
+    u = share(rand(2dof));
+    # w = S*u;
+    w = L*u;
   end
   etoc = toc()
 end

@@ -11,13 +11,13 @@ function w = ho_afun(u, params)
   Ux = zeros(NP, ne); Uy = zeros(NP, ne);
 
   for e = 1:ne
-    idx = m.get_node_indices(e, order)
+    idx = mesh.get_node_indices(e, order);
     Ux(:, e) = u(idx);
     Uy(:, e) = u(idx+dof);
   end
   Wx = eMat * Ux; Wy = eMat * Uy;
   for e = 1:ne
-    idx = m.get_node_indices(e, order)
+    idx = mesh.get_node_indices(e, order);
     w(idx) = w(idx) + Wx(:, e);
     w(idx+dof) = w(idx+dof) + Wy(:, e);
   end

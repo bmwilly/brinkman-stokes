@@ -1,3 +1,7 @@
+
+order = 2; msize = 4; dim = 2; 
+t = hos_homg(order, msize, dim);
+
 orders = [4];
 msizes = [4];
 

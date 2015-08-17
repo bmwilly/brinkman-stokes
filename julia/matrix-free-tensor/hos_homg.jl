@@ -16,18 +16,7 @@ include("../julia-homg/Refel.jl")
 include("stokes_flow/ho_afun.jl")
 
 function hos_homg(order, msize, dim)
-  # dim = 2
   nelems = [2^msize]
-
-  # m = Mesh.Hexmesh(tuple(repmat(nelems, 1, dim)...), Xform.identity)
-  # dof = prod([m.nelems...]*order + 1)
-  # K,M,iK = Mesh.assemble_poisson(m, order)
-  # k1,k2 = size(K)
-  # A = [K spzeros(k1,k2); spzeros(k1,k2) K]
-  # tic()
-  # for cnt = 1:100; u = vec(rand(2dof, 1)); w = A*u; end
-  # etoc = toc()
-
   m = Mesh.Hexmesh(tuple(repmat(nelems, 1, dim)...), Xform.identity)
   Mesh.set_order(m,order);
   refel = Refel( m.dim, order );

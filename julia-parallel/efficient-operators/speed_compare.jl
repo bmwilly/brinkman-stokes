@@ -41,9 +41,11 @@ msizes = [2,3,4,5,6,7];
 #   Guide.title("100 matvec operations for 32x32 grid for different order elements")
 # )
 
+order = 2;
+dim = 2;
 mtimes = Float64[];
 for msize in msizes
-  t = hos_homg(2, msize)
+  t = hos_homg(order, msize, dim)
   push!(mtimes, t)
 end
 # Gadfly.plot(

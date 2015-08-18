@@ -1,12 +1,12 @@
-push!(LOAD_PATH, "/Users/bwilliams/Documents/brinkman-stokes/julia-parallel/julia-homg")
-push!(LOAD_PATH, "/home/bmw313/Documents/brinkman-stokes/julia-parallel/julia-homg")
-@everywhere using Basis
-@everywhere using Mesh
-@everywhere using Xform
-@everywhere using Grids
-@everywhere using Tensor
-@everywhere using HexMeshGrids
-@everywhere require("Refel.jl")
+# push!(LOAD_PATH, "/Users/bwilliams/Documents/brinkman-stokes/julia-parallel/julia-homg")
+# push!(LOAD_PATH, "/home/bmw313/Documents/brinkman-stokes/julia-parallel/julia-homg")
+# @everywhere using Basis
+# @everywhere using Mesh
+# @everywhere using Xform
+# @everywhere using Grids
+# @everywhere using Tensor
+# @everywhere using HexMeshGrids
+# @everywhere require("Refel.jl")
 
 function hos_homg_setup(order, msize, dim)
   nelems = [2^msize]

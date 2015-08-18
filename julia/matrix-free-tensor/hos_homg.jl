@@ -5,7 +5,7 @@
 # reload("../julia-homg/Grids.jl")
 # reload("../julia-homg/Tensor.jl")
 # reload("../julia-homg/Refel.jl")
-using LinearOperators
+# using LinearOperators
 include("helpers/helper_functions.jl")
 include("../julia-homg/Basis.jl")
 include("../julia-homg/Hexmesh.jl")
@@ -40,8 +40,9 @@ function hos_homg(order, msize, dim)
     "eMat" => eMat
   }
 
-  A = LinearOperator(2dof, Float64, u -> ho_afun(u, params))
+  u = rand(2dof)
   tic()
-  for cnt = 1:100; u = rand(2dof); w = A*u; end
+  for cnt = 1:100; w = ho_afun(u, params); end
   etoc = toc()
+
 end

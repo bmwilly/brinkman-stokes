@@ -43,8 +43,8 @@ function ho_afun(u, params)
   Uy = dzeros(NP, ne)
   Ux_chunks = map(fetch, { (@spawnat p localpart(Ux)) for p = procs(Ux) })
   Uy_chunks = map(fetch, { (@spawnat p localpart(Uy)) for p = procs(Uy) })
-  U_mats = map(loop_u_chunk, Ux_chunks, Uy_chunks)
-  # U_matsp = pmap(loop_u_chunk, Ux_chunks, Uy_chunks)
+  # U_mats = map(loop_u_chunk, Ux_chunks, Uy_chunks)
+  U_mats = pmap(loop_u_chunk, Ux_chunks, Uy_chunks)
   Ux_mats = [ x[1] for x in U_mats ]
   Uy_mats = [ x[2] for x in U_mats ]
   Ux = reduce(hcat, Ux_mats)
@@ -65,6 +65,14 @@ function ho_afun(u, params)
     w[idx+dof] += Wy[:, e]
   end
 
+  # Wx_chunks = map(fetch, { (@spawnat p localpart(Wx)) for p = procs(Wx) })
+  # Wy_chunks = map(fetch, { (@spawnat p localpart(Wy)) for p = procs(Wy) })
+  # W_mats = map(loop_w_chunk, Wx_chunks, Wy_chunks)
+  # Ux_mats = [ x[1] for x in U_mats ]
+  # Uy_mats = [ x[2] for x in U_mats ]
+  # Wx = reduce(hcat, Ux_mats)
+  # Wy = reduce(hcat, Wy_mats)
+
   w[bdy] = uu[bdy]
   w[bdy+dof] = uu[bdy+dof]
   vec(w)
@@ -80,6 +88,17 @@ end
 end
 
 @everywhere loop_u_chunk(Ux, Uy) = loop_u(mesh, order, dof, u, Ux, Uy)
+
+@everywhere function loop_w(mesh::Mesh.Hexmesh, order::Int, dof::Int, w, Wx, Wy)
+  for e = 1:size(Wx,2)
+    idx = Mesh.get_node_indices(mesh, e, order)
+    w[idx] += Wx[:, e]
+    w[idx+dof] += Wy[:, e]
+  end
+  Wx,Wy
+end
+
+@everywhere loop_w_chunk(Wx, Wy) = loop_w(mesh, order, dof, w, Wx, Wy)
 
 
 # @everywhere function loop_u!(erange, mesh, order, Ux, Uy, u, dof)

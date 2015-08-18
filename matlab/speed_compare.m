@@ -1,5 +1,7 @@
-addpath(genpath('/Users/bwilliams/Documents/brinkman-stokes/matlab/matrix-free-tensor'));
 addpath(genpath('/Users/bwilliams/Documents/masters-thesis/MATLAB/homg'));
+
+% addpath(genpath('/Users/bwilliams/Documents/brinkman-stokes/matlab/matrix-free-tensor'));
+addpath(genpath('/Users/bwilliams/Documents/brinkman-stokes/matlab/global-matrix'));
 
 % order = 2; msize = 4; dim = 2; 
 % t = hos_homg(order, msize, dim);
@@ -8,7 +10,7 @@ addpath(genpath('/Users/bwilliams/Documents/masters-thesis/MATLAB/homg'));
 % orders = [11,12,13,14,15,16,17,18,19,20];
 % orders = [21,22,23,24];
 % msizes = [4];
-msizes = [2,3,4,5,6,7,8,9,10];
+msizes = [8];
 
 % otimes = [];
 % % dim = input('Dimension: ');
@@ -47,4 +49,4 @@ for msize = msizes
     t = hos_homg(order, msize, dim); 
     mtimes = [mtimes t];
 end
-disp mtimes
+

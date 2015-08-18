@@ -1,4 +1,4 @@
-using ParallelSparseMatMul
+@everywhere using ParallelSparseMatMul
 # reload("helpers/helper_functions.jl")
 # reload("../julia-homg/Basis.jl")
 # reload("../julia-homg/Hexmesh.jl")
@@ -15,9 +15,7 @@ using ParallelSparseMatMul
 @everywhere include("../julia-homg/Refel.jl")
 
 function hos_homg(order, msize, dim)
-  # dim = 2
   nelems = [2^msize]
-
   m = Mesh.Hexmesh(tuple(repmat(nelems, 1, dim)...), Xform.identity)
   dof = prod([m.nelems...]*order + 1)
   K,M,iK = Mesh.assemble_poisson(m, order)
@@ -27,9 +25,11 @@ function hos_homg(order, msize, dim)
   L = operator(A)
   tic()
   for cnt = 1:100
-    u = share(rand(2dof));
-    # w = S*u;
-    w = L*u;
+    # u = share(rand(2dof));
+    # u = shsprand(2dof, 1, 1);
+    u = Base.shmem_rand(2dof);
+    w = S*u;
+    # w = L*u;
   end
   etoc = toc()
 end

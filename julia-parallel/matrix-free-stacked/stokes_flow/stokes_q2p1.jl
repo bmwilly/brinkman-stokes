@@ -21,16 +21,13 @@ reload("diffusion/lderiv.jl")
 #    qe          local Q1 mass matrix
 #    bbxe        local Q2 x-derivative matrix
 #    bbye        local Q2 y-derivative matrix
-function stokes_q2p1(xy, xyp, mv)
+function stokes_q2p1(grid)
 
+    xy = grid["xy"]; xyp = grid["xyp"]; mv = grid["mv"]
     nngpt = 9
-    x = xy[:, 1]
-    y = xy[:, 2]
-    xp = xyp[:, 1]
-    yp = xyp[:, 2]
-    nvtx = length(x)
-    nu = 2nvtx
-    np = 3length(xp)
+    x = xy[:, 1]; y = xy[:, 2]
+    xp = xyp[:, 1]; yp = xyp[:, 2]
+    nvtx = length(x); nu = 2nvtx; np = 3length(xp)
     nel = length(mv[:, 1])
     mp = [[1:3:3nel]' [2:3:3nel]' [3:3:3nel]']
 
@@ -70,7 +67,7 @@ function stokes_q2p1(xy, xyp, mv)
     bbye = zeros(nel, 9, 9)
 
     # loop over Gauss points
-    @parallel for igpt = 1:nngpt
+    for igpt = 1:nngpt
         sigpt = s[igpt]
         tigpt = t[igpt]
         wght = wt[igpt]
@@ -103,6 +100,14 @@ function stokes_q2p1(xy, xyp, mv)
 
     println("done")
 
-    (ae, bxe, bye, ge, qe, bbxe, bbye)
+    elem_mats = {
+      "ae" => ae,
+      "bxe" => bxe,
+      "bye" => bye,
+      "ge" => ge,
+      "qe" => qe,
+      "bbxe" => bbxe,
+      "bbye" => bbye
+    }
 
 end

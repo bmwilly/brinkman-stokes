@@ -1,9 +1,11 @@
-using Gadfly
+# using Gadfly
 # using PyPlot
 include("hos_homg.jl")
 include("mv_fun.jl")
 
-orders = [2, 3, 4]; msizes = [5, 6, 7, 8];
+orders = [2, 3, 4];
+msizes = [7,8,9]
+# msizes = [5, 6, 7, 8];
 
 # mesh sizes
 mtimes = Float64[]
@@ -11,11 +13,12 @@ for msize in msizes
   t = mv_fun(msize)
   push!(mtimes, t)
 end
-Gadfly.plot(
-  x = msizes, y = mtimes, Geom.line,
-  Guide.xlabel("Mesh size (log of number of elements)"), Guide.ylabel("Time (s)"),
-  Guide.title("100 matvec operations for Q2 elements on different sized grids")
-)
+@show mtimes
+# Gadfly.plot(
+#   x = msizes, y = mtimes, Geom.line,
+#   Guide.xlabel("Mesh size (log of number of elements)"), Guide.ylabel("Time (s)"),
+#   Guide.title("100 matvec operations for Q2 elements on different sized grids")
+# )
 
 # # orders
 # otimes = Float64[];

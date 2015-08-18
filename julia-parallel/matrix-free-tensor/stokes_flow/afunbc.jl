@@ -12,7 +12,7 @@ function afunbc(u, kparams)
 
     xy = kparams["xy"];
     xyp = kparams["xyp"];
-    mv = kparams["mv"];
+    mv = share(kparams["mv"]);
     bound = kparams["bound"];
     ae = kparams["ae"]
 
@@ -27,20 +27,12 @@ function afunbc(u, kparams)
     u[bound+nvtx] = zeros(length(bound))
 
     w = SharedArray(Float64, nu+np)
-    n,m = size(mv)
-    Ux = SharedArray(Float64, (m, n)); Uy = SharedArray(Float64, (m, n))
+    Ux = SharedArray(Float64, (size(mv,2), size(mv,1)))
+    Uy = SharedArray(Float64, (size(mv,2), size(mv,1)))
 
     @sync begin
       for p in procs()
-        @async remotecall_wait(p, loop_u_chunk!, u, Ux, Uy, mv, nvtx)
-      end
-    end
-
-    Wx = aes * Ux; Wy = aes * Uy
-
-    @sync begin
-      for p in procs()
-        @async remotecall_wait(p, loop_w_chunk!, w, Wx, Wy, mv, nvtx)
+        @async remotecall_wait(p, loop_elem_chunk!, w, u, Ux, Uy, aes, mv, nvtx)
       end
     end
 
@@ -49,16 +41,35 @@ function afunbc(u, kparams)
     vec(w)
 end
 
-@everywhere function myrange(M::SharedArray)
-  ind = indexpids(M)
+@everywhere function myrange(mv::SharedArray)
+  ind = indexpids(mv)
   if ind == 0
     # this worker is not assigned a piece
     return 1:0
   end
-  nchunks = length(procs(M))
-  splits = [iround(s) for s in linspace(0, size(M, 2), nchunks + 1)]
+  nchunks = length(procs(mv))
+  splits = [iround(s) for s in linspace(0, size(mv, 1), nchunks + 1)]
   splits[ind]+1:splits[ind+1]
 end
+
+@everywhere function loop_elem!(w, u, Ux, Uy, aes, mv, nvtx, erange)
+  # @show erange
+  for e in erange
+    ind = vec(mv[e, :]')
+    Ux[:, e] = u[ind]
+    Uy[:, e] = u[ind+nvtx]
+  end
+  Wx = aes * Ux
+  Wy = aes * Uy
+  for e in erange
+    ind = vec(mv[e, :]')
+    w[ind] += Wx[:, e]
+    w[ind+nvtx] += Wy[:, e]
+  end
+  w
+end
+
+@everywhere loop_elem_chunk!(w, u, Ux, Uy, aes, mv, nvtx) = loop_elem!(w, u, Ux, Uy, aes, mv, nvtx, myrange(mv))
 
 @everywhere function loop_u!(u, Ux, Uy, mv, nvtx, erange)
   # @show erange

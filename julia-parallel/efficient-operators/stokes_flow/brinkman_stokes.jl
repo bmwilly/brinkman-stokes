@@ -25,8 +25,9 @@ function brinkman_stokes()
 
     xy = stokes_grid["xy"]
     nu = 2length(xy[:, 1])
-    K = zeros(nu, nu)
-    stokes_mats = stokes_brinkman_q2p1(stokes_grid, K)
+    # K = zeros(nu, nu)
+    # stokes_mats = stokes_brinkman_q2p1(stokes_grid, K)
+    stokes_mats = stokes_q2p1(stokes_grid)
 
     bounds = {
       "bound" => channel_grid["bound"],
@@ -36,10 +37,12 @@ function brinkman_stokes()
     }
 
     msize = channel_grid["msize"];
-    order = int(input("Polynomial order: "))
+    # order = int(input("Polynomial order: "))
+    order = 2;
     # dim = int(input("Dimension: "));
     dim = 2;
-    nelems = [2^(msize-1)]
+    # nelems = [2^(msize-1)]
+    nelems = [2^msize]
     m = Mesh.Hexmesh(tuple(repmat(nelems, 1, dim)...), Xform.identity)
     dof = prod([m.nelems...]*order + 1)
 
@@ -56,9 +59,11 @@ function brinkman_stokes()
     #   0.77  0.33;
     #   0.8   0.42;
     # ]
+    # centers = [rand(10) rand(10)]
+
     centers = [
       0.15 0.2
-      0.15 0.45
+      0.17 0.45
       0.15 0.8
       0.3  0.3
       0.4  0.55
@@ -69,7 +74,23 @@ function brinkman_stokes()
       0.9  0.35
     ]
 
-    K,M,iK = Mesh.assemble_poisson_brinkman(m, order, centers)
+    # centers = [0.33 0.5]
+
+    # spe10
+    # x = grid["x"]; y = grid["y"];
+    # spe10 = matread("data/spe10.mat")
+    # KU = spe10["KU"]; pU = spe10["pU"];
+    # # layer = 1;
+    # # K = KU[1, 1:((length(x)-1)/2), 1:((length(y)-1)/2), layer];
+    # # K = squeeze(K[1,:,:], 1);
+    # centers = KU[:] .^(-1)
+    # kp = reshape(kp[1:length(x)*length(y)], length(x), length(y))
+
+    # kp = KU[1, 1, :, :]
+    # kp = squeeze(kp, 1)
+    # kp = squeeze(kp, 1)
+
+    K,M,kappa = Mesh.assemble_poisson_brinkman(m, order, centers)
     k1,k2 = size(K)
     A = [K spzeros(k1,k2); spzeros(k1,k2) K]
     G = [M spzeros(k1,k2); spzeros(k1,k2) M]
@@ -77,6 +98,6 @@ function brinkman_stokes()
     stokes_mats["G"] = G
 
     # keys(mats) =
-    # {"A", "B", "G", "Q", "Bx", "By", "f", "g", "x", "y", "xyp", "bound"}
-    mats = merge(stokes_mats, grid, bounds)
+    # {"A", "B", "G", "Q", "Bx", "By", "kappa" "f", "g", "x", "y", "xyp", "bound"}
+    mats = merge(stokes_mats, grid, bounds, {"kappa" => kappa, "msize" => msize})
 end

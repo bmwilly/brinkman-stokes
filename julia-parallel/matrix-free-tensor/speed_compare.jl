@@ -9,7 +9,7 @@ include("mv_fun.jl")
 orders = [21,22,23,24];
 # msizes = [5, 6, 7, 8];
 # msizes = [2,3,4,5,6,7,8,9,10,11,12];
-msizes = [9]
+msizes = [8]
 
 # mesh sizes
 mtimes = Float64[]

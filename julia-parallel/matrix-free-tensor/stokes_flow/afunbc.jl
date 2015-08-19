@@ -10,6 +10,7 @@
     # w           A * u
 function afunbc(u, kparams)
 
+    tic()
     xy = kparams["xy"];
     xyp = kparams["xyp"];
     mv = share(kparams["mv"]);
@@ -29,16 +30,21 @@ function afunbc(u, kparams)
     w = SharedArray(Float64, nu+np)
     Ux = SharedArray(Float64, (size(mv,2), size(mv,1)))
     Uy = SharedArray(Float64, (size(mv,2), size(mv,1)))
+    t1 = toc()
 
+    tic()
     @sync begin
       for p in procs()
         @async remotecall_wait(p, loop_elem_chunk!, w, u, Ux, Uy, aes, mv, nvtx)
       end
     end
+    t2 = toc()
 
+    tic()
     w[bound] = uu[bound]
     w[bound+nvtx] = uu[bound+nvtx]
     vec(w)
+    t3 = toc()
 end
 
 @everywhere function myrange(mv::SharedArray)

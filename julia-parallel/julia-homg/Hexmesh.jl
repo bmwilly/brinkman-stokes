@@ -449,12 +449,9 @@ end
 
 		I = zeros(ne * NPNP, 1);
 		J = zeros(ne * NPNP, 1);
-		# mass_val = zeros(ne * NPNP, 1);
-		# stiff_val = zeros(ne * NPNP, 1);
-		# inv_stiff_val = zeros(ne * NPNP, 1);
-		mass_val = SharedArray(Float64, (ne * NPNP, 1), pids = workers());
-		stiff_val = SharedArray(Float64, (ne * NPNP, 1), pids = workers());
-		inv_stiff_val = SharedArray(Float64, (ne * NPNP, 1), pids = workers());
+		mass_val = zeros(ne * NPNP, 1);
+		stiff_val = zeros(ne * NPNP, 1);
+		inv_stiff_val = zeros(ne * NPNP, 1);
 		ind_inner1D = repmat((2:order), 1, order-1);
 		if self.dim == 2
 
@@ -470,8 +467,7 @@ end
 		end
 
 		# loop over elements
-		# @parallel for e=1:ne
-		for e = 1:ne
+		for e=1:ne
 			idx =  get_node_indices(self, e, order);
 			ind1 = repmat(idx,NP,1);
 			ind2 = reshape(repmat(idx',NP,1),NPNP,1);
@@ -541,20 +537,21 @@ end
 		J = zeros(ne * NPNP, 1);
 		mass_val = zeros(ne * NPNP, 1);
 		stiff_val = zeros(ne * NPNP, 1);
-		inv_stiff_val = zeros(ne * NPNP, 1);
-		ind_inner1D = repmat((2:order), 1, order-1);
-		if self.dim == 2
-
-			ind_inner = ind_inner1D + (order+1) * (ind_inner1D'-1);
-		else
-			ind_inner = ind_inner1D + (order+1) * (ind_inner1D'-1);
-			# ind_inner = repmat(ind_inner, [1,1,order-1]);
-			ind_inner = repeat(ind_inner, outer = [1,1,order-1]);
-			for i = 1:order-1
-				# ind_inner[:,:,i] = ind_inner[:,:,i] + i * (order+1)^2;
-				ind_inner[:,:,i] += i * (order+1)^2;
-			end
-		end
+		perm_val = zeros(dof, 1);
+		# inv_stiff_val = zeros(ne * NPNP, 1);
+		# ind_inner1D = repmat((2:order), 1, order-1);
+		# if self.dim == 2
+		#
+		# 	ind_inner = ind_inner1D + (order+1) * (ind_inner1D'-1);
+		# else
+		# 	ind_inner = ind_inner1D + (order+1) * (ind_inner1D'-1);
+		# 	# ind_inner = repmat(ind_inner, [1,1,order-1]);
+		# 	ind_inner = repeat(ind_inner, outer = [1,1,order-1]);
+		# 	for i = 1:order-1
+		# 		# ind_inner[:,:,i] = ind_inner[:,:,i] + i * (order+1)^2;
+		# 		ind_inner[:,:,i] += i * (order+1)^2;
+		# 	end
+		# end
 
 		# loop over elements
 		for e=1:ne
@@ -576,11 +573,13 @@ end
 			eMat = element_stiffness_brinkman(self, e, refel, detJac, Jac, brinkman_pts);
 			stiff_val[st:en] = eMat[:];
 
-			eMat_inner_inv = inv(eMat[ind_inner[:],ind_inner[:]]);
-			eMat_inv = diagm(diag(eMat,0));
+			perm_val[idx] = brinkman_pts[:];
 
-			eMat_inv[ind_inner[:],ind_inner[:]] =  eMat_inner_inv;
-			inv_stiff_val[st:en] = eMat_inv[:];
+			# eMat_inner_inv = inv(eMat[ind_inner[:],ind_inner[:]]);
+			# eMat_inv = diagm(diag(eMat,0));
+			#
+			# eMat_inv[ind_inner[:],ind_inner[:]] =  eMat_inner_inv;
+			# inv_stiff_val[st:en] = eMat_inv[:];
 		end
 
 		Iv=int64(I[:]);
@@ -594,25 +593,44 @@ end
 		jj = ismember(J,bdy);
 
 		stiff_val = stiff_val.*(int(!bool(ii))).*(int(!bool(jj)));
-		inv_stiff_val = inv_stiff_val.*(int(!bool(ii))).*(int(!bool(jj)));
+		# inv_stiff_val = inv_stiff_val.*(int(!bool(ii))).*(int(!bool(jj)));
 
 		I = [I; bdy];
 		J = [J; bdy];
 		stiff_val = [stiff_val; ones(length(bdy), 1)];
-		inv_stiff_val = [inv_stiff_val; ones(length(bdy), 1)];
+		# inv_stiff_val = [inv_stiff_val; ones(length(bdy), 1)];
 		Iv=int64(I[:]);
 		Jv=int64(J[:]);
 		sv=stiff_val[:];
-		isv=inv_stiff_val[:];
+		# isv=inv_stiff_val[:];
 
 		K = sparse(Iv,Jv,sv,dof,dof);
-		iK = sparse(Iv,Jv,isv,dof,dof);
-		ebdy = get_element_boundary_node_indices(self, order);
-		iKebdry = diag(full(iK[ebdy,ebdy]),0)
-		if countnz(iKebdry) > 0
-      	iK[ebdy,ebdy] = diagm(1./iKebdry)
-	  end
-		return K, M, iK
+		# iK = sparse(Iv,Jv,isv,dof,dof);
+		# ebdy = get_element_boundary_node_indices(self, order);
+		# iKebdry = diag(full(iK[ebdy,ebdy]),0)
+		# if countnz(iKebdry) > 0
+    #   	iK[ebdy,ebdy] = diagm(1./iKebdry)
+	  # end
+		# return K, M, iK
+
+		kappa = perm_val[:];
+
+		return K,M,kappa
+	end
+	function assemble_permeability(self, order, centers)
+		set_order(self, order);
+		refel = Refel(self.dim, order);
+		dof = prod([self.nelems...]*order + 1);
+		ne = prod([self.nelems...]);
+		perm_val = zeros(dof, 1);
+		# loop over elements
+		for e = 1:ne
+			idx = get_node_indices(self, e, order);
+			pts = element_nodes(self, e, refel);
+			brinkman_pts = brinkman_tensor(pts, centers);
+			perm_val[idx] = brinkman_pts[:];
+		end
+		kappa = perm_val[:];
 	end
 	function assemble_rhs(self, fx, order)
 		set_order(self, order)
@@ -809,8 +827,10 @@ end
 		# get euclidean distances between nodal points and centers of brinkman obstacles
 		R = pairwise(Euclidean(), pts', centers')
 		R = minimum(R, 2)
-		brinkman_pts[find(R .< 0.05)] = 1e6
+		# brinkman_pts[find(R .< 0.025)] = 1e6
 		brinkman_pts[find(R .< 0.075)] = 1e6
+		# brinkman_pts[find(R .< 0.2)] = 1e6
+		# brinkman_pts = centers[1:npts]
 		brinkman_pts
 	end
 

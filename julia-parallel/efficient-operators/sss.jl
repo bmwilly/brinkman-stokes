@@ -29,7 +29,7 @@ p = xst[nu + 1:end];
 ux = reshape(u[1:nvtx], length(x), length(y))';
 uy = reshape(u[nvtx+1:end], length(x), length(y))';
 
-writecsv("home/bmw313/Documents/tmp/sol/x.csv", x)
-writecsv("home/bmw313/Documents/tmp/sol/y.csv", y)
-writecsv("home/bmw313/Documents/tmp/sol/ux.csv", ux)
-writecsv("home/bmw313/Documents/tmp/sol/uy.csv", uy)
+writecsv("/home/bmw313/Documents/tmp/sol/x.csv", x)
+writecsv("/home/bmw313/Documents/tmp/sol/y.csv", y)
+writecsv("/home/bmw313/Documents/tmp/sol/ux.csv", ux)
+writecsv("/home/bmw313/Documents/tmp/sol/uy.csv", uy)

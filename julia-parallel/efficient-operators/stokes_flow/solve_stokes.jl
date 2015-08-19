@@ -24,12 +24,8 @@ function solve_stokes(domain)
   A = mats["A"]; B = mats["B"]; Bx = mats["Bx"]; By = mats["By"];
   f = mats["f"]; g = mats["g"]; xy = mats["xy"]; xyp = mats["xyp"];
   bound = mats["bound"]; x = mats["x"]; y = mats["y"];
-  Q = mats["Q"];
-  if domain == 3
-    P = mats["P"]
-  else
-    P = zeros(size(A))
-  end
+  Q = mats["Q"]; msize = mats["msize"];
+  if domain == 3; kappa = mats["kappa"]; else; kappa = zeros(length(x)*length(y)); end;
 
   # boundary conditions
   println("imposing (enclosed flow) boundary conditions ...")
@@ -91,14 +87,18 @@ function solve_stokes(domain)
     println("GMRES reached desired tolerance at iteration $(length(resvec))")
   end
 
-  # p = plot(
-  #   x = 1:1:length(resvec), y = log(10, resvec), Geom.line,
-  #   Guide.xlabel("Iteration"), Guide.ylabel("log_10(residual)")
-  # )
-  # draw(PNG("graphs/iters.png", 12inch, 6inch), p)
+  p = Gadfly.plot(
+    x = 1:1:length(resvec), y = log(10, resvec), Geom.line,
+    Guide.xlabel("Iteration"), Guide.ylabel("log_10(residual)")
+  )
+  outfile = string("graphs/brinkman_iters", msize, ".png")
+  Gadfly.draw(PNG(outfile, 12inch, 6inch), p)
+
+  outfile = string("output/brinkman_iters", msize, ".csv")
+  writecsv(outfile, log(10, resvec))
 
   sol = {
-    "K" => K, "Ast" => Ast, "Bst" => Bst, "M" => M, "P" => P,
+    "K" => K, "Ast" => Ast, "Bst" => Bst, "M" => M, "kappa" => kappa,
     "rhs" => rhs, "fst" => fst, "gst" => gst, "xst" => xst
   }
 

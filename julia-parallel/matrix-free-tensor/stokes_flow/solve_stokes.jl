@@ -8,14 +8,17 @@ reload("stokes_flow/kfunbc.jl")
 reload("helpers/input.jl")
 reload("solvers/mg_diff.jl")
 reload("solvers/m_st_mg.jl")
+reload("stokes_flow/qfun.jl")
+reload("stokes_flow/qfun_diag.jl")
 
 ###SOLVE_STOKES solve stokes problem
 function solve_stokes(domain)
 
+  msize = int(input("Mesh size: "))
   @time (if domain == 1
-    kparams = square_stokes()
+    kparams = square_stokes(msize)
   elseif domain == 2
-    kparams = brinkman_stokes()
+    kparams = brinkman_stokes(msize)
   else
     error("invalid domain, please try again")
   end)

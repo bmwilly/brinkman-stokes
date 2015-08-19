@@ -13,9 +13,9 @@ include("../../julia-homg/Grids.jl")
 include("../../julia-homg/Tensor.jl")
 include("../../julia-homg/Refel.jl")
 
-function brinkman_stokes()
+function brinkman_stokes(msize)
 
-  channel_grid = channel_domain() # Q2 grid for channel domain
+  channel_grid = channel_domain(msize) # Q2 grid for channel domain
   stokes_grid = q2p1grid(channel_grid)
   stokes_mats = stokes_q2p1(stokes_grid) # stokes element matrices
 

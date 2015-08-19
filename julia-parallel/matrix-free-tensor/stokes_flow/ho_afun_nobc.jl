@@ -1,9 +1,6 @@
 ###HO_AFUN matrix-free A block operator for high order stokes
 function ho_afun_nobc(u, params)
-  # dof = prod([mesh.nelems...]*order + 1)
-  # ne = prod([mesh.nelems...])
-  # NP = (order+1)^mesh.dim
-
+  
   mesh = params["mesh"]; order = params["order"];
   dof = params["dof"]; ne = params["ne"]; NP = params["NP"];
   bdy = params["bdy"]; eMat = params["eMat"];

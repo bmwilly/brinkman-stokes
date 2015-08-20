@@ -7,18 +7,27 @@ include("mv_fun.jl")
 # p = int(input("Total number of processors: "))
 # addprocs(p-1)
 
-orders = [21,22,23,24];
+# orders = [21,22,23,24];
 # msizes = [5, 6, 7, 8];
 # msizes = [2,3,4,5,6,7,8,9,10,11,12];
-msizes = [8]
+# msizes = [8]
+
+msize = 9
+kparams = square_stokes(msize)
+xy = kparams["xy"]; xyp = kparams["xyp"]
+nvtx = length(xy[:, 1]); nu = 2nvtx; np = 3length(xyp[:, 1])
+
+tic(); for cnt = 1:100; u = Base.shmem_rand(nu+np); w = afunbc(u, kparams); end
+etoc = toc()
+
 
 # mesh sizes
-mtimes = Float64[]
-for msize in msizes
-  t = mv_fun(msize)
-  push!(mtimes, t)
-end
-@show mtimes
+# mtimes = Float64[]
+# for msize in msizes
+#   t = mv_fun(msize)
+#   push!(mtimes, t)
+# end
+# @show mtimes
 # Gadfly.plot(
 #   x = msizes, y = mtimes, Geom.line,
 #   Guide.xlabel("Mesh size (log of number of elements)"), Guide.ylabel("Time (s)"),

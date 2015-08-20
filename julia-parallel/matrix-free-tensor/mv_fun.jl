@@ -1,6 +1,5 @@
 using ParallelSparseMatMul
 include("stokes_flow/square_stokes.jl")
-# reload("stokes_flow/kfunbc.jl")
 include("stokes_flow/afunbc.jl")
 
 function mv_fun(msize)

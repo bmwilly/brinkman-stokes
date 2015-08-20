@@ -50,7 +50,7 @@ end
 @everywhere loop_elem_chunk!(w, u, aes, mv, nvtx) = loop_elem!(w, u, aes, mv, nvtx, myrange(mv))
 
 msize = 9
-# kparams = square_stokes(msize)
+kparams = square_stokes(msize)
 #
 xy = kparams["xy"]; xyp = kparams["xyp"]
 nvtx = length(xy[:, 1]); nu = 2nvtx; np = 3length(xyp[:, 1])

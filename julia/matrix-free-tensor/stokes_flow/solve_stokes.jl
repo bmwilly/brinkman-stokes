@@ -13,9 +13,9 @@ reload("solvers/m_st_mg.jl")
 function solve_stokes(domain)
 
   @time (if domain == 1
-    kparams = square_stokes()
+    kparams = square_stokes(msize)
   elseif domain == 2
-    kparams = brinkman_stokes()
+    kparams = brinkman_stokes(msize)
   else
     error("invalid domain, please try again")
   end)

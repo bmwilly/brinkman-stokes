@@ -40,9 +40,8 @@ function hos_homg(order, msize, dim)
     "eMat" => eMat
   }
 
-  u = rand(2dof)
   tic()
-  for cnt = 1:100; w = ho_afun(u, params); end
+  for cnt = 1:100; u = rand(2dof); w = ho_afun(u, params); end
   etoc = toc()
 
 end

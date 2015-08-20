@@ -4,10 +4,10 @@
 # include("../helpers/input.jl")
 # require("helpers/meshgrid.jl")
 # require("stokes_flow/stokes_q2p1.jl")
-reload("stokes_flow/stokes_q2p1.jl")
-reload("helpers/helper_functions.jl")
-reload("grids/q2p1grid.jl")
-reload("grids/cavity_domain.jl")
+include("stokes_q2p1.jl")
+include("../helpers/helper_functions.jl")
+include("../grids/q2p1grid.jl")
+include("../grids/cavity_domain.jl")
 
 ###SQUARE_STOKES set up flow problem in unit square domain
 function square_stokes(msize)

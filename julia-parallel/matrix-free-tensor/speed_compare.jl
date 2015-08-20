@@ -1,6 +1,7 @@
+push!(LOAD_PATH, "$(homedir())/Documents/brinkman-stokes/julia-parallel/matrix-free-tensor")
 # using Gadfly
 # using PyPlot
-include("hos_homg.jl")
+# include("hos_homg.jl")
 include("mv_fun.jl")
 
 # p = int(input("Total number of processors: "))

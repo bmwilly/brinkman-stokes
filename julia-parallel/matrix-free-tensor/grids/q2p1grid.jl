@@ -62,41 +62,7 @@ function q2p1grid(grid)
   np = nel
   # initialize global matrices
   adj = spzeros(nvtx, nvtx)
-  ee = zeros(nel, 4)
-
-  # evaluate element number on each edge in turn
-  # and assemble into adjacency matrix
-  ## nx = 0, ny = -1
-  # adj += sparse(mv[:, 1], mv[:, 2], 1:np, nvtx, nvtx)
-  # ## nx = 1, ny = 0
-  # adj += sparse(mv[:, 2], mv[:, 3], 1:np, nvtx, nvtx)
-  # ## nx = 0, ny = 1
-  # adj += sparse(mv[:, 3], mv[:, 4], 1:np, nvtx, nvtx)
-  # ## nx = -1, ny = 0
-  # adj += sparse(mv[:, 4], mv[:, 1], 1:np, nvtx, nvtx)
-
-  # for el = 1:nel
-  #   (ii, jj) = find(adj .== el)
-  #   ee[el, :] = diag(adj[jj, ii])'
-  # end
-  # ee = ee[:, [2 4 3 1]]
   ee = []
-
-  # plotting of the grid
-  # if nel <= 1 # disable plotting of grid
-  #   adj = spzeros(nvtx, nvtx)
-  #   mel = length(mv[:, 1])
-  #
-  #   for i = 1:nel
-  #     adj[mv[i, 1] mv[i, 2]] = 1
-  #     adj[mv[i, 2] mv[i, 3]] = 1
-  #     adj[mv[i, 3] mv[i, 4]] = 1
-  #     adj[mv[i, 4] mv[i, 1]] = 1
-  #   end
-  #
-  #   plot(adj, xy)
-  #
-  # end
 
   grid_out = {
     "x" => x,

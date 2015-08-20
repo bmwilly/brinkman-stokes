@@ -10,6 +10,7 @@
     # w           A * u
 function afunbc(u, kparams)
 
+    tic()
     xy = kparams["xy"]; xyp = kparams["xyp"]; mv = kparams["mv"]; bound = kparams["bound"];
     ae = kparams["ae"]
 
@@ -26,16 +27,10 @@ function afunbc(u, kparams)
 
     n,m = size(mv)
     Ux = zeros(m, n); Uy = zeros(m, n)
+    t1 = toc();
+    @show t1;
 
-    # w = SharedArray(Float64, (nu + np, 1), pids = workers())
-    # nelworker = nel/nworkers()
-
-    # @parallel for worker = 1:nworkers()
-
-    #   for e = (nelworker*worker - nelworker + 1):(nelworker*worker)
-      # @parallel for e = 1:nel
-      # for e = 1:nel/nworkers()
-
+    tic()
     for e = 1:nel
       ind = vec(mv[e, :]')
       Ux[:, e] = u[ind]
@@ -49,10 +44,13 @@ function afunbc(u, kparams)
       w[ind] += Wx[:, e]
       w[ind+nvtx] += Wy[:, e]
     end
+    t2 = toc();
+    @show t2;
 
+    tic()
     w[bound] = uu[bound]
     w[bound+nvtx] = uu[bound+nvtx]
-    # end # parallel
-
     vec(w)
+    t3 = toc();
+    @show t3;
 end

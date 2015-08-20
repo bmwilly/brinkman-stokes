@@ -1,20 +1,22 @@
 # using Gadfly
 # using PyPlot
-include("hos_homg.jl")
-# include("mv_fun.jl")
+# include("hos_homg.jl")
+include("mv_fun.jl")
 
 # orders = [2,3,4,5,6,7,8];
 # orders = [9,10,11,12,13,14,15,16];
 # orders = [17,18,19,20,21,22,23,24];
 # orders = [21];
-msizes = [2,3,4,5,6,7,8];
+# msizes = [2,3,4,5,6,7,8];
+msizes = [8]
 
 # # mesh sizes
-# mtimes = Float64[]
-# for msize in msizes
-#   t = mv_fun(msize)
-#   push!(mtimes, t)
-# end
+mtimes = Float64[]
+for msize in msizes
+  t = mv_fun(msize)
+  push!(mtimes, t)
+end
+@show mtimes
 # Gadfly.plot(
 #   x = msizes, y = mtimes, Geom.line,
 #   Guide.xlabel("Mesh size (log of number of elements)"), Guide.ylabel("Time (s)"),
@@ -40,13 +42,13 @@ msizes = [2,3,4,5,6,7,8];
 # )
 
 # mesh sizes
-order = 2;
-dim = 2;
-mtimes = Float64[];
-for msize in msizes
-  t = hos_homg(order, msize, dim)
-  push!(mtimes, t)
-end
+# order = 2;
+# dim = 2;
+# mtimes = Float64[];
+# for msize in msizes
+#   t = hos_homg(order, msize, dim)
+#   push!(mtimes, t)
+# end
 #
 # Gadfly.plot(
 #   x = msizes, y = mtimes, Geom.line,

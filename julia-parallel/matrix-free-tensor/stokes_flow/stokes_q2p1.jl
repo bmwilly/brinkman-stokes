@@ -4,9 +4,12 @@
 # require("diffusion/deriv.jl")
 # require("diffusion/qderiv.jl")
 # require("diffusion/lderiv.jl")
-reload("diffusion/deriv.jl")
-reload("diffusion/qderiv.jl")
-reload("diffusion/lderiv.jl")
+# include("diffusion/deriv.jl")
+# include("diffusion/qderiv.jl")
+# include("diffusion/lderiv.jl")
+include("../diffusion/deriv.jl")
+include("../diffusion/qderiv.jl")
+include("../diffusion/lderiv.jl")
 
 ###STOKES_Q2P1 Q2-P1 matrix generator
 #input
@@ -99,6 +102,14 @@ function stokes_q2p1(grid)
     end # end of Gauss point loop
 
     println("done")
+
+    ae = squeeze(ae[1, :, :], 1)
+    bxe = squeeze(bxe[1, :, :], 1)
+    bye = squeeze(bye[1, :, :], 1)
+    ge = squeeze(ge[1, :, :], 1)
+    qe = squeeze(qe[1, :, :], 1)
+    bbxe = squeeze(bbxe[1, :, :], 1)
+    bbye = squeeze(bbye[1, :, :], 1)
 
     elem_mats = {
       "ae" => ae,

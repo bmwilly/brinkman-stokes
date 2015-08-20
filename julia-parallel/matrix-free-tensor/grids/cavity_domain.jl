@@ -1,4 +1,4 @@
-reload("helpers/helper_functions.jl")
+include("../helpers/helper_functions.jl")
 
 ###CAVITY_DOMAIN square cavity Q2 grid generator
 function cavity_domain(msize)

@@ -16,9 +16,8 @@ function agal(u, kparams)
 	# get variables
 	nvtx = length(xy[:, 1]); nu = 2nvtx; np = 3length(xyp[:, 1])
 	nel = length(mv[:, 1])
-	aes = squeeze(ae[1, :, :], 1)
-	w = zeros(nu+np)
-	# w = SharedArray(Float64, (nu + np, 1), pids = workers())
+	aes = share(ae)
+	w = SharedArray(Float64, nu+np)
 
 	# zero dirichlet boundary conditions
 	uu = copy(u)

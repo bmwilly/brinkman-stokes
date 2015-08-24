@@ -16,7 +16,7 @@ function qfun_diag(u, kparams)
   nvtx = length(xy[:, 1]); nu = 2nvtx; np = 3length(xyp[:, 1])
   nel = length(mv[:, 1])
   mp = [[1:3:3nel] [2:3:3nel] [3:3:3nel]]
-  qes = squeeze(qe[1, :, :], 1)
+  qes = share(qe)
   w = zeros(nu+np)
 
   n,m = size(mv)

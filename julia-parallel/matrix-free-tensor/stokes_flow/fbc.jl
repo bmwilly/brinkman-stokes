@@ -1,6 +1,6 @@
-reload("stokes_flow/afun.jl")
-reload("stokes_flow/ho_afun_nobc.jl")
-reload("stokes_flow/btfun.jl")
+include("afun.jl")
+include("ho_afun_nobc.jl")
+include("btfun.jl")
 
 function fbc(kparams)
 
@@ -28,9 +28,9 @@ function fbc(kparams)
     bccy[bound] = bcy
 
     bc = [bccx; bccy; zeros(np, 1)]
-    # w -= afun(bc, kparams)
-    w -= ho_afun_nobc(bc, kparams)
-    w -= btfun(bc, kparams)
+    w -= afun(share(bc), kparams)
+    # w -= ho_afun_nobc(bc, kparams)
+    w -= btfun(share(bc), kparams)
 
     wx = w[1:nvtx]
     wy = w[nvtx + 1:nu]

@@ -16,7 +16,7 @@ function agal_diag(u, params)
   # get variables
   nvtx = length(xy[:, 1]); nu = 2nvtx; np = 3length(xyp[:, 1])
   nel = length(mv[:, 1])
-  aes = squeeze(ae[1, :, :], 1)
+  aes = share(ae)
   w = zeros(nu+np)
 
   # zero dirichlet boundary conditions

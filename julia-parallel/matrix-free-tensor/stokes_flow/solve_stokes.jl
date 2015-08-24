@@ -1,20 +1,19 @@
-using LinearOperators
 using KrylovMethods
-reload("stokes_flow/square_stokes.jl")
-reload("stokes_flow/brinkman_stokes.jl")
-reload("stokes_flow/fbc.jl")
-reload("stokes_flow/gbc.jl")
-reload("stokes_flow/kfunbc.jl")
-reload("helpers/input.jl")
-reload("solvers/mg_diff.jl")
-reload("solvers/m_st_mg.jl")
-reload("stokes_flow/qfun.jl")
-reload("stokes_flow/qfun_diag.jl")
+include("square_stokes.jl")
+include("brinkman_stokes.jl")
+include("fbc.jl")
+include("gbc.jl")
+include("kfunbc.jl")
+include("qfun.jl")
+include("qfun_diag.jl")
+include("../solvers/mg_diff.jl")
+include("../solvers/m_st_mg.jl")
 
 ###SOLVE_STOKES solve stokes problem
 function solve_stokes(domain)
 
   msize = int(input("Mesh size: "))
+  # msize = 4
   @time (if domain == 1
     kparams = square_stokes(msize)
   elseif domain == 2
@@ -33,7 +32,7 @@ function solve_stokes(domain)
   gst = gbc(kparams)
   rhs = vec([fst; gst])
 
-  K = u -> kfunbc(u, kparams)
+  K = u -> kfunbc(share(u), kparams)
   M = u -> u
 
   pc = input("Use GMG preconditioner? (y/n): ")
@@ -66,26 +65,10 @@ function solve_stokes(domain)
     K, rhs, length(rhs);
     tol = tol, maxIter = maxit, M = M, out = 1
   ))
-  # bnrm2 = norm(rhs);
-  # if bnrm2 == 0.0; bnrm2 = 1.0; end
-  # # err = norm(M*rhs) / bnrm2
-  # err = norm(M(rhs)) / bnrm2
-  # @time(
-  # if err < tol
-  #   xst = zeros(length(rhs));
-  #   flag = NaN; iter = NaN; resvec = NaN
-  # else
-  #   (xst, flag, err, iter, resvec) = gmres(
-  #     K, rhs, length(rhs);
-  #     tol = 1e-6, maxIter = maxit, M = M, out = 1
-  #   )
-  # end
-  # )
 
   if flag == 0
     println("GMRES reached desired tolerance at iteration $(length(resvec))")
   end
 
-  (xst, kparams)
-
+  xst,kparams
 end

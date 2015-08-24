@@ -6,8 +6,8 @@ function bbfunplot(u, kparams)
   # get variables
   nvtx = length(xy[:, 1]); nu = 2nvtx; np = 3length(xyp[:, 1])
   nel = length(mv[:, 1])
-  bbxes = squeeze(bbxe[1, :, :], 1)
-  bbyes = squeeze(bbye[1, :, :], 1)
+  bbxes = share(bbxe)
+  bbyes = share(bbye)
   w = zeros(nvtx)
   # w = SharedArray(Float64, (nvtx, 1), pids = workers())
 

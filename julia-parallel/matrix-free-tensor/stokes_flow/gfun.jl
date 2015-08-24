@@ -16,7 +16,7 @@ function gfun(u, kparams)
   # get variables
   nvtx = length(xy[:, 1]); nu = 2nvtx; np = 3length(xyp[:, 1])
   nel = length(mv[:, 1])
-  ges = squeeze(ge[1, :, :], 1)
+  ges = share(ge)
   w = zeros(nu+np)
 
   n,m = size(mv)

@@ -35,7 +35,7 @@ function afunbc(u::SharedArray, kparams)
     # tic()
     @sync begin
       for p in procs()
-        @async remotecall_wait(p, loop_elem_chunk!, w, u, aes, mv, nvtx)
+        @async remotecall_wait(p, afunbc_loop_chunk!, w, u, aes, mv, nvtx)
       end
       # for p in workers()
       #   @async remotecall_wait(p, loop_elem_chunk!, w, u, Ux, Uy, aes, mv, nvtx)
@@ -54,18 +54,7 @@ function afunbc(u::SharedArray, kparams)
     # t3 += t;
 end
 
-@everywhere function myrange(mv::SharedArray)
-  ind = indexpids(mv)
-  if ind == 0
-    # this worker is not assigned a piece
-    return 1:0
-  end
-  nchunks = length(procs(mv))
-  splits = [iround(s) for s in linspace(0, size(mv, 1), nchunks + 1)]
-  splits[ind]+1:splits[ind+1]
-end
-
-@everywhere function loop_elem!(w::SharedArray, u::SharedArray, aes, mv, nvtx, prange::UnitRange)
+@everywhere function afunbc_loop!(w::SharedArray, u::SharedArray, aes, mv, nvtx, prange::UnitRange)
   # @show erange
   pnel = length(prange)
   mve = mv[prange,:]
@@ -86,4 +75,4 @@ end
   w
 end
 
-@everywhere loop_elem_chunk!(w, u, aes, mv, nvtx) = loop_elem!(w, u, aes, mv, nvtx, myrange(mv))
+@everywhere afunbc_loop_chunk!(w, u, aes, mv, nvtx) = afunbc_loop!(w, u, aes, mv, nvtx, myrange(mv))

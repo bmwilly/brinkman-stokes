@@ -1,9 +1,4 @@
 # load required packages and functions
-# include("../helpers/meshgrid.jl")
-# include("stokes_q2p1.jl")
-# include("../helpers/input.jl")
-# require("helpers/meshgrid.jl")
-# require("stokes_flow/stokes_q2p1.jl")
 include("stokes_q2p1.jl")
 include("../helpers/helper_functions.jl")
 include("../grids/q2p1grid.jl")

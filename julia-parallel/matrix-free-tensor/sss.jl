@@ -1,6 +1,6 @@
 using ParallelSparseMatMul
 include("stokes_flow/solve_stokes.jl")
-include("graphs/flowplot.jl")
+# include("graphs/flowplot.jl")
 include("helpers/helper_functions.jl")
 
 domain = int(input("Choose problem (1/lid-driven cavity, 2/brinkman): "))

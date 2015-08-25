@@ -8,12 +8,12 @@ include("qfun.jl")
 include("qfun_diag.jl")
 include("../solvers/mg_diff.jl")
 include("../solvers/m_st_mg.jl")
+include("../solvers/gmres2.jl")
 
 ###SOLVE_STOKES solve stokes problem
 function solve_stokes(domain)
 
   msize = int(input("Mesh size: "))
-  # msize = 4
   @time (if domain == 1
     kparams = square_stokes(msize)
   elseif domain == 2
@@ -61,7 +61,7 @@ function solve_stokes(domain)
   end
 
   tol = 1e-6; maxit = 100 # gmres parameters
-  @time ((xst, flag, err, iter, resvec) = gmres(
+  @time ((xst, flag, err, iter, resvec) = gmres2(
     K, rhs, length(rhs);
     tol = tol, maxIter = maxit, M = M, out = 1
   ))

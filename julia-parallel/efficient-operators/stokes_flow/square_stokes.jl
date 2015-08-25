@@ -1,15 +1,16 @@
 # load required packages and functions
-reload("helpers/meshgrid.jl")
-reload("stokes_flow/stokes_q2p1.jl")
-reload("helpers/input.jl")
-reload("grids/q2p1grid.jl")
-reload("grids/cavity_domain.jl")
+# reload("stokes_flow/stokes_q2p1.jl")
+# reload("grids/q2p1grid.jl")
+# reload("grids/cavity_domain.jl")
+include("stokes_q2p1.jl")
+include("../grids/q2p1grid.jl")
+include("../grids/cavity_domain.jl")
 
 ###SQUARE_STOKES set up flow problem in unit square domain
-function square_stokes()
+function square_stokes(msize)
 
     # generate Q2 grid for square cavity
-    cavity_grid = cavity_domain()
+    cavity_grid = cavity_domain(msize)
     grid = q2p1grid(cavity_grid)
 
     # stokes q2-p1 matrix generator
@@ -25,6 +26,6 @@ function square_stokes()
 
     # keys(mats) =
     # {"A", "B", "G", "Q", "Bx", "By", "f", "g", "x", "y", "xyp", "bound"}
-    mats = merge(stokes_mats, grid, bounds)
+    mats = merge(stokes_mats, grid, bounds, {"msize" => msize})
 
 end

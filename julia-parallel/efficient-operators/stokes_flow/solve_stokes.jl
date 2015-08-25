@@ -1,22 +1,25 @@
 using LinearOperators
 using KrylovMethods
 using Gadfly
-reload("stokes_flow/square_stokes.jl")
-reload("stokes_flow/obstacle_stokes.jl")
-reload("stokes_flow/brinkman_stokes.jl")
-reload("stokes_flow/flowbc.jl")
-reload("solvers/mg_diff.jl")
-reload("solvers/m_st_mg.jl")
+# reload("stokes_flow/square_stokes.jl")
+# reload("stokes_flow/obstacle_stokes.jl")
+# reload("stokes_flow/brinkman_stokes.jl")
+# reload("stokes_flow/flowbc.jl")
+# reload("solvers/mg_diff.jl")
+# reload("solvers/m_st_mg.jl")
+include("square_stokes.jl")
+include("brinkman_stokes.jl")
+include("flowbc.jl")
+include("../solvers/mg_diff.jl")
+include("../solvers/m_st_mg.jl")
 
 ###SOLVE_STOKES solve stokes problem
-function solve_stokes(domain)
+function solve_stokes(domain, msize)
 
   @time (if domain == 1
-    mats = square_stokes()
+    mats = square_stokes(msize)
   elseif domain == 2
-    mats = obstacle_stokes()
-  elseif domain == 3
-    mats = brinkman_stokes()
+    mats = brinkman_stokes(msize)
   else
     error("invalid domain, please try again")
   end)
@@ -87,15 +90,15 @@ function solve_stokes(domain)
     println("GMRES reached desired tolerance at iteration $(length(resvec))")
   end
 
-  p = Gadfly.plot(
-    x = 1:1:length(resvec), y = log(10, resvec), Geom.line,
-    Guide.xlabel("Iteration"), Guide.ylabel("log_10(residual)")
-  )
-  outfile = string("graphs/brinkman_iters", msize, ".png")
-  Gadfly.draw(PNG(outfile, 12inch, 6inch), p)
-
-  outfile = string("output/brinkman_iters", msize, ".csv")
-  writecsv(outfile, log(10, resvec))
+  # p = Gadfly.plot(
+  #   x = 1:1:length(resvec), y = log(10, resvec), Geom.line,
+  #   Guide.xlabel("Iteration"), Guide.ylabel("log_10(residual)")
+  # )
+  # outfile = string("graphs/brinkman_iters", msize, ".png")
+  # Gadfly.draw(PNG(outfile, 12inch, 6inch), p)
+  #
+  # outfile = string("output/brinkman_iters", msize, ".csv")
+  # writecsv(outfile, log(10, resvec))
 
   sol = {
     "K" => K, "Ast" => Ast, "Bst" => Bst, "M" => M, "kappa" => kappa,

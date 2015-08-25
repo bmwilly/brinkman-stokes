@@ -23,5 +23,4 @@ function kfunbc(u, kparams)
     # w = [A*u[1:nu]; zeros(np)] + B*u + Bt*u
 
     w = afunbc(u, kparams) + bfunbc(u, kparams) + btfunbc(u, kparams)
-
 end

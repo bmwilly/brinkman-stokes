@@ -1,3 +1,5 @@
+# SharedType = Union{SharedArray, SharedSparseMatrixCSC}
+
 function input(prompt::String="")
   print(prompt)
   chomp(readline())

@@ -1,6 +1,7 @@
-using LinearOperators
+# using IterativeSolvers
+# using LinearOperators
 using KrylovMethods
-using Gadfly
+# using Gadfly
 # reload("stokes_flow/square_stokes.jl")
 # reload("stokes_flow/obstacle_stokes.jl")
 # reload("stokes_flow/brinkman_stokes.jl")
@@ -64,27 +65,14 @@ function solve_stokes(domain, msize)
     end
   end
 
-  tol = 1e-6; maxit = 100;
+  # tol = 1e-6; maxit = 100;
+  restrt = min(100, length(rhs)); tol = 1e-6; maxIter = 1
   @time ((xst, flag, err, iter, resvec) = gmres(
-    K, rhs, length(rhs);
-    tol = tol, maxIter = maxit, M = M, out = 1
+    K, rhs, restrt;
+    tol = tol, maxIter = maxIter, M = M, out = 1
   ))
 
-  # bnrm2 = norm(rhs);
-  # if bnrm2 == 0.0; bnrm2 = 1.0; end
-  # # err = norm(M*rhs) / bnrm2
-  # err = norm(M(rhs)) / bnrm2
-  # @time(
-  # if err < tol
-  #   xst = zeros(length(rhs));
-  #   flag = NaN; iter = NaN; resvec = NaN
-  # else
-  #   (xst, flag, err, iter, resvec) = gmres(
-  #     K, rhs, length(rhs);
-  #     tol = tol, maxIter = maxit, M = M, out = 1
-  #   )
-  # end
-  # )
+  # xst,convHist = gmres(K, rhs)
 
   if flag == 0
     println("GMRES reached desired tolerance at iteration $(length(resvec))")

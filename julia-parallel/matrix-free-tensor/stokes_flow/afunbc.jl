@@ -8,7 +8,7 @@
     # ae          local Q2 diffusion derivative matrix
 #output
     # w           A * u
-function afunbc(u::SharedArray, kparams)
+function afunbc(u, kparams)
 
     # tic()
     xy = kparams["xy"];
@@ -23,6 +23,8 @@ function afunbc(u::SharedArray, kparams)
     aes = share(ae);
 
     # zero dirichlet boundary conditions
+    # @show u
+    # typeof(u)
     uu = copy(u)
     u[bound] = zeros(length(bound))
     u[bound+nvtx] = zeros(length(bound))

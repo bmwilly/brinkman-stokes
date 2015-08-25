@@ -14,7 +14,7 @@ function gmres2(A::Function,b::Vector,restrt::Int; tol::Real=1e-2,maxIter::Int=1
 #
 # Input:
 #
-#	A       - function computing A*x 
+#	A       - function computing A*x
 #	b       - right hand side vector
 #	restrt  - number of iterations between restarts
 #	tol     - error tolerance
@@ -52,9 +52,9 @@ function gmres2(A::Function,b::Vector,restrt::Int; tol::Real=1e-2,maxIter::Int=1
     restrt = min(restrt,n-1)
     V     = spzeros(n,restrt+1)
     H     = spzeros(restrt+1,restrt)
-    cs    = spzeros(restrt)
-    sn    = spzeros(restrt)
-    e1    = spzeros(n)
+    cs    = spzeros(restrt,1)
+    sn    = spzeros(restrt,1)
+    e1    = spzeros(n,1)
     e1[1] = 1.0
 
     if iseltype(b,Complex) || iseltype(r,Complex) || iseltype(A,Complex)

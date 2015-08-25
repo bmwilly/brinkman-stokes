@@ -1,4 +1,5 @@
 using KrylovMethods
+# using IterativeSolvers
 include("square_stokes.jl")
 include("brinkman_stokes.jl")
 include("fbc.jl")
@@ -60,11 +61,19 @@ function solve_stokes(domain)
     M = u -> m_st_mg(u, mparams)
   end
 
-  tol = 1e-6; maxit = 100 # gmres parameters
-  @time ((xst, flag, err, iter, resvec) = gmres2(
-    K, rhs, length(rhs);
-    tol = tol, maxIter = maxit, M = M, out = 1
+  restrt = min(100, length(rhs)); tol = 1e-6; maxIter = 1 # gmres parameters
+  @time ((xst, flag, err, iter, resvec) = gmres(
+    K, rhs, restrt;
+    tol = tol, maxIter = maxIter, M = M, out = 1
   ))
+
+  # tol = 1e-6; maxiter = 1
+  # Kf = MatrixFcn{Float64}(nv+np, nv+np, (w,u) -> kfunbc(w, share(u), kparams))
+  # x, convHist = gmres(Kf, rhs; tol = tol, maxiter = maxiter)
+  #
+  # # x = zeros(length(rhs))
+  # gmres!(x, K, rhs, M; tol = tol, maxiter = maxiter)
+  # gmres(Kf, rhs, M; tol = tol, maxiter = maxiter)
 
   if flag == 0
     println("GMRES reached desired tolerance at iteration $(length(resvec))")

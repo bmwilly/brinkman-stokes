@@ -1,22 +1,19 @@
 using LinearOperators
 using KrylovMethods
 using Gadfly
-reload("stokes_flow/square_stokes.jl")
-reload("stokes_flow/obstacle_stokes.jl")
-reload("stokes_flow/brinkman_stokes.jl")
-reload("stokes_flow/flowbc.jl")
-reload("solvers/mg_diff.jl")
-reload("solvers/m_st_mg.jl")
+include("square_stokes.jl")
+include("brinkman_stokes.jl")
+include("flowbc.jl")
+include("../solvers/mg_diff.jl")
+include("../solvers/m_st_mg.jl")
 
 ###SOLVE_STOKES solve stokes problem
-function solve_stokes(domain)
+function solve_stokes(domain, msize)
 
   @time (if domain == 1
-    mats = square_stokes()
+    mats = square_stokes(msize)
   elseif domain == 2
-    mats = obstacle_stokes()
-  elseif domain == 3
-    mats = brinkman_stokes()
+    mats = brinkman_stokes(msize)
   else
     error("invalid domain, please try again")
   end)
@@ -25,11 +22,6 @@ function solve_stokes(domain)
   f = mats["f"]; g = mats["g"]; xy = mats["xy"]; xyp = mats["xyp"];
   bound = mats["bound"]; x = mats["x"]; y = mats["y"];
   Q = mats["Q"];
-  if domain == 3
-    P = mats["P"]
-  else
-    P = zeros(size(A))
-  end
 
   # boundary conditions
   println("imposing (enclosed flow) boundary conditions ...")

@@ -13,10 +13,10 @@ include("../../julia-homg/Tensor.jl")
 include("../../julia-homg/Refel.jl")
 
 ###SQUARE_STOKES set up flow problem in unit square domain
-function brinkman_stokes()
+function brinkman_stokes(msize)
 
     # generate Q2 grid for square channel
-    channel_grid = channel_domain()
+    channel_grid = channel_domain(msize)
     grid = q2p1grid(channel_grid)
 
     # stokes q2-p1 matrix generator
@@ -25,8 +25,7 @@ function brinkman_stokes()
 
     xy = stokes_grid["xy"]
     nu = 2length(xy[:, 1])
-    K = zeros(nu, nu)
-    stokes_mats = stokes_brinkman_q2p1(stokes_grid, K)
+    stokes_mats = stokes_brinkman_q2p1(stokes_grid)
 
     bounds = {
       "bound" => channel_grid["bound"],
@@ -36,7 +35,8 @@ function brinkman_stokes()
     }
 
     msize = channel_grid["msize"];
-    order = int(input("Polynomial order: "))
+    # order = int(input("Polynomial order: "))
+    order = 2;
     # dim = int(input("Dimension: "));
     dim = 2;
     nelems = [2^(msize-1)]
@@ -44,17 +44,29 @@ function brinkman_stokes()
     dof = prod([m.nelems...]*order + 1)
 
     # brinkman obstacles
+    # centers = [
+    #   0.15 0.15
+    #   0.17 0.45
+    #   0.15 0.8
+    #   0.37 0.25
+    #   0.4  0.55
+    #   0.55 0.85
+    #   0.7  0.4
+    #   0.7  0.8
+    #   0.8  0.1
+    #   0.9  0.35
+    # ]
     centers = [
-      0.1 0.2
-      0.1 0.5
-      0.1 0.8
-      0.3 0.3
-      0.4 0.5
-      0.4 0.8
-      0.7 0.4
-      0.7 0.8
-      0.8 0.1
-      0.9 0.5
+      0.15 0.2
+      0.17 0.45
+      0.15 0.8
+      0.3  0.3
+      0.4  0.55
+      0.4  0.8
+      0.7  0.4
+      0.7  0.8
+      0.8  0.1
+      0.9  0.35
     ]
     K,M = Mesh.assemble_poisson_brinkman(m, order, centers)
     k1,k2 = size(K)

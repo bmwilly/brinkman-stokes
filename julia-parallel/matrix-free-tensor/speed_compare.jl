@@ -12,13 +12,14 @@ include("mv_fun.jl")
 # msizes = [2,3,4,5,6,7,8,9,10,11,12];
 # msizes = [8]
 
-msize = 9
+# msize = 9
+msize = int(input("Mesh size: "))
 kparams = square_stokes(msize)
 xy = kparams["xy"]; xyp = kparams["xyp"]
 nvtx = length(xy[:, 1]); nu = 2nvtx; np = 3length(xyp[:, 1])
 
-tic(); for cnt = 1:100; u = Base.shmem_rand(nu+np); w = afunbc(u, kparams); end
-etoc = toc()
+tic(); for cnt = 1:100; u = Base.shmem_rand(nu+np); w = afunbc(u, kparams); end; etoc = toc()
+# tic(); for cnt = 1:100; u = Base.shmem_rand(nu+np); w = afunbc(u, kparams); end; etoc = toc()
 
 
 # mesh sizes

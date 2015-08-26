@@ -9,5 +9,5 @@ uy = readcsv(get_file("uy"))
 
 figure();
 # pcolor(x, y, kp, cmap = "Greys");
-quiver(x, y, ux, uy, ux, scale = 20);
+quiver(x, y, ux, uy, ux, scale = 2);
 axis([-1,1,-1,1]);

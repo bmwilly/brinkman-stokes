@@ -145,7 +145,7 @@ function stokes_brinkman_q2p1(grid, K)
 
     println("done")
 
-    A += K .* G # brinkman
+    # A += K .* G # brinkman
     # G = K .* G
 
     mats = {
@@ -155,7 +155,6 @@ function stokes_brinkman_q2p1(grid, K)
       "Q" => Q, # pressure matrix
       "Bx" => BBx,
       "By" => BBy,
-      "P" => K, # permeability tensor
       "f" => f,
       "g" => g
     }

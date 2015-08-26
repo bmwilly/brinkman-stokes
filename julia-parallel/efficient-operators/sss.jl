@@ -1,12 +1,10 @@
-# reload("stokes_flow/solve_stokes.jl")
-# reload("graphs/flowplot.jl")
-# reload("helpers/helper_functions.jl")
 include("stokes_flow/solve_stokes.jl")
 include("graphs/flowplot.jl")
 include("helpers/helper_functions.jl")
 
-domain = int(input("Choose domain (1/lid-driven cavity, 2/brinkman): "))
-msize = int(input("Mesh size: "))
+# domain = int(input("Choose domain (1/lid-driven cavity, 2/brinkman): "))
+# msize = int(input("Mesh size: "))
+domain = 2; msize = 7;
 sol = solve_stokes(domain, msize)
 println("done")
 # flowplot(sol, domain)
@@ -23,11 +21,6 @@ xp = unique(xyp[:, 1]); yp = unique(xyp[:, 2]);
 # compute auxilliary quantities
 u = xst[1:nu];
 p = xst[nu + 1:end];
-
-## plot pressure
-# p = p[1:3:end]
-# zp = reshape(p, length(xp), length(yp))'
-# figure(); streamplot(xp, yp, zp)
 
 ## plot velocity
 ux = reshape(u[1:nvtx], length(x), length(y))';

@@ -2,12 +2,10 @@ reload("helpers/input.jl")
 reload("helpers/meshgrid.jl")
 
 ###CAVITY_DOMAIN square cavity Q2 grid generator
-function cavity_domain()
+function cavity_domain(msize)
 
   ## define geometry
   println("Grid generation for cavity domain.")
-  # msize = 6
-  msize = int(input("Mesh size: "))
   n = 2^msize
   np = int(n/2)
   nel = int(np^2)

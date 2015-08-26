@@ -1,8 +1,4 @@
 push!(LOAD_PATH, "$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators")
-# include("matvec.jl")
-# include("hos-homg.jl")
-# using Gadfly
-# using PyPlot
 include("hos_homg.jl")
 include("mv_fun.jl")
 
@@ -14,7 +10,8 @@ include("mv_fun.jl")
 # msizes = [5,6,7];
 # msizes = [9]
 
-msize = 9
+# msize = 9
+msize = int(input("Mesh size: "))
 mats = square_stokes(msize)
 A = mats["A"]; B = mats["B"]; Bx = mats["Bx"]; By = mats["By"];
 f = mats["f"]; g = mats["g"]; xy = mats["xy"]; xyp = mats["xyp"];

@@ -1,7 +1,4 @@
 # load required packages and functions
-# reload("stokes_flow/stokes_q2p1.jl")
-# reload("grids/q2p1grid.jl")
-# reload("grids/cavity_domain.jl")
 include("stokes_q2p1.jl")
 include("../grids/q2p1grid.jl")
 include("../grids/cavity_domain.jl")
@@ -27,5 +24,4 @@ function square_stokes(msize)
     # keys(mats) =
     # {"A", "B", "G", "Q", "Bx", "By", "f", "g", "x", "y", "xyp", "bound"}
     mats = merge(stokes_mats, grid, bounds, {"msize" => msize})
-
 end

@@ -1,13 +1,4 @@
-# using IterativeSolvers
-# using LinearOperators
 using KrylovMethods
-# using Gadfly
-# reload("stokes_flow/square_stokes.jl")
-# reload("stokes_flow/obstacle_stokes.jl")
-# reload("stokes_flow/brinkman_stokes.jl")
-# reload("stokes_flow/flowbc.jl")
-# reload("solvers/mg_diff.jl")
-# reload("solvers/m_st_mg.jl")
 include("square_stokes.jl")
 include("brinkman_stokes.jl")
 include("flowbc.jl")
@@ -41,32 +32,30 @@ function solve_stokes(domain, msize)
   K = [Ast Bst'; Bst spzeros(np, np)]
   M = u -> u
 
-  if domain == 1 || domain == 3
-    pc = input("Use GMG preconditioner? (y/n): ")
-    if pc == "y"
+  pc = input("Use GMG preconditioner? (y/n): ")
+  if pc == "y"
 
-      nv = size(Ast, 1); np = size(Q, 1); nu = nv/2
-      Agal = Ast[1:nu, 1:nu]
-      (mgdata, smooth_data, sweeps, stype, npre, npost, nc) = mg_diff(x, y, Agal)
+    nv = size(Ast, 1); np = size(Q, 1); nu = nv/2
+    Agal = Ast[1:nu, 1:nu]
+    (mgdata, smooth_data, sweeps, stype, npre, npost, nc) = mg_diff(x, y, Agal)
 
-      mparams = {
-        "nv" => nv,
-        "Q" => Q,
-        "mgdata" => mgdata,
-        "smooth_data" => smooth_data,
-        "nc" => nc,
-        "npre" => npre,
-        "npost" => npost,
-        "sweeps" => sweeps
-      }
+    mparams = {
+      "nv" => nv,
+      "Q" => Q,
+      "mgdata" => mgdata,
+      "smooth_data" => smooth_data,
+      "nc" => nc,
+      "npre" => npre,
+      "npost" => npost,
+      "sweeps" => sweeps
+    }
 
-      # block GMG preconditioner
-      M = u -> m_st_mg(u, mparams)
-    end
+    # block GMG preconditioner
+    M = u -> m_st_mg(u, mparams)
   end
 
   # tol = 1e-6; maxit = 100;
-  restrt = min(100, length(rhs)); tol = 1e-6; maxIter = 1
+  restrt = min(1000, length(rhs)); tol = 1e-6; maxIter = 100
   @time ((xst, flag, err, iter, resvec) = gmres(
     K, rhs, restrt;
     tol = tol, maxIter = maxIter, M = M, out = 1
@@ -94,5 +83,4 @@ function solve_stokes(domain, msize)
   }
 
   sol = merge(mats, sol)
-
 end

@@ -1,10 +1,10 @@
 using LinearOperators
 using Distances
-reload("grids/q2p1grid.jl")
-reload("stokes_flow/stokes_q2p1.jl")
-reload("grids/channel_domain.jl")
-reload("stokes_flow/ho_afun.jl")
-reload("stokes_flow/ho_gfun.jl")
+include("../grids/q2p1grid.jl")
+include("../grids/channel_domain.jl")
+include("stokes_q2p1.jl")
+include("ho_afun.jl")
+include("ho_gfun.jl")
 include("../helpers/helper_functions.jl")
 include("../../julia-homg/Basis.jl")
 include("../../julia-homg/Hexmesh.jl")

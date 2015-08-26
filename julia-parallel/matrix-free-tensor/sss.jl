@@ -3,9 +3,11 @@ include("stokes_flow/solve_stokes.jl")
 # include("graphs/flowplot.jl")
 include("helpers/helper_functions.jl")
 
-domain = int(input("Choose problem (1/lid-driven cavity, 2/brinkman): "))
-# domain = 1
-(xst, kparams) = solve_stokes(domain)
+# domain = int(input("Choose problem (1/lid-driven cavity, 2/brinkman): "))
+# msize = int(input("Mesh size: "))
+msize = 6
+domain = 2
+(xst, kparams) = solve_stokes(domain, msize)
 println("done")
 # doplot = input("Create plot? (y/n): ")
 #
@@ -24,7 +26,7 @@ p = sol[nu+1:end]
 ux = reshape(u[1:nvtx], length(x), length(y))'
 uy = reshape(u[nvtx+1:end], length(x), length(y))'
 
-writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/x.csv", x)
-writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/y.csv", y)
-writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/ux.csv", ux)
-writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/uy.csv", uy)
+writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/matrix-free-tensor/temp/sol/x.csv", x)
+writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/matrix-free-tensor/temp/sol/y.csv", y)
+writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/matrix-free-tensor/temp/sol/ux.csv", ux)
+writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/matrix-free-tensor/temp/sol/uy.csv", uy)

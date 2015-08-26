@@ -1,6 +1,5 @@
-reload("stokes_flow/regcavity_flow.jl")
-reload("stokes_flow/obstacle_flow.jl")
-reload("stokes_flow/poiseuille_flow.jl")
+include("regcavity_flow.jl")
+include("poiseuille_flow.jl")
 
 ###FLOWBC imposes inflow boundary conditions
 # input
@@ -34,8 +33,6 @@ function flowbc(a, b, f, g, xy, bound, domain)
   if domain == 1
     (bcx, bcy) = regcavity_flow(xbd, ybd)
   elseif domain == 2
-    (bcx, bcy) = obstacle_flow(xbd, ybd)
-  elseif domain == 3
     (bcx, bcy) = poiseuille_flow(xbd, ybd)
   end
 

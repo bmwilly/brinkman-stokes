@@ -112,5 +112,4 @@ function cavity_domain(msize)
     "bnde" => bnde,
     "obs" => obs
   }
-
 end

@@ -13,10 +13,10 @@ include("../../julia-homg/Tensor.jl")
 include("../../julia-homg/Refel.jl")
 
 ###SQUARE_STOKES set up flow problem in unit square domain
-function brinkman_stokes()
+function brinkman_stokes(msize)
 
     # generate Q2 grid for square channel
-    channel_grid = channel_domain()
+    channel_grid = channel_domain(msize)
     grid = q2p1grid(channel_grid)
 
     # stokes q2-p1 matrix generator
@@ -47,20 +47,6 @@ function brinkman_stokes()
     dof = prod([m.nelems...]*order + 1)
 
     # brinkman obstacles
-    # centers = [
-    #   0.1   0.5;
-    #   0.15  0.7;
-    #   0.18  0.1;
-    #   0.2   0.8;
-    #   0.45  0.55;
-    #   0.5   0.35;
-    #   0.65  0.65;
-    #   0.75  0.4;
-    #   0.77  0.33;
-    #   0.8   0.42;
-    # ]
-    # centers = [rand(10) rand(10)]
-
     centers = [
       0.15 0.2
       0.17 0.45
@@ -73,7 +59,6 @@ function brinkman_stokes()
       0.8  0.1
       0.9  0.35
     ]
-
     # centers = [0.33 0.5]
 
     # spe10

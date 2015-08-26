@@ -36,7 +36,6 @@ function brinkman_stokes(msize)
       "obs" => channel_grid["obs"]
     }
 
-    msize = channel_grid["msize"];
     # order = int(input("Polynomial order: "))
     order = 2;
     # dim = int(input("Dimension: "));

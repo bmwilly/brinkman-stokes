@@ -1,4 +1,5 @@
 using KrylovMethods
+# using IterativeSolvers
 include("square_stokes.jl")
 include("brinkman_stokes.jl")
 include("flowbc.jl")
@@ -55,12 +56,15 @@ function solve_stokes(domain, msize)
   end
 
   # tol = 1e-6; maxit = 100;
-  restrt = min(1000, length(rhs)); tol = 1e-6; maxIter = 100
+  restrt = min(5000, length(rhs)); tol = 1e-6; maxIter = 100
   @time ((xst, flag, err, iter, resvec) = gmres(
     K, rhs, restrt;
     tol = tol, maxIter = maxIter, M = M, out = 1
   ))
 
+  # m_st_mg!(u, unneeded, mparams) = m_st_mg(u, mparams)
+  # M = MatrixFcn{Float64}(size(K,1), size(K,2), (u, unneeded) -> m_st_mg!(u, unneeded, mparams))
+  # @time ((xst, convHist) = IterativeSolvers.gmres(K, rhs, M; tol = tol, restart = restrt))
   # xst,convHist = gmres(K, rhs)
 
   if flag == 0

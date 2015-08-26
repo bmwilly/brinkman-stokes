@@ -1,6 +1,6 @@
 using PyPlot
 
-folder = "k4"
+folder = "k6"
 get_file = var -> string("temp/sol/", folder, "/", var, ".csv")
 x = readcsv(get_file("x"))
 y = readcsv(get_file("y"))

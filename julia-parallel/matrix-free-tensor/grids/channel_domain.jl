@@ -5,7 +5,7 @@ function channel_domain(msize)
 
   ## define geometry
   println("Grid generation for channel domain.")
-  n = 2^msize
+  n = 2^(msize+1)
   np = int(n/2)
   nel = int(np^2)
 

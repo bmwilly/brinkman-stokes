@@ -40,8 +40,8 @@ function brinkman_stokes(msize)
     0.8   0.42;
   ]
 
-  msize = channel_grid["msize"]; order = 2; dim = 2;
-  nelems = [2^(msize-1)]
+  order = 2; dim = 2;
+  nelems = [2^(msize)]
   m = Mesh.Hexmesh(tuple(repmat(nelems, 1, dim)...), Xform.identity)
   dof = prod([m.nelems...]*order + 1)
   Mesh.set_order(m,order);

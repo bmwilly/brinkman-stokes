@@ -1,10 +1,12 @@
 ###HO_AFUN matrix-free A block operator for high order stokes
 function ho_afun(u, params)
+  u = share(u)
   mesh = params["mesh"]; order = params["order"];
   dof = params["dof"]; ne = params["ne"]; NP = params["NP"];
   bdy = params["bdy"];
   refel = params["refel"]
   centers = params["centers"]
+  mv = share(params["mv"])
   w = zeros(length(u))
   Ux = zeros(NP, ne); Uy = zeros(NP, ne)
   eMats = zeros(NP*ne, NP)

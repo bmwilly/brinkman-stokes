@@ -12,7 +12,7 @@ println("done")
 doplot = input("Create plot? (y/n): ")
 
 if doplot == "y"
-  flowplot(xst, kparams)
+  flowplot(sol, kparams)
 end
 
 # x = kparams["x"]; y = kparams["y"];

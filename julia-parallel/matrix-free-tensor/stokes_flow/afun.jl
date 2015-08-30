@@ -1,5 +1,6 @@
 function afun(u, kparams)
 
+  u = share(u)
   xy = kparams["xy"];
   xyp = kparams["xyp"];
   mv = share(kparams["mv"]);

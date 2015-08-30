@@ -37,3 +37,11 @@ function ismember(main_array, sub_array)
   out[match_index]=1
   out
 end
+
+@everywhere function myrange(mv::SharedArray)
+  ind = indexpids(mv)
+  if ind == 0; return 1:0; end
+  nchunks = length(procs(mv))
+  splits = [iround(s) for s in linspace(0, size(mv,1), nchunks+1)]
+  splits[ind]+1:splits[ind+1]
+end

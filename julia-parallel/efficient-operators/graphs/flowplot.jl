@@ -1,8 +1,4 @@
 using PyPlot
-# using Dierckx
-# using Gaston
-# using Gadfly
-# using Plotly
 
 function flowplot(sol, domain)
 
@@ -20,28 +16,16 @@ function flowplot(sol, domain)
   u = xst[1:nu];
   p = xst[nu + 1:end];
 
-  ## plot pressure
-  # p = p[1:3:end]
-  # zp = reshape(p, length(xp), length(yp))'
-  # figure(); streamplot(xp, yp, zp)
-
   ## plot velocity
   ux = reshape(u[1:nvtx], length(x), length(y))';
   uy = reshape(u[nvtx+1:end], length(x), length(y))';
 
-  # writecsv("home/bmw313/Documents/tmp/sol/x.csv", x)
-  # writecsv("home/bmw313/Documents/tmp/sol/y.csv", y)
-  # writecsv("home/bmw313/Documents/tmp/sol/ux.csv", ux)
-  # writecsv("home/bmw313/Documents/tmp/sol/uy.csv", uy)
-
-
-  figure(); streamplot(x, y, ux, uy, density = 4, color = ux); axis([-1,1,-1,1]);
-  # figure(); streamplot(x, y, ux, uy, density = 4, color = ux); quiver(x, y, ux, uy); axis([-1,1,-1,1])
-  # figure(); quiver(x, y, ux, uy, scale = 20); axis([-1,1,-1,1])
-  # figure(); streamplot(x, y, ux, uy, density = 4); quiver(x, y, ux, uy, ux); axis([-1,1,-1,1])
+  figure();
+  streamplot(x, y, ux, uy, density = 4, color = ux);
+  axis([-1,1,-1,1]);
 
   figure();
   # pcolor(x, y, kp, cmap = "Greys");
-  quiver(x, y, ux, uy, ux, scale = 2);
+  quiver(x, y, ux, uy, ux, scale = 20);
   axis([-1,1,-1,1]);
 end

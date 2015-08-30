@@ -1,8 +1,7 @@
 ###HO_AFUN matrix-free A block operator for high order stokes
-function ho_afun(u, params)
+function ho_afunbc(u, params)
   u = share(u)
-  mesh = params["mesh"];
-  order = params["order"];
+  mesh = params["mesh"]; order = params["order"];
   dof = params["dof"];
   ne = params["ne"];
   bdy = params["bdy"];
@@ -30,7 +29,7 @@ function ho_afun(u, params)
 
   # @sync begin
   #   for p in procs()
-  #     @async remotecall_wait(p, ho_afun_loop_chunk!, w, u, mesh, order, dof, refel, centers, mv)
+  #     @async remotecall_wait(p, ho_afunbc_loop_chunk!, w, u, mesh, order, dof, refel, centers, mv)
   #   end
   # end
 
@@ -39,7 +38,7 @@ function ho_afun(u, params)
   vec(w)
 end
 
-@everywhere function ho_afun_loop!(w, u, mesh, order, dof, refel, centers, mv, prange)
+@everywhere function ho_afunbc_loop!(w, u, mesh, order, dof, refel, centers, mv, prange)
   pnel = length(prange)
   mve = mv[prange,:]
   for e = 1:pnel
@@ -55,4 +54,4 @@ end
   w
 end
 
-@everywhere ho_afun_loop_chunk!(w, u, mesh, order, dof, refel, centers, mv) = ho_afun_loop!(w, u, mesh, order, dof, refel, centers, mv, myrange(mv))
+@everywhere ho_afunbc_loop_chunk!(w, u, mesh, order, dof, refel, centers, mv) = ho_afunbc_loop!(w, u, mesh, order, dof, refel, centers, mv, myrange(mv))

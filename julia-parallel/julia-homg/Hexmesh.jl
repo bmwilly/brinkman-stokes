@@ -822,7 +822,8 @@ end
 	end
 	function brinkman_tensor(pts, centers)
 		npts = length(pts[:,1]); nc = length(centers[:,1])
-		brinkman_pts = ones(npts)
+		brinkman_pts = zeros(npts)
+		# brinkman_pts = ones(npts)
 
 		# get euclidean distances between nodal points and centers of brinkman obstacles
 		R = pairwise(Euclidean(), pts', centers')
@@ -830,7 +831,6 @@ end
 		# brinkman_pts[find(R .< 0.025)] = 1e6
 		brinkman_pts[find(R .< 0.075)] = 1e6
 		# brinkman_pts[find(R .< 0.2)] = 1e6
-		# brinkman_pts = centers[1:npts]
 		brinkman_pts
 	end
 

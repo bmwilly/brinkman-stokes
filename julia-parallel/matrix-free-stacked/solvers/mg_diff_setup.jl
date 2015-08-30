@@ -53,37 +53,37 @@ function mg_diff_setup(x, y)
     # compute boundary vertices and edges
     # four boundary edges
     k1 = find(xy[:,2] .== -1)
-    e1 = []
+    e1 = Int[]
     for k = 1:mel
         if any(mv[k,5] .== k1)
-            e1 = [e1, k]
+						push!(e1, k)
         end
     end
     ef1 = ones(size(e1))
 
     k2 = find((xy[:,1] .== 1) & (xy[:,2] .< 1) & (xy[:,2] .> -1))
-    e2 = []
+    e2 = Int[]
     for k = 1:mel
         if any(mv[k,6] .== k2)
-            e2 = [e2, k]
+						push!(e2, k)
         end
     end
     ef2 = 2*ones(size(e2))
 
     k3 = find(xy[:,2] .== 1)
-    e3 = []
+    e3 = Int[]
     for k = 1:mel
         if any(mv[k,7] .== k3)
-            e3 = [e3, k]
+						push!(e3, k)
         end
     end
     ef3 = 3*ones(size(e3))
 
     k4 = find((xy[:,1] .== -1) & (xy[:,2] .< 1) & (xy[:,2] .> -1))
-    e4 = []
+    e4 = Int[]
     for k = 1:mel
         if any(mv[k,8] .== k4)
-            e4 = [e4, k]
+						push!(e4, k)
         end
     end
     ef4 = 4*ones(size(e4))

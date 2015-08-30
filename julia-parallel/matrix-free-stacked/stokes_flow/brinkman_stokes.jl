@@ -16,7 +16,9 @@ include("../../julia-homg/Refel.jl")
 function brinkman_stokes(msize)
 
   channel_grid = channel_domain(msize) # Q2 grid for channel domain
-  stokes_grid = q2p1grid(channel_grid)
+  grid = q2p1grid(channel_grid)
+  mv = channel_grid["mv"]
+  stokes_grid = merge(grid, {"mv" => mv})
   stokes_mats = stokes_q2p1(stokes_grid) # stokes element matrices
 
   bounds = {
@@ -27,19 +29,19 @@ function brinkman_stokes(msize)
   }
 
   # brinkman obstacles
-  # centers = [
-  #   0.1   0.5;
-  #   0.15  0.7;
-  #   0.18  0.1;
-  #   0.2   0.8;
-  #   0.45  0.55;
-  #   0.5   0.35;
-  #   0.65  0.65;
-  #   0.75  0.4;
-  #   0.77  0.33;
-  #   0.8   0.42;
-  # ]
-  centers = [0.33 0.5]
+  centers = [
+    0.1   0.5;
+    0.15  0.7;
+    0.18  0.1;
+    0.2   0.8;
+    0.45  0.55;
+    0.5   0.35;
+    0.65  0.65;
+    0.75  0.4;
+    0.77  0.33;
+    0.8   0.42;
+  ]
+  # centers = [0.33 0.5]
 
   order = 2; dim = 2;
   nelems = [2^(msize)]
@@ -62,7 +64,8 @@ function brinkman_stokes(msize)
     "NP" => NP,
     "bdy" => bdy,
     "refel" => refel,
-    "centers" => centers
+    "centers" => centers,
+    "mv" => mv
   }
 
   A = LinearOperator(2dof, Float64, u -> ho_afun(u, params))

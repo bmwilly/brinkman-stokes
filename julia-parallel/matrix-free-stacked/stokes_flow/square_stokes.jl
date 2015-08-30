@@ -1,13 +1,8 @@
 # load required packages and functions
-# include("../helpers/meshgrid.jl")
-# include("stokes_q2p1.jl")
-# include("../helpers/input.jl")
-# require("helpers/meshgrid.jl")
-# require("stokes_flow/stokes_q2p1.jl")
-reload("stokes_flow/stokes_q2p1.jl")
-reload("helpers/helper_functions.jl")
-reload("grids/q2p1grid.jl")
-reload("grids/cavity_domain.jl")
+include("stokes_q2p1.jl")
+include("../helpers/helper_functions.jl")
+include("../grids/q2p1grid.jl")
+include("../grids/cavity_domain.jl")
 
 ###SQUARE_STOKES set up flow problem in unit square domain
 function square_stokes(msize)
@@ -17,7 +12,9 @@ function square_stokes(msize)
     grid = q2p1grid(cavity_grid)
 
     # stokes q2-p1 matrix generator
-    stokes_mats = stokes_q2p1(grid)
+    mv = cavity_grid["mv"]
+    stokes_grid = merge(grid, {"mv" => mv})
+    stokes_mats = stokes_q2p1(stokes_grid)
 
     bounds = {
       "bound" => cavity_grid["bound"],
@@ -26,6 +23,30 @@ function square_stokes(msize)
       "obs" => cavity_grid["obs"]
     }
 
-    kparams = merge(stokes_mats, grid, bounds, {"msize" => msize})
+    order = 2; dim = 2;
+    nelems = [2^(msize)]
+    m = Mesh.Hexmesh(tuple(repmat(nelems, 1, dim)...), Xform.identity)
+    dof = prod([m.nelems...]*order + 1)
+    Mesh.set_order(m,order);
+    refel = Refel( m.dim, order );
+    dof = prod([m.nelems...]*order + 1);
+    ne = prod([m.nelems...]);
+    # storage for indices and values
+    NP = (order+1)^m.dim;
+    NPNP = NP * NP;
+    bdy = Mesh.get_boundary_node_indices(m, order);
+
+    params = {
+      "mesh" => m,
+      "order" => order,
+      "dof" => dof,
+      "ne" => ne,
+      "NP" => NP,
+      "bdy" => bdy,
+      "refel" => refel,
+      "mv" => mv
+    }
+
+    kparams = merge(stokes_mats, stokes_grid, bounds, params, {"msize" => msize})
 
 end

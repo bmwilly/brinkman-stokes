@@ -1,7 +1,5 @@
-reload("solvers/mg_pre.jl")
-reload("solvers/mg_post.jl")
-reload("helpers/gmres2.jl")
-
+include("mg_pre.jl")
+include("mg_post.jl")
 ###MG_ITER performs one GMG iteration
 # input
 # 	As				coefficient matrix
@@ -22,7 +20,7 @@ function mg_iter(As, x0, f, smooth_data, level, npre, npost, sweeps)
 	P = As[level]["prolong"]
 
 	if level == 2
-		x,flag,err,iter,resvec = gmres(u -> A(u, params), f, length(f))
+		x,flag = gmres(u -> A(u, params), f, length(f))
 	else
 		# presmooth
 		x = mg_pre(A, params, x0, f, npre, smooth_data, level, sweeps)
@@ -32,7 +30,7 @@ function mg_iter(As, x0, f, smooth_data, level, npre, npost, sweeps)
 		rc = P'*r
 
 		# coarse grid correction
-		cc = mg_iter(As, zeros(size(rc)), rc, smooth_data, level-1, npre, npost, sweeps)
+		cc = mg_iter(As, zeros(length(rc)), rc, smooth_data, level-1, npre, npost, sweeps)
 		x += P*cc
 
 		# postsmooth

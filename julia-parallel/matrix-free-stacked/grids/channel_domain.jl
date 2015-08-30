@@ -1,10 +1,10 @@
 reload("helpers/helper_functions.jl")
 
 ###CAVITY_DOMAIN square cavity Q2 grid generator
-function cavity_domain(msize)
+function channel_domain(msize)
 
   ## define geometry
-  println("Grid generation for cavity domain.")
+  println("Grid generation for channel domain.")
   n = 2^(msize+1)
   np = int(n/2)
   nel = int(np^2)
@@ -23,9 +23,7 @@ function cavity_domain(msize)
   yy = reshape(Y', nvtx, 1)
   xy = [xx[:] yy[:]]
 
-  kx = 1
-  ky = 1
-  mel = 0
+  kx = 1; ky = 1; mel = 0
   mv = zeros(Int64, nel, 9)
   for j = 1:np
       for i = 1:np
@@ -86,8 +84,14 @@ function cavity_domain(msize)
   end
   ef4 = 4*ones(size(e4))
 
-  bound = sort([k1; k2; k3; k4])
-  mbound = [e1' ef1'; e2' ef2'; e3' ef3'; e4' ef4']
+  # outbc = int(input("outflow boundary: 1/natural, 2/prescribed: "))
+  # if outbc == 2
+  #   bound = sort([k1; k2; k3; k4])
+  #   mbound = [e1' ef1'; e2' ef2'; e3' ef3'; e4' ef4']
+  # else
+    bound = sort([k1; k3; k4])
+    mbound = [e1' ef1'; e3' ef3'; e4' ef4']
+  # end
 
   ## specify boundary information for graphics
   # bndxy: (x,y)-coordinates of vertices that define the domain and obstacle(s)
@@ -100,7 +104,7 @@ function cavity_domain(msize)
   obs = []
   sbnde = [1 2 3 4]
 
-  cavity_grid = {
+  channel_grid = {
     "mv" => mv,
     "xy" => xy,
     "bound" => bound,

@@ -28,8 +28,8 @@ function solve_stokes(domain, msize)
 
   println("imposing (enclosed flow) boundary conditions ...")
   # get RHS vector
-  fst = fbc(kparams)
-  gst = gbc(kparams)
+  fst = fbc(domain, kparams)
+  gst = gbc(domain, kparams)
   rhs = vec([fst; gst])
 
   K = u -> kfunbc(share(u), kparams)
@@ -60,10 +60,10 @@ function solve_stokes(domain, msize)
     M = u -> m_st_mg(u, mparams)
   end
 
-  restrt = min(500, length(rhs)); tol = 1e-6; maxIter = 1 # gmres parameters
+  restrt = min(500, length(rhs)); tol = 1e-6;  # gmres parameters
   @time ((xst, flag, err, iter, resvec) = gmres(
     K, rhs, restrt;
-    tol = tol, maxIter = 20, M = M, out = 1
+    tol = tol, M = M, out = 1
   ))
 
   # tol = 1e-6; maxiter = 1

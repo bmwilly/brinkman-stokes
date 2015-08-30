@@ -17,14 +17,13 @@ function agal(u, kparams)
 	nvtx = length(xy[:, 1]); nu = 2nvtx; np = 3length(xyp[:, 1])
 	nel = length(mv[:, 1])
 	aes = squeeze(ae[1, :, :], 1)
-	w = zeros(nu+np)
-	# w = SharedArray(Float64, (nu + np, 1), pids = workers())
+	w = zeros(length(u))
 
 	# zero dirichlet boundary conditions
 	uu = copy(u)
 	u[bound] = zeros(length(bound))
 
-	# @parallel for e = 1:nel
+	# loop over elements
 	for e = 1:nel
 		ind = vec(mv[e, :]')
 		w[ind] += aes * u[ind]

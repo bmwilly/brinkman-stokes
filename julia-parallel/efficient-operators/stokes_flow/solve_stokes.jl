@@ -21,7 +21,7 @@ function solve_stokes(domain, msize)
   f = mats["f"]; g = mats["g"]; xy = mats["xy"]; xyp = mats["xyp"];
   bound = mats["bound"]; x = mats["x"]; y = mats["y"];
   Q = mats["Q"]; msize = mats["msize"];
-  if domain == 3; kappa = mats["kappa"]; else; kappa = zeros(length(x)*length(y)); end;
+  if domain == 2; kappa = mats["kappa"]; else; kappa = zeros(length(x)*length(y)); end;
 
   # boundary conditions
   println("imposing (enclosed flow) boundary conditions ...")
@@ -55,7 +55,6 @@ function solve_stokes(domain, msize)
     M = u -> m_st_mg(u, mparams)
   end
 
-  # tol = 1e-6; maxit = 100;
   restrt = min(5000, length(rhs)); tol = 1e-6; maxIter = 100
   @time ((xst, flag, err, iter, resvec) = gmres(
     K, rhs, restrt;

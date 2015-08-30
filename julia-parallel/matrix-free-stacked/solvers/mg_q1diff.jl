@@ -64,20 +64,3 @@ function mg_q1diff(xy, ev)
   # (a, r, f)
 
 end
-
-# ###MG_AFUN constructs matrix-free bilinear diffusion operator for GMG
-# function mg_afun(u, mparams)
-#
-# 	ev = mparams["ev"]
-# 	ae = mparams["ae"]
-# 	aes = squeeze(ae[1, :, :], 1)
-#
-# 	for e = 1:nel
-# 		ind = ev[e, :]'
-# 		we = aes * u[ind]
-# 		w[ind] += we
-# 	end
-#
-# 	vec(w)
-#
-# end

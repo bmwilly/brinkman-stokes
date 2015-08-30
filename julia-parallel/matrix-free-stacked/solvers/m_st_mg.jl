@@ -1,4 +1,4 @@
-reload("solvers/mg_iter.jl")
+include("mg_iter.jl")
 
 ###M_ST_MG block MG preconditioner for Stokes equations
 # input
@@ -12,13 +12,13 @@ function m_st_mg(x_it, mparams)
 	rvx = x_it[1:nu]; rvy = x_it[nu+1:nv]; rp = x_it[nv+1:nv+np]
 
 	zvx = mg_iter(
-		mparams["mgdata"], zeros(size(rvx)), rvx,
+		mparams["mgdata"], zeros(length(rvx)), rvx,
 		mparams["smooth_data"], mparams["nc"],
 		mparams["npre"], mparams["npost"], mparams["sweeps"]
 	)
 
 	zvy = mg_iter(
-		mparams["mgdata"], zeros(size(rvy)), rvy,
+		mparams["mgdata"], zeros(length(rvy)), rvy,
 		mparams["smooth_data"], mparams["nc"],
 		mparams["npre"], mparams["npost"], mparams["sweeps"]
 	)

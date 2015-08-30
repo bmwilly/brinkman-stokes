@@ -82,7 +82,8 @@ function solve_stokes(domain, msize)
 
   sol = {
     "K" => K, "Ast" => Ast, "Bst" => Bst, "M" => M, "kappa" => kappa,
-    "rhs" => rhs, "fst" => fst, "gst" => gst, "xst" => xst
+    "rhs" => rhs, "fst" => fst, "gst" => gst, "xst" => xst,
+    "resvec" => resvec, "err" => err, "iter" => iter
   }
 
   sol = merge(mats, sol)

@@ -18,7 +18,7 @@ function flowplot(sol, kparams)
 
   figure();
   # pcolor(x, y, kp, cmap = "Greys");
-  quiver(x, y, ux, uy, ux, scale = 2);
+  quiver(x, y, ux, uy, ux, scale = 20);
   axis([-1,1,-1,1]);
 
 end

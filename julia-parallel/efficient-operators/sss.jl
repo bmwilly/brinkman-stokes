@@ -2,9 +2,9 @@ include("stokes_flow/solve_stokes.jl")
 include("graphs/flowplot.jl")
 include("helpers/helper_functions.jl")
 
-# domain = int(input("Choose domain (1/lid-driven cavity, 2/brinkman): "))
+domain = int(input("Choose domain (1/lid-driven cavity, 2/brinkman): "))
 msize = int(input("Mesh size: "))
-domain = 2;
+# domain = 2;
 # msize = 7;
 sol = solve_stokes(domain, msize)
 println("done")
@@ -28,8 +28,8 @@ p = xst[nu + 1:end];
 ux = reshape(u[1:nvtx], length(x), length(y))';
 uy = reshape(u[nvtx+1:end], length(x), length(y))';
 
-writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/x.csv", x)
-writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/y.csv", y)
-writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/ux.csv", ux)
-writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/uy.csv", uy)
-writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/kp.csv", kp)
+# writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/x.csv", x)
+# writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/y.csv", y)
+# writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/ux.csv", ux)
+# writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/uy.csv", uy)
+# writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/kp.csv", kp)

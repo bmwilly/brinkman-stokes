@@ -19,7 +19,7 @@ function afunbc(u, kparams)
     nvtx = length(xy[:, 1]); nu = 2nvtx; np = 3length(xyp[:, 1])
     nel = length(mv[:, 1])
     aes = squeeze(ae[1, :, :], 1)
-    w = SharedArray(Float64, nu+np)
+    w = SharedArray(Float64, length(u))
 
     # zero dirichlet boundary conditions
     uu = copy(u)
@@ -61,5 +61,3 @@ end
 end
 
 @everywhere loop_elem_chunk!(w, u, aes, mv, nvtx) = loop_elem!(w, u, aes, mv, nvtx, myrange(mv))
-
-# remotecall_wait(2, loop_elem_chunk!, w, u, aes, mv, nvtx)

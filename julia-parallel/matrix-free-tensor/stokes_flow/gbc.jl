@@ -27,5 +27,5 @@ function gbc(domain, kparams)
 
     bc = [bccx; bccy; zeros(np, 1)]
     w -= bfun(bc, kparams)
-    w = vec(w[nu+1:nu+np])
+    w = vec(w[1:np])
 end

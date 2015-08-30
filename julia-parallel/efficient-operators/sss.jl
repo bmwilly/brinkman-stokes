@@ -28,8 +28,8 @@ p = xst[nu + 1:end];
 ux = reshape(u[1:nvtx], length(x), length(y))';
 uy = reshape(u[nvtx+1:end], length(x), length(y))';
 
-# writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/x.csv", x)
-# writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/y.csv", y)
-# writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/ux.csv", ux)
-# writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/uy.csv", uy)
-# writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/kp.csv", kp)
+writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/x.csv", x)
+writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/y.csv", y)
+writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/ux.csv", ux)
+writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/uy.csv", uy)
+writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/kp.csv", kp)

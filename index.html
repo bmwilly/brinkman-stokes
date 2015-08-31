@@ -16,10 +16,10 @@
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  
+
     ga('create', 'UA-66815119-1', 'auto');
     ga('send', 'pageview');
-  
+
     </script>
   </head>
   <body>
@@ -48,9 +48,9 @@
 <h3>
 <a id="basic-usage" class="anchor" href="#basic-usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Basic Usage</h3>
 
-<p>There are two implementations of the software, one each for a serial Julia implementation, a parallel Julia implementation, and a serial Matlab implementation. For each implementation, there are three versions that correspond to various finite element assembly methods, using assembled matrices, matrix-free methods, and matrix-free methods using tensor products. In each of these subfolder (e.g., julia-parallel/efficient-operators), the main driver is a file called "sss". </p>
+<p>There are two implementations of the software, a parallel Julia implementation and a serial Matlab implementation. For each implementation, there are three versions that correspond to various finite element assembly methods, using assembled matrices, matrix-free methods using matrix-vector products, and matrix-free methods using matrix-matrix products. </p>
 
-<p>From julia, run <code>include(sss.jl)</code> to start an interactive session that will prompt you for a type of test problem to solve (lid-driven cavity or brinkman flow through obstacles), mesh size, preconditioning steps, etc. </p>
+<p>From the top-level directory, <code>cd julia-parallel/efficient-operators</code>. Start <code>julia</code> and run <code>include(sss.jl)</code> to start an interactive session that will prompt you for a type of test problem to solve (lid-driven cavity or brinkman flow through obstacles), mesh size, preconditioning steps, etc. </p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/bmwilly">bmwilly</a></p>
@@ -58,6 +58,6 @@
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
-    
+
   </body>
 </html>

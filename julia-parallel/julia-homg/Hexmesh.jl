@@ -451,20 +451,20 @@ end
 		J = zeros(ne * NPNP, 1);
 		mass_val = zeros(ne * NPNP, 1);
 		stiff_val = zeros(ne * NPNP, 1);
-		inv_stiff_val = zeros(ne * NPNP, 1);
-		ind_inner1D = repmat((2:order), 1, order-1);
-		if self.dim == 2
-
-			ind_inner = ind_inner1D + (order+1) * (ind_inner1D'-1);
-		else
-			ind_inner = ind_inner1D + (order+1) * (ind_inner1D'-1);
-			# ind_inner = repmat(ind_inner, [1,1,order-1]);
-			ind_inner = repeat(ind_inner, outer = [1,1,order-1]);
-			for i = 1:order-1
-				# ind_inner[:,:,i] = ind_inner[:,:,i] + i * (order+1)^2;
-				ind_inner[:,:,i] += i * (order+1)^2;
-			end
-		end
+		# inv_stiff_val = zeros(ne * NPNP, 1);
+		# ind_inner1D = repmat((2:order), 1, order-1);
+		# if self.dim == 2
+		#
+		# 	ind_inner = ind_inner1D + (order+1) * (ind_inner1D'-1);
+		# else
+		# 	ind_inner = ind_inner1D + (order+1) * (ind_inner1D'-1);
+		# 	# ind_inner = repmat(ind_inner, [1,1,order-1]);
+		# 	ind_inner = repeat(ind_inner, outer = [1,1,order-1]);
+		# 	for i = 1:order-1
+		# 		# ind_inner[:,:,i] = ind_inner[:,:,i] + i * (order+1)^2;
+		# 		ind_inner[:,:,i] += i * (order+1)^2;
+		# 	end
+		# end
 
 		# loop over elements
 		for e=1:ne
@@ -485,11 +485,11 @@ end
 			eMat = element_stiffness(self, e, refel, detJac, Jac);
 			stiff_val[st:en] = eMat[:];
 
-			eMat_inner_inv = inv(eMat[ind_inner[:],ind_inner[:]]);
-			eMat_inv = diagm(diag(eMat,0));
+			# eMat_inner_inv = inv(eMat[ind_inner[:],ind_inner[:]]);
+			# eMat_inv = diagm(diag(eMat,0));
 
-			eMat_inv[ind_inner[:],ind_inner[:]] =  eMat_inner_inv;
-			inv_stiff_val[st:en] = eMat_inv[:];
+			# eMat_inv[ind_inner[:],ind_inner[:]] =  eMat_inner_inv;
+			# inv_stiff_val[st:en] = eMat_inv[:];
 		end
 
 		Iv=int64(I[:]);
@@ -503,25 +503,27 @@ end
 		jj = ismember(J,bdy);
 
 		stiff_val = stiff_val.*(int(!bool(ii))).*(int(!bool(jj)));
-		inv_stiff_val = inv_stiff_val.*(int(!bool(ii))).*(int(!bool(jj)));
+		# inv_stiff_val = inv_stiff_val.*(int(!bool(ii))).*(int(!bool(jj)));
 
 		I = [I; bdy];
 		J = [J; bdy];
 		stiff_val = [stiff_val; ones(length(bdy), 1)];
-		inv_stiff_val = [inv_stiff_val; ones(length(bdy), 1)];
+		# inv_stiff_val = [inv_stiff_val; ones(length(bdy), 1)];
 		Iv=int64(I[:]);
 		Jv=int64(J[:]);
 		sv=stiff_val[:];
-		isv=inv_stiff_val[:];
+		# isv=inv_stiff_val[:];
 
 		K = sparse(Iv,Jv,sv,dof,dof);
-		iK = sparse(Iv,Jv,isv,dof,dof);
-		ebdy = get_element_boundary_node_indices(self, order);
-		iKebdry = diag(full(iK[ebdy,ebdy]),0)
-		if countnz(iKebdry) > 0
-      	iK[ebdy,ebdy] = diagm(1./iKebdry)
-	  end
-		return K, M, iK
+		# iK = sparse(Iv,Jv,isv,dof,dof);
+		# ebdy = get_element_boundary_node_indices(self, order);
+		# iKebdry = diag(full(iK[ebdy,ebdy]),0)
+		# if countnz(iKebdry) > 0
+    #   	iK[ebdy,ebdy] = diagm(1./iKebdry)
+	  # end
+		# return K, M, iK
+
+		return K,M
 	end
 	function assemble_poisson_brinkman(self, order, centers)
 		set_order(self,order);

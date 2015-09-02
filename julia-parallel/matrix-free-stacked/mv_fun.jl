@@ -1,7 +1,7 @@
 using ParallelSparseMatMul
-reload("stokes_flow/square_stokes.jl")
-reload("stokes_flow/kfunbc.jl")
-reload("stokes_flow/afunbc.jl")
+include("stokes_flow/square_stokes.jl")
+include("stokes_flow/kfunbc.jl")
+include("stokes_flow/afunbc.jl")
 
 function mv_fun(msize)
   kparams = square_stokes(msize)

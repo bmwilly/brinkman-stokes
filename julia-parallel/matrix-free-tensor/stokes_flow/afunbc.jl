@@ -23,41 +23,24 @@ function afunbc(u, kparams)
     aes = share(ae);
 
     # zero dirichlet boundary conditions
-    # @show u
-    # typeof(u)
     uu = copy(u)
     u[bound] = zeros(length(bound))
     u[bound+nvtx] = zeros(length(bound))
 
     w = SharedArray(Float64, nu+np)
-    # t = toc();
-    # @show t1;
-    # t1 += t;
 
-    # tic()
     @sync begin
       for p in procs()
         @async remotecall_wait(p, afunbc_loop_chunk!, w, u, aes, mv, nvtx)
       end
-      # for p in workers()
-      #   @async remotecall_wait(p, loop_elem_chunk!, w, u, Ux, Uy, aes, mv, nvtx)
-      # end
     end
-    # t = toc();
-    # @show t2;
-    # t2 += t;
 
-    # tic()
     w[bound] = uu[bound]
     w[bound+nvtx] = uu[bound+nvtx]
     vec(w)
-    # t = toc();
-    # @show t3;
-    # t3 += t;
 end
 
 @everywhere function afunbc_loop!(w::SharedArray, u::SharedArray, aes, mv, nvtx, prange::UnitRange)
-  # @show erange
   pnel = length(prange)
   mve = mv[prange,:]
   Ux = zeros(size(mve,2), pnel)

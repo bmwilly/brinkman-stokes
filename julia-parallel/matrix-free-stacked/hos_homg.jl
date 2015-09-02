@@ -1,32 +1,20 @@
-# reload("helpers/helper_functions.jl")
-# reload("../julia-homg/Basis.jl")
-# reload("../julia-homg/Hexmesh.jl")
-# reload("../julia-homg/Xform.jl")
-# reload("../julia-homg/Grids.jl")
-# reload("../julia-homg/Tensor.jl")
-# reload("../julia-homg/Refel.jl")
-using LinearOperators
-include("helpers/helper_functions.jl")
-include("../julia-homg/Basis.jl")
-include("../julia-homg/Hexmesh.jl")
-include("../julia-homg/Xform.jl")
-include("../julia-homg/Grids.jl")
-include("../julia-homg/Tensor.jl")
-include("../julia-homg/Refel.jl")
-include("stokes_flow/ho_afun.jl")
+push!(LOAD_PATH, "$(homedir())/Documents/brinkman-stokes/julia-parallel/julia-homg")
+@everywhere using LinearOperators
+@everywhere using ParallelSparseMatMul
+@everywhere using Mesh
+@everywhere using Xform
+@everywhere include("helpers/helper_functions.jl")
+@everywhere include("grids/channel_domain.jl")
+@everywhere include("../julia-homg/Refel.jl")
+@everywhere include("stokes_flow/ho_afun.jl")
+@everywhere include("stokes_flow/ho_afun_square.jl")
 
-function hos_homg(order, msize)
-  dim = 2
+function hos_homg(order, msize, dim)
+  # dim = 2
   nelems = [2^msize]
 
-  # m = Mesh.Hexmesh(tuple(repmat(nelems, 1, dim)...), Xform.identity)
-  # dof = prod([m.nelems...]*order + 1)
-  # K,M,iK = Mesh.assemble_poisson(m, order)
-  # k1,k2 = size(K)
-  # A = [K spzeros(k1,k2); spzeros(k1,k2) K]
-  # tic()
-  # for cnt = 1:100; u = vec(rand(2dof, 1)); w = A*u; end
-  # etoc = toc()
+  # channel_grid = channel_domain(msize) # Q2 grid for channel domain
+  # mv = channel_grid["mv"]
 
   m = Mesh.Hexmesh(tuple(repmat(nelems, 1, dim)...), Xform.identity)
   Mesh.set_order(m,order);
@@ -41,6 +29,12 @@ function hos_homg(order, msize)
   (detJac, Jac) = Mesh.geometric_factors(m, refel, pts);
   eMat = Mesh.element_stiffness(m, 1, refel, detJac, Jac);
 
+  idxs = zeros(ne, NP)
+  for e = 1:ne
+    idx = Mesh.get_node_indices(m, e, order)
+    idxs[e,:] = idx
+  end
+
   params = {
     "mesh" => m,
     "order" => order,
@@ -48,11 +42,18 @@ function hos_homg(order, msize)
     "ne" => ne,
     "NP" => NP,
     "bdy" => bdy,
-    "eMat" => eMat
+    "eMat" => eMat,
+    "refel" => refel,
+    "mv" => mv,
+    "idxs" => idxs
   }
 
-  A = LinearOperator(2dof, Float64, u -> ho_afun(u, params))
+  # A = LinearOperator(2dof, Float64, u -> ho_afun(u, params))
+  # A = LinearOperator(2dof, Float64, u -> ho_afun_square(u, params))
+  A = u -> ho_afun_square(u, params)
+  # u = Base.shmem_rand(2dof)
+  # w = A(u)
   tic()
-  for cnt = 1:100; u = rand(2dof); w = A*u; end
+  for cnt = 1:100; u = Base.shmem_rand(2dof); w = A(u); end
   etoc = toc()
 end

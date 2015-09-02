@@ -1,7 +1,7 @@
 push!(LOAD_PATH, "$(homedir())/Documents/brinkman-stokes/julia-parallel/matrix-free-tensor")
 # using Gadfly
 # using PyPlot
-# include("hos_homg.jl")
+include("hos_homg.jl")
 include("mv_fun.jl")
 
 # p = int(input("Total number of processors: "))
@@ -13,12 +13,12 @@ include("mv_fun.jl")
 # msizes = [8]
 
 # msize = 9
-msize = int(input("Mesh size: "))
-kparams = square_stokes(msize)
-xy = kparams["xy"]; xyp = kparams["xyp"]
-nvtx = length(xy[:, 1]); nu = 2nvtx; np = 3length(xyp[:, 1])
+# msize = int(input("Mesh size: "))
+# kparams = square_stokes(msize)
+# xy = kparams["xy"]; xyp = kparams["xyp"]
+# nvtx = length(xy[:, 1]); nu = 2nvtx; np = 3length(xyp[:, 1])
 
-tic(); for cnt = 1:100; u = Base.shmem_rand(nu+np); w = afunbc(u, kparams); end; etoc = toc()
+# tic(); for cnt = 1:100; u = Base.shmem_rand(nu+np); w = afunbc(u, kparams); end; etoc = toc()
 # tic(); for cnt = 1:100; u = Base.shmem_rand(nu+np); w = afunbc(u, kparams); end; etoc = toc()
 
 

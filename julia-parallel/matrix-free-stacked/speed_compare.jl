@@ -5,9 +5,8 @@ include("hos_homg.jl")
 include("mv_fun.jl")
 
 # orders = [2, 3, 4];
-msizes = [1]
-# msizes = [7,8,9]
-# msizes = [5, 6, 7, 8];
+msizes = [2]
+# msizes = [2,3,4]
 
 # mesh sizes
 # mtimes = Float64[]

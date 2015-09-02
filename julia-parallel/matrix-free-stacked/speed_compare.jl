@@ -5,7 +5,7 @@ include("hos_homg.jl")
 include("mv_fun.jl")
 
 # orders = [2, 3, 4];
-msize = [1]
+msizes = [1]
 # msizes = [2,3,4,5,6]
 # msizes = [2,3,4]
 

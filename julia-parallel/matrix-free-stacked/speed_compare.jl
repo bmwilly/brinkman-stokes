@@ -6,7 +6,7 @@ include("mv_fun.jl")
 
 # orders = [2, 3, 4];
 msizes = [1]
-msizes = [1,2,3,4,5,6]
+# msizes = [1,2,3,4,5,6]
 # msizes = [2,3,4]
 
 # mesh sizes

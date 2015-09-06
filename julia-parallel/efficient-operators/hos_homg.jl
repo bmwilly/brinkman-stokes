@@ -1,10 +1,10 @@
+push!(LOAD_PATH, "$(homedir())/Documents/brinkman-stokes/julia-parallel/julia-homg")
 @everywhere using ParallelSparseMatMul
 @everywhere include("helpers/helper_functions.jl")
-@everywhere include("../julia-homg/Basis.jl")
-@everywhere include("../julia-homg/Hexmesh.jl")
-@everywhere include("../julia-homg/Xform.jl")
-@everywhere include("../julia-homg/Grids.jl")
-@everywhere include("../julia-homg/Tensor.jl")
+@everywhere using LinearOperators
+@everywhere using ParallelSparseMatMul
+@everywhere using Mesh
+@everywhere using Xform
 @everywhere include("../julia-homg/Refel.jl")
 
 function hos_homg(order, msize, dim)

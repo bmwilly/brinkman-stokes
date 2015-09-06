@@ -13,3 +13,8 @@ k1,k2 = size(K)
 A = [K spzeros(k1,k2); spzeros(k1,k2) K]
 
 figure(); spy(A)
+
+nnzs = [nnz(A[i,:]) for i = 1:size(A,1)]
+@show mean(nnzs)
+@show mean(nnzs) / size(A,1)
+@show dof * 2

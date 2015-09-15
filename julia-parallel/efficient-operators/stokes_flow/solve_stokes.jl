@@ -56,8 +56,6 @@ function solve_stokes(domain, msize)
   end
 
   restrt = min(5000, length(rhs)); tol = 1e-6; maxIter = 100
-  # K = LinearOperator(size(K,1), Float64, u -> K*u)
-  # M = LinearOperator(size(K,1), Float64, u -> M(u))
   @time ((xst, flag, err, iter, resvec) = gmres(
     K, rhs, restrt;
     tol = tol, maxIter = maxIter, M = M, out = 1
@@ -79,8 +77,8 @@ function solve_stokes(domain, msize)
   # outfile = string("graphs/brinkman_iters", msize, ".png")
   # Gadfly.draw(PNG(outfile, 12inch, 6inch), p)
   #
-  # outfile = string("output/brinkman_iters", msize, ".csv")
-  # writecsv(outfile, log(10, resvec))
+  outfile = string("output/brinkman_iters", msize, ".csv")
+  writecsv(outfile, log(10, resvec))
 
   sol = {
     "K" => K, "Ast" => Ast, "Bst" => Bst, "M" => M, "kappa" => kappa,

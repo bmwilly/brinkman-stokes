@@ -9,7 +9,7 @@ include("mv_fun.jl")
 
 # orders = [21,22,23,24];
 # msizes = [5, 6, 7, 8];
-# msizes = [2,3,4,5,6,7,8,9,10,11,12];
+msizes = [2,3,4,5,6,7,8];
 # msizes = [8]
 
 # msize = 9
@@ -23,12 +23,12 @@ include("mv_fun.jl")
 
 
 # mesh sizes
-# mtimes = Float64[]
-# for msize in msizes
-#   t = mv_fun(msize)
-#   push!(mtimes, t)
-# end
-# @show mtimes
+mtimes = Float64[]
+for msize in msizes
+  t = mv_fun(msize)
+  push!(mtimes, t)
+end
+@show mtimes
 # Gadfly.plot(
 #   x = msizes, y = mtimes, Geom.line,
 #   Guide.xlabel("Mesh size (log of number of elements)"), Guide.ylabel("Time (s)"),

@@ -59,7 +59,7 @@ function gauss(alpha::Real,beta::Real,N::Integer)
 	# Purpose: Compute the N'th order Gauss quadrature points, x,
 	# and weights, w, associated with the Jacobi
 	# polynomial, of type (alpha,beta) > -1 ( <> -0.5).
-	
+
 	x = Float64[]
 	w = Float64[]
 	if N==0

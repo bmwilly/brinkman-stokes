@@ -33,14 +33,15 @@ function solve_stokes(domain, msize)
   K = [Ast Bst'; Bst spzeros(np, np)]
   M = u -> u
 
-  pc = input("Use GMG preconditioner? (y/n): ")
+  pc = user_input("Use GMG preconditioner? (y/n): ")
+  # pc = "y"
   if pc == "y"
 
-    nv = size(Ast, 1); np = size(Q, 1); nu = nv/2
+    nv = size(Ast, 1); np = size(Q, 1); nu = Int(nv/2)
     Agal = Ast[1:nu, 1:nu]
     (mgdata, smooth_data, sweeps, stype, npre, npost, nc) = mg_diff(x, y, Agal)
 
-    mparams = {
+    mparams = Dict(
       "nv" => nv,
       "Q" => Q,
       "mgdata" => mgdata,
@@ -49,7 +50,7 @@ function solve_stokes(domain, msize)
       "npre" => npre,
       "npost" => npost,
       "sweeps" => sweeps
-    }
+    )
 
     # block GMG preconditioner
     M = u -> m_st_mg(u, mparams)
@@ -78,13 +79,13 @@ function solve_stokes(domain, msize)
   # Gadfly.draw(PNG(outfile, 12inch, 6inch), p)
   #
   outfile = string("output/brinkman_iters", msize, ".csv")
-  writecsv(outfile, log(10, resvec))
+  writecsv(outfile, log.(10, resvec))
 
-  sol = {
+  sol = Dict(
     "K" => K, "Ast" => Ast, "Bst" => Bst, "M" => M, "kappa" => kappa,
     "rhs" => rhs, "fst" => fst, "gst" => gst, "xst" => xst,
     "resvec" => resvec, "err" => err, "iter" => iter
-  }
+  )
 
   sol = merge(mats, sol)
 end

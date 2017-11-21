@@ -2,7 +2,7 @@ reload("stokes_flow/regcavity_flow.jl")
 ###HOSBC imposes inflow boundary condition
 function hosbc(a, f, xy, bound)
   nu = length(f);
-  nvtx = int(nu / 2); nbd = length(bound)
+  nvtx = Int(nu / 2); nbd = length(bound)
   nullcol = spzeros(nvtx, nbd)
   Ax = a[1:nvtx, 1:nvtx]
   Ay = a[nvtx + 1:nu, nvtx + 1:nu]

@@ -1,5 +1,5 @@
-reload("helpers/input.jl")
-reload("helpers/meshgrid.jl")
+include("../helpers/input.jl")
+include("../helpers/meshgrid.jl")
 
 ###CAVITY_DOMAIN square cavity Q2 grid generator
 function cavity_domain(msize)
@@ -7,14 +7,14 @@ function cavity_domain(msize)
   ## define geometry
   println("Grid generation for cavity domain.")
   n = 2^(msize+1)
-  np = int(n/2)
-  nel = int(np^2)
+  np = Int(n/2)
+  nel = Int(np^2)
 
   # y-direction
-  yy = [1/np:1/np:1]
-  ypos = [0, yy]
+  yy = collect(1/np:1/np:1)
+  ypos = [0; yy]
   yneg = -yy[length(yy):-1:1]
-  y = [yneg, ypos]'
+  y = [yneg; ypos]'
   x = y
 
   # compute biquadratic element coordinates
@@ -60,7 +60,7 @@ function cavity_domain(msize)
   end
   ef1 = ones(size(e1))
 
-  k2 = find((xy[:,1] .== 1) & (xy[:,2] .< 1) & (xy[:,2] .> -1))
+  k2 = find((xy[:,1] .== 1) .& (xy[:,2] .< 1) .& (xy[:,2] .> -1))
   e2 = Int[]
   for k = 1:mel
       if any(mv[k,6] .== k2)
@@ -78,7 +78,7 @@ function cavity_domain(msize)
   end
   ef3 = 3*ones(size(e3))
 
-  k4 = find((xy[:,1] .== -1) & (xy[:,2] .< 1) & (xy[:,2] .> -1))
+  k4 = find((xy[:,1] .== -1) .& (xy[:,2] .< 1) .& (xy[:,2] .> -1))
   e4 = Int[]
   for k = 1:mel
       if any(mv[k,8] .== k4)
@@ -101,7 +101,7 @@ function cavity_domain(msize)
   obs = []
   sbnde = [1 2 3 4]
 
-  cavity_grid = {
+  cavity_grid = Dict(
     "mv" => mv,
     "xy" => xy,
     "bound" => bound,
@@ -111,5 +111,5 @@ function cavity_domain(msize)
     "bndxy" => bndxy,
     "bnde" => bnde,
     "obs" => obs
-  }
+  )
 end

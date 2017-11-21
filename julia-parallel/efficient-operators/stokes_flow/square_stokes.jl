@@ -11,17 +11,17 @@ function square_stokes(msize)
     grid = q2p1grid(cavity_grid)
 
     # stokes q2-p1 matrix generator
-    stokes_grid = merge(grid, {"mv" => cavity_grid["mv"]})
+    stokes_grid = merge(grid, Dict("mv" => cavity_grid["mv"]))
     stokes_mats = stokes_q2p1(stokes_grid)
 
-    bounds = {
+    bounds = Dict(
       "bound" => cavity_grid["bound"],
       "bndxy" => cavity_grid["bndxy"],
       "bnde" => cavity_grid["bnde"],
       "obs" => cavity_grid["obs"]
-    }
+    )
 
     # keys(mats) =
     # {"A", "B", "G", "Q", "Bx", "By", "f", "g", "x", "y", "xyp", "bound"}
-    mats = merge(stokes_mats, grid, bounds, {"msize" => msize})
+    mats = merge(stokes_mats, grid, bounds, Dict("msize" => msize))
 end

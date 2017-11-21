@@ -1,12 +1,13 @@
 using Base.Cartesian, Base.Prehashed
-@ngenerate N typeof(A) function indunique{T,N}(A::AbstractArray{T,N}, dim::Int)
-    1 <= dim <= N || return copy(A)
+
+@generated function indunique{T,N}(A::AbstractArray{T,N}, dim::Int) quote
+    1 <= dim <= $N || return copy(A)
     hashes = zeros(Uint, size(A, dim))
 
     # Compute hash for each row
     k = 0
-    @nloops N i A d->(if d == dim; k = i_d; end) begin
-       @inbounds hashes[k] = hash(hashes[k], hash((@nref N A i)))
+    @nloops $N i A d->(if d == dim; k = i_d; end) begin
+       @inbounds hashes[k] = hash(hashes[k], hash((@nref $N A i)))
     end
 
     # Collect index of first row for each hash
@@ -20,13 +21,13 @@ using Base.Cartesian, Base.Prehashed
     # Check for collisions
     collided = falses(size(A, dim))
     @inbounds begin
-        @nloops N i A d->(if d == dim
+        @nloops $N i A d->(if d == dim
                               k = i_d
                               j_d = uniquerow[k]
                           else
                               j_d = i_d
                           end) begin
-            if (@nref N A j) != (@nref N A i)
+            if (@nref $N A j) != (@nref $N A i)
                 collided[k] = true
             end
         end
@@ -47,7 +48,7 @@ using Base.Cartesian, Base.Prehashed
 
             # Check for collisions
             fill!(nowcollided, false)
-            @nloops N i A d->begin
+            @nloops $N i A d->begin
                                  if d == dim
                                      k = i_d
                                      j_d = uniquerow[k]
@@ -56,7 +57,7 @@ using Base.Cartesian, Base.Prehashed
                                      j_d = i_d
                                  end
                              end begin
-                if (@nref N A j) != (@nref N A i)
+                if (@nref $N A j) != (@nref $N A i)
                     nowcollided[k] = true
                 end
             end
@@ -65,4 +66,5 @@ using Base.Cartesian, Base.Prehashed
     end
 
     sort!(uniquerows)
+end
 end

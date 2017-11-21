@@ -11,7 +11,7 @@ include("mv_fun.jl")
 # msizes = [9]
 
 # msize = 9
-msize = int(input("Mesh size: "))
+msize = user_input("Mesh size: ")
 mats = square_stokes(msize)
 A = mats["A"]; B = mats["B"]; Bx = mats["Bx"]; By = mats["By"];
 f = mats["f"]; g = mats["g"]; xy = mats["xy"]; xyp = mats["xyp"];
@@ -43,7 +43,7 @@ etoc = toc()
 # )
 
 # otimes = Float64[];
-# dim = int(input("Dimension: "))
+# dim = user_input("Dimension: ")
 # if dim == 2
 #   msize = 5
 # elseif dim == 3

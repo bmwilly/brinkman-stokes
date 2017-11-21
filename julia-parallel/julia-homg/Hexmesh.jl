@@ -82,7 +82,7 @@ function plot(self)
 	    (x,y) = ndgrid( 0:1/self.nelems[1]:1.0, 0:1/self.nelems[2]:1.0 );
 
 	    # z = 0
-	    z = zeros (size(x));
+	    z = zeros(size(x));
 	    pts = [x[:] y[:] z[:]];
 	    coords = self.Xf(pts);
 	    x0 = reshape(coords[:,1], size(x));
@@ -98,7 +98,7 @@ function plot(self)
 	    PyPlot.plot3D(x1[:],y1[:],z1[:], c="k", linestyle="-");
 	    PyPlot.plot3D(x1'[:],y1'[:],z1'[:], c="k",  linestyle="-");
 	    # z = 1
-	    z = ones  (size(x));
+	    z = ones(size(x));
 	    pts = [x[:] y[:] z[:]];
 	    coords = self.Xf(pts);
 	    PyPlot.surf(reshape(coords[:,1], size(x)), reshape(coords[:,2], size(x)), reshape(coords[:,3], size(x)), alpha=0.5);
@@ -112,7 +112,7 @@ function plot(self)
 	    # 2 yz planes
 	    (y,z) = ndgrid( 0:1/self.nelems[2]:1.0, 0:1/self.nelems[3]:1.0 );
 	    # x = 0
-	    x = zeros (size(y));
+	    x = zeros(size(y));
 	    pts = [x[:] y[:] z[:]];
 	    coords = self.Xf(pts);
 	    PyPlot.surf(reshape(coords[:,1], size(x)), reshape(coords[:,2], size(x)), reshape(coords[:,3], size(x)), alpha=0.5);
@@ -123,7 +123,7 @@ function plot(self)
 	    PyPlot.plot3D(x1[:],y1[:],z1[:], c="k", linestyle="-");
 	    PyPlot.plot3D(x1'[:],y1'[:],z1'[:], c="k",  linestyle="-");
 	    # x = 1
-	    x = ones (size(y));
+	    x = ones(size(y));
 	    pts = [x[:] y[:] z[:]];
 	    coords = self.Xf(pts);
 	    PyPlot.surf(reshape(coords[:,1], size(x)), reshape(coords[:,2], size(x)), reshape(coords[:,3], size(x)), alpha=0.5);
@@ -137,7 +137,7 @@ function plot(self)
 	    # 2 xz planes
 	    (x,z) = ndgrid( 0:1/self.nelems[1]:1.0, 0:1/self.nelems[3]:1.0 );
 	    # y = 0
-	    y = zeros (size(x));
+	    y = zeros(size(x));
 	    pts = [x[:] y[:] z[:]];
 	    coords = self.Xf(pts);
 	    PyPlot.surf(reshape(coords[:,1], size(x)), reshape(coords[:,2], size(x)), reshape(coords[:,3], size(x)), alpha=0.5);
@@ -148,7 +148,7 @@ function plot(self)
 	    PyPlot.plot3D(x1[:],y1[:],z1[:], c="k", linestyle="-");
 	    PyPlot.plot3D(x1'[:],y1'[:],z1'[:], c="k",  linestyle="-");
 	    # y = 1
-	    y = ones (size(x));
+	    y = ones(size(x));
 	    pts = [x[:] y[:] z[:]];
 	    coords = self.Xf(pts);
 	    PyPlot.surf(reshape(coords[:,1], size(x)), reshape(coords[:,2], size(x)), reshape(coords[:,3], size(x)), alpha=0.5);
@@ -206,7 +206,7 @@ else
     scl=8;
     (x,y) = ndgrid( 0:1/(scl*self.nelems[1]):1.0, 0:1/(scl*self.nelems[2]):1.0 );
     # z = 0
-    z = zeros (size(x));
+    z = zeros(size(x));
     pts = [x[:] y[:] z[:]];
     coords = self.Xf(pts);
     ci = arrayfun( fx, coords[:,1], coords[:,2], coords[:,3] );
@@ -220,7 +220,7 @@ else
 
     # hold on;
     (x,y) = ndgrid( 0:1/self.nelems[1]:1.0, 0:1/self.nelems[2]:1.0 );
-    z = zeros (size(x));
+    z = zeros(size(x));
     pts = [x[:] y[:] z[:]];
     coords = self.Xf(pts);
     x1 = reshape(coords[:,1], self.nelems[1]+1, self.nelems[2]+1);
@@ -230,7 +230,7 @@ else
     PyPlot.plot3D(x1'[:],y1'[:],z1'[:], c="k", linestyle="-");
     # z = 1
     (x,y) = ndgrid( 0:1/(scl*self.nelems[1]):1.0, 0:1/(scl*self.nelems[2]):1.0 );
-    z = ones  (size(x));
+    z = ones(size(x));
     pts = [x[:] y[:] z[:]];
     coords = self.Xf(pts);
     ci = arrayfun( fx, coords[:,1], coords[:,2], coords[:,3] );
@@ -244,7 +244,7 @@ else
     #     ); # 'FaceColor', 'interp', 'FaceLighting', 'phong'
     # hold on;
     (x,y) = ndgrid( 0:1/self.nelems[1]:1.0, 0:1/self.nelems[2]:1.0 );
-    z = ones  (size(x));
+    z = ones(size(x));
     pts = [x[:] y[:] z[:]];
     coords = self.Xf(pts);
     x1 = reshape(coords[:,1], self.nelems[1]+1, self.nelems[2]+1);
@@ -256,7 +256,7 @@ else
     # 2 yz planes
     (y,z) = ndgrid( 0:1/(scl*self.nelems[2]):1.0, 0:1/(scl*self.nelems[3]):1.0 );
     # x = 0
-    x = zeros (size(y));
+    x = zeros(size(y));
     pts = [x[:] y[:] z[:]];
     coords = self.Xf(pts);
     ci = arrayfun( fx, coords[:,1], coords[:,2], coords[:,3] );
@@ -271,7 +271,7 @@ else
     # hold on;
     (y,z) = ndgrid( 0:1/self.nelems[2]:1.0, 0:1/self.nelems[3]:1.0 );
     # x = 0
-    x = zeros (size(y));
+    x = zeros(size(y));
     pts = [x[:] y[:] z[:]];
     coords = self.Xf(pts);
     x1 = reshape(coords[:,1], self.nelems[2]+1, self.nelems[3]+1);
@@ -281,7 +281,7 @@ else
     PyPlot.plot3D(x1'[:],y1'[:],z1'[:], c="k", linestyle="-");
     x = 1
     (y,z) = ndgrid( 0:1/(scl*self.nelems[2]):1.0, 0:1/(scl*self.nelems[3]):1.0 );
-    x = ones (size(y));
+    x = ones(size(y));
     pts = [x[:] y[:] z[:]];
     coords = self.Xf(pts);
     ci = arrayfun( fx, coords[:,1], coords[:,2], coords[:,3] );
@@ -295,7 +295,7 @@ else
 
     # hold on;
     (y,z) = ndgrid( 0:1/self.nelems[2]:1.0, 0:1/self.nelems[3]:1.0 );
-    x = ones (size(y));
+    x = ones(size(y));
     pts = [x[:] y[:] z[:]];
     coords = self.Xf(pts);
     x1 = reshape(coords[:,1], self.nelems[2]+1, self.nelems[3]+1);
@@ -307,7 +307,7 @@ else
     # 2 xz planes
     (x,z) = ndgrid( 0:1/(scl*self.nelems[1]):1.0, 0:1/(scl*self.nelems[3]):1.0 );
     # y = 0
-    y = zeros (size(x));
+    y = zeros(size(x));
     pts = [x[:] y[:] z[:]];
     coords = self.Xf(pts);
     ci = arrayfun( fx, coords[:,1], coords[:,2], coords[:,3] );
@@ -320,7 +320,7 @@ else
 
     # hold on;
     (x,z) = ndgrid( 0:1/self.nelems[1]:1.0, 0:1/self.nelems[3]:1.0 );
-    y = zeros (size(x));
+    y = zeros(size(x));
     pts = [x[:] y[:] z[:]];
     coords = self.Xf(pts);
     x1 = reshape(coords[:,1], self.nelems[1]+1, self.nelems[3]+1);
@@ -330,7 +330,7 @@ else
     PyPlot.plot3D(x1'[:],y1'[:],z1'[:], c="k", linestyle="-");
     # y = 1
     (x,z) = ndgrid( 0:1/(scl*self.nelems[1]):1.0, 0:1/(scl*self.nelems[3]):1.0 );
-    y = ones (size(x));
+    y = ones(size(x));
     pts = [x[:] y[:] z[:]];
     coords = self.Xf(pts);
     ci = arrayfun( fx, coords[:,1], coords[:,2], coords[:,3] );
@@ -343,7 +343,7 @@ else
 
     # hold on;
     (x,z) = ndgrid( 0:1/self.nelems[1]:1.0, 0:1/self.nelems[3]:1.0 );
-    y = ones (size(x));
+    y = ones(size(x));
     pts = [x[:] y[:] z[:]];
     coords = self.Xf(pts);
     x1 = reshape(coords[:,1], self.nelems[1]+1, self.nelems[3]+1);
@@ -366,7 +366,7 @@ end
 		if isempty(self.order)
 			self.order = order;
 		else
-			assert (order == self.order);
+			assert(order == self.order);
 		end
 	end
 	function set_coeff(self, coeff)
@@ -396,7 +396,7 @@ end
 		for e=1:ne
 			pts =  element_nodes(self, e, refel);
 			(detJac,D) = geometric_factors(self, refel, pts);
-			idx =  get_node_indices (self, e, order);
+			idx =  get_node_indices(self, e, order);
 			eM = element_mass(self, e, refel, detJac);
 			ind1 = repmat(idx,NP,1);
 			ind2 = reshape(repmat(idx',NP,1),NPNP,1);
@@ -423,7 +423,7 @@ end
 		stiff_val = zeros(ne * NPNP, 1);
 		# loop over elements
 		for e=1:ne
-			idx =  get_node_indices (self, e, order);
+			idx =  get_node_indices(self, e, order);
 			ind1 = repmat(idx,NP,1);
 			ind2 = reshape(repmat(idx',NP,1),NPNP,1);
 			st = (e-1)*NPNP+1;
@@ -642,7 +642,7 @@ end
 		f = zeros(dof,1)
 		# loop over elements
 		for e=1:ne
-			idx =  get_node_indices (self, e, order)
+			idx =  get_node_indices(self, e, order)
 			pts =  element_nodes(self, e, refel)
 			(J,D) = geometric_factors(self, refel, pts)
 			gpts = element_gauss(self, e, refel)
@@ -667,7 +667,7 @@ end
 			NP_f = (2*self.order+1)^self.dim;
 			Pe = refel.Ph;
 		else
-			assert (order == 2*self.order);
+			assert(order == 2*self.order);
 			NP_c = (self.order+1)^self.dim;
 			NP_f = (order+1)^self.dim;
 			dof_coarse = prod([self.nelems...] * self.order + 1);
@@ -682,7 +682,7 @@ end
 		val = zeros(ne * NPNP, 1);
 
 		for e=1:ne
-			(idx_c, idx_f) = get_interpolation_indices (self,e);
+			(idx_c, idx_f) = get_interpolation_indices(self,e);
 			ind1 = repmat(idx_f,NP_c,1);
 			ind2 = reshape(repmat(idx_c',NP_f,1),NPNP,1);
 			st = (e-1)*NPNP+1;
@@ -700,11 +700,11 @@ end
 		P = sparse(I[:],J[:],u_val[:],dof_fine,dof_coarse);
 		return P;
 	end
-	function get_node_indices ( self, eid, order )
+	function get_node_indices( self, eid, order )
 		# determine global node indices for a given element
 
 		if ( self.dim == 2)
-			(i,j) = ind2sub (self.nelems, eid);
+			(i,j) = ind2sub(self.nelems, eid);
 			i_low   = (i-1)*order + 1;   i_high =  i*order + 1;
 			j_low   = (j-1)*order + 1;   j_high =  j*order + 1;
 
@@ -714,7 +714,7 @@ end
 			x=[1:length(m)]
 			idx = sub2ind([self.nelems...]'*order + 1,m[x],n[x])
 		else
-			(i,j,k) = ind2sub (self.nelems, eid);
+			(i,j,k) = ind2sub(self.nelems, eid);
 
 			i_low   = (i-1)*order + 1;   i_high =  i*order + 1;
 			j_low   = (j-1)*order + 1;   j_high =  j*order + 1;
@@ -730,46 +730,46 @@ end
 		end
 		return idx
 	end
-	function get_linear_node_indices ( self, eid, order )
+	function get_linear_node_indices( self, eid, order )
 		# determine global node indices for a given element
 		if ( self.dim == 2)
-			(i,j) = ind2sub (self.nelems*order, eid);
+			(i,j) = ind2sub(self.nelems*order, eid);
 
 			(i,j) = ndgrid(i:i+1, j:j+1);
 
-			idx     = sub2ind ([self.nelems...]'*order + 1, i[:], j[:]);
+			idx     = sub2ind([self.nelems...]'*order + 1, i[:], j[:]);
 		else
-			(i,j,k) = ind2sub (self.nelems*order, eid);
+			(i,j,k) = ind2sub(self.nelems*order, eid);
 
 			(i,j,k) = ndgrid(i:i+1, j:j+1, k:k+1);
 
-			idx     = sub2ind ([self.nelems...]'*order + 1, i[:], j[:], k[:] );
+			idx     = sub2ind([self.nelems...]'*order + 1, i[:], j[:], k[:] );
 		end
 		return idx
 	end
-	function get_interpolation_indices ( self, eid )
+	function get_interpolation_indices( self, eid )
 		# determine global node indices for a given element
 		if ( self.dim == 2)
-			(i,j) = ind2sub (self.nelems, eid);
+			(i,j) = ind2sub(self.nelems, eid);
 
 			i_low       = (i-1)*self.order + 1;   i_high =  i*self.order + 1;
 			j_low       = (j-1)*self.order + 1;   j_high =  j*self.order + 1;
 			(i,j)       = ndgrid(i_low:i_high, j_low:j_high);
-			idx_coarse  = sub2ind ([self.nelems...]*self.order + 1, i[:], j[:]);
+			idx_coarse  = sub2ind([self.nelems...]*self.order + 1, i[:], j[:]);
 
 			(i,j)       = ndgrid(2*i_low-1:2*i_high-1, 2*j_low-1:2*j_high-1);
-			idx_fine    = sub2ind (2*[self.nelems...]*self.order + 1, i[:], j[:]);
+			idx_fine    = sub2ind(2*[self.nelems...]*self.order + 1, i[:], j[:]);
 		else
-			(i,j,k) = ind2sub (self.nelems, eid);
+			(i,j,k) = ind2sub(self.nelems, eid);
 
 			i_low       = (i-1)*self.order + 1;   i_high =  i*self.order + 1;
 			j_low       = (j-1)*self.order + 1;   j_high =  j*self.order + 1;
 			k_low       = (k-1)*self.order + 1;   k_high =  k*self.order + 1;
 			(i,j,k)     = ndgrid(i_low:i_high, j_low:j_high, k_low:k_high);
-			idx_coarse  = sub2ind ([self.nelems...]*self.order + 1, i[:], j[:], k[:] );
+			idx_coarse  = sub2ind([self.nelems...]*self.order + 1, i[:], j[:], k[:] );
 
 			(i,j,k)     = ndgrid(2*i_low-1:2*i_high-1, 2*j_low-1:2*j_high-1, 2*k_low-1:2*k_high-1);
-			idx_fine    = sub2ind (2*[self.nelems...]*self.order + 1, i[:], j[:], k[:] );
+			idx_fine    = sub2ind(2*[self.nelems...]*self.order + 1, i[:], j[:], k[:] );
 		end
 		return idx_coarse, idx_fine
 	end
@@ -854,22 +854,22 @@ end
 
 		if (self.dim == 2 )
 			mu = map(self.coeff, gpts[:,1], gpts[:,2] );
-			factor [:,1] = (D.rx.*D.rx + D.ry.*D.ry ) .* J .* r.W .* mu ; # d2u/dx^2
-			factor [:,2] = (D.sx.*D.sx + D.sy.*D.sy ) .* J .* r.W .* mu ; # d2u/dy^2
-			factor [:,3] = (D.rx.*D.sx + D.ry.*D.sy ) .* J .* r.W .* mu ; # d2u/dxdy
+			factor[:,1] = (D.rx.*D.rx + D.ry.*D.ry ) .* J .* r.W .* mu ; # d2u/dx^2
+			factor[:,2] = (D.sx.*D.sx + D.sy.*D.sy ) .* J .* r.W .* mu ; # d2u/dy^2
+			factor[:,3] = (D.rx.*D.sx + D.ry.*D.sy ) .* J .* r.W .* mu ; # d2u/dxdy
 
 			Ke =   r.Qx' * diagm(factor[:,1]) * r.Qx + r.Qy' * diagm(factor[:,2]) * r.Qy + r.Qx' * diagm(factor[:,3]) * r.Qy + r.Qy' * diagm(factor[:,3]) * r.Qx ;
 		else
 			mu = map(self.coeff, gpts[:,1], gpts[:,2], gpts[:,3] );
 
 			# first compute dj.w.J.J'
-			factor [:,1] = (D.rx.*D.rx + D.ry.*D.ry + D.rz.*D.rz ) .* J .* r.W .* mu ; # d2u/dx^2
-			factor [:,2] = (D.sx.*D.sx + D.sy.*D.sy + D.sz.*D.sz ) .* J .* r.W .* mu ; # d2u/dy^2
-			factor [:,3] = (D.tx.*D.tx + D.ty.*D.ty + D.tz.*D.tz ) .* J .* r.W .* mu ; # d2u/dz^2
+			factor[:,1] = (D.rx.*D.rx + D.ry.*D.ry + D.rz.*D.rz ) .* J .* r.W .* mu ; # d2u/dx^2
+			factor[:,2] = (D.sx.*D.sx + D.sy.*D.sy + D.sz.*D.sz ) .* J .* r.W .* mu ; # d2u/dy^2
+			factor[:,3] = (D.tx.*D.tx + D.ty.*D.ty + D.tz.*D.tz ) .* J .* r.W .* mu ; # d2u/dz^2
 
-			factor [:,4] = (D.rx.*D.sx + D.ry.*D.sy + D.rz.*D.sz ) .* J .* r.W .* mu ; # d2u/dxdy
-			factor [:,5] = (D.rx.*D.tx + D.ry.*D.ty + D.rz.*D.tz ) .* J .* r.W .* mu ; # d2u/dxdz
-			factor [:,6] = (D.sx.*D.tx + D.sy.*D.ty + D.sz.*D.tz ) .* J .* r.W .* mu ; # d2u/dydz
+			factor[:,4] = (D.rx.*D.sx + D.ry.*D.sy + D.rz.*D.sz ) .* J .* r.W .* mu ; # d2u/dxdy
+			factor[:,5] = (D.rx.*D.tx + D.ry.*D.ty + D.rz.*D.tz ) .* J .* r.W .* mu ; # d2u/dxdz
+			factor[:,6] = (D.sx.*D.tx + D.sy.*D.ty + D.sz.*D.tz ) .* J .* r.W .* mu ; # d2u/dydz
 
 			Ke =   r.Qx' * diagm(factor[:,1]) * r.Qx + r.Qy' * diagm(factor[:,2]) * r.Qy + r.Qz' * diagm(factor[:,3]) * r.Qz + r.Qx' * diagm(factor[:,4]) * r.Qy + r.Qy' * diagm(factor[:,4]) * r.Qx + r.Qx' * diagm(factor[:,5]) * r.Qz + r.Qz' * diagm(factor[:,5]) * r.Qx + r.Qz' * diagm(factor[:,6]) * r.Qy + r.Qy' * diagm(factor[:,6]) * r.Qz ;
 		end
@@ -887,13 +887,13 @@ end
 			xr  = refel.Dg * pts;
 			J = xr;
 		elseif (refel.dim == 2)
-			(xr, xs) = Tensor.grad2 (refel.Dg, pts[:,1]);
-			(yr, ys) = Tensor.grad2 (refel.Dg, pts[:,2]);
+			(xr, xs) = Tensor.grad2(refel.Dg, pts[:,1]);
+			(yr, ys) = Tensor.grad2(refel.Dg, pts[:,2]);
 			J = -xs.*yr + xr.*ys;
 		else
-			(xr, xs, xt) = Tensor.grad3 (refel.Dg, pts[:,1]);
-			(yr, ys, yt) = Tensor.grad3 (refel.Dg, pts[:,2]);
-			(zr, zs, zt) = Tensor.grad3 (refel.Dg, pts[:,3]);
+			(xr, xs, xt) = Tensor.grad3(refel.Dg, pts[:,1]);
+			(yr, ys, yt) = Tensor.grad3(refel.Dg, pts[:,2]);
+			(zr, zs, zt) = Tensor.grad3(refel.Dg, pts[:,3]);
 
 			J = xr.*(ys.*zt-zs.*yt) - yr.*(xs.*zt-zs.*xt) + zr.*(xs.*yt-ys.*xt);
 		end
@@ -923,7 +923,7 @@ end
 	function linear_element_nodes(self, elem, order)
 
 		if (self.dim == 2)
-			(i,j) = ind2sub (self.nelems*order, elem);
+			(i,j) = ind2sub(self.nelems*order, elem);
 
 			x1d = getGLLcoords(order, self.nelems(1));
 			y1d = getGLLcoords(order, self.nelems(2));
@@ -931,7 +931,7 @@ end
 			(x, y) = ndgrid(x1d(i:i+1), y1d(j:j+1));
 			pts = [x[:] y[:]];
 		else
-			(i,j,k) = ind2sub (self.nelems*order, elem);
+			(i,j,k) = ind2sub(self.nelems*order, elem);
 
 			x1d = getGLLcoords(order, self.nelems(1));
 			y1d = getGLLcoords(order, self.nelems(2));
@@ -947,10 +947,10 @@ end
 	function element_nodes(self, elem, refel)
 		h = 1./[self.nelems...]';
 		if ( self.dim == 2)
-			(i,j) = ind2sub (self.nelems, elem);
+			(i,j) = ind2sub(self.nelems, elem);
 			idx = [i j];
 		else
-			(i,j,k) = ind2sub (self.nelems, elem);
+			(i,j,k) = ind2sub(self.nelems, elem);
 			idx = [i j k];
 		end
 		p_mid = (idx - 0.5) .* h;
@@ -974,10 +974,10 @@ end
 			h = 1./[self.nelems...]';
 
 			if ( self.dim == 2)
-				(i,j) = ind2sub (self.nelems, elem);
+				(i,j) = ind2sub(self.nelems, elem);
 				idx = [i j];
 			else
-				(i,j,k) = ind2sub (self.nelems, elem);
+				(i,j,k) = ind2sub(self.nelems, elem);
 				idx = [i j k];
 			end
 			p_mid = (idx - 0.5) .* h;
@@ -994,7 +994,7 @@ end
 			assert(refel.N == 1);
 			# ... get gll points ...
 			if (self.dim == 2)
-				(i,j) = ind2sub (tuple([self.nelems...]'*self.order), elem);
+				(i,j) = ind2sub(tuple([self.nelems...]'*self.order), elem);
 
 				x1d = getGLLcoords(self.order, self.nelems[1]);
 				y1d = getGLLcoords(self.order, self.nelems[2]);
@@ -1006,7 +1006,7 @@ end
 
 				pts = [x[:] y[:]];
 			else
-				(i,j,k) = ind2sub (tuple([self.nelems...]'*self.order), elem);
+				(i,j,k) = ind2sub(tuple([self.nelems...]'*self.order), elem);
 
 				x1d = getGLLcoords(self.order, self.nelems[1]);
 				y1d = getGLLcoords(self.order, self.nelems[2]);
@@ -1023,13 +1023,13 @@ end
 		end
 		coords = self.Xf(pts);
 	end
-	function assemble_poisson_linearized (self, order)
+	function assemble_poisson_linearized(self, order)
 		set_order(self, order);
 
-		refel = Refel ( self.dim, 1 );
+		refel = Refel( self.dim, 1 );
 
-		dof = prod ( [self.nelems...]*order + 1);
-		ne  = prod ( [self.nelems...]*order ) ;
+		dof = prod( [self.nelems...]*order + 1);
+		ne  = prod( [self.nelems...]*order ) ;
 
 		# storage for indices and values
 		NP = (1+1)^self.dim; # linear elements
@@ -1043,7 +1043,7 @@ end
 
 		# loop over elements
 		for e=1:ne
-			idx = get_linear_node_indices (self, e, order);
+			idx = get_linear_node_indices(self, e, order);
 
 			ind1 = repmat(idx,NP,1);
 			ind2 = reshape(repmat(idx',NP,1),NPNP,1);
@@ -1085,7 +1085,7 @@ end
 		fac = 1.0/(2*elems);
 
 		# gll coordinates in [-1,1]
-		x = Basis.gll (0,0,order)';
+		x = Basis.gll(0,0,order)';
 
 		x = (x + 1)*fac;
 

@@ -148,7 +148,7 @@ function stokes_brinkman_q2p1(grid, K)
     A += K .* G # brinkman
     # G = K .* G
 
-    mats = {
+    mats = Dict(
       "A" => A, # velocity matrix
       "B" => B, # vector velocity matrix
       "G" => G, # mass matrix
@@ -158,6 +158,6 @@ function stokes_brinkman_q2p1(grid, K)
       "P" => K, # permeability tensor
       "f" => f,
       "g" => g
-    }
+    )
 
 end

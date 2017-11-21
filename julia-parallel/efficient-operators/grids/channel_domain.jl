@@ -1,4 +1,4 @@
-reload("helpers/helper_functions.jl")
+include("../helpers/helper_functions.jl")
 
 ###CAVITY_DOMAIN square cavity Q2 grid generator
 function channel_domain(msize)
@@ -6,14 +6,14 @@ function channel_domain(msize)
   ## define geometry
   println("Grid generation for channel domain.")
   n = 2^(msize+1)
-  np = int(n/2)
-  nel = int(np^2)
+  np = Int(n/2)
+  nel = Int(np^2)
 
   # y-direction
-  yy = [1/np:1/np:1]
-  ypos = [0, yy]
+  yy = collect(1/np:1/np:1)
+  ypos = [0; yy]
   yneg = -yy[length(yy):-1:1]
-  y = [yneg, ypos]'
+  y = [yneg; ypos]'
   x = y
 
   # compute biquadratic element coordinates
@@ -86,7 +86,7 @@ function channel_domain(msize)
   end
   ef4 = 4*ones(size(e4))
 
-  outbc = int(input("outflow boundary: 1/natural, 2/prescribed: "))
+  outbc = user_input("outflow boundary: 1/natural, 2/prescribed: ")
   if outbc == 2
     bound = sort([k1; k2; k3; k4])
     mbound = [e1' ef1'; e2' ef2'; e3' ef3'; e4' ef4']
@@ -106,7 +106,7 @@ function channel_domain(msize)
   obs = []
   sbnde = [1 2 3 4]
 
-  channel_grid = {
+  channel_grid = Dict(
     "mv" => mv,
     "xy" => xy,
     "bound" => bound,
@@ -117,6 +117,6 @@ function channel_domain(msize)
     "bnde" => bnde,
     "obs" => obs,
     "msize" => msize
-  }
+  )
 
 end

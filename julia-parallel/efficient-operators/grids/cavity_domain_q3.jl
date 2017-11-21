@@ -4,10 +4,10 @@ function cavity_domain_q3()
   ## define geometry
   println("Grid generation for cavity domain.")
   # msize = 6
-  msize = int(input("Mesh size: "))
+  msize = user_input("Mesh size: ")
   n = 2^msize
-  np = int(n/2)
-  nel = int(np^2)
+  np = Int(n/2)
+  nel = Int(np^2)
 
   # y-direction
   yy = [1/np:1/np:1]

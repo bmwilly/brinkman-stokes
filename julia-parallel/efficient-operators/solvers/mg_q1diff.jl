@@ -52,9 +52,9 @@ function mg_q1diff(xy, ev)
 
   # assemble global matrix and source vector
   for krow = 1:4
-  	nrow = int(ev[:, krow])
+  	nrow = Int(ev[:, krow])
   	for kcol = 1:4
-  		ncol = int(ev[:, kcol])
+  		ncol = Int(ev[:, kcol])
   		a += sparse(nrow, ncol, ae[:, krow, kcol], nvtx, nvtx)
   	end
   end

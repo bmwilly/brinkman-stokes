@@ -14,7 +14,7 @@ function hderiv(s, t, xl, yl)
 
     nel = length(xl[:, 1])
     ninel = length(xl[1, :])
-    p = int(sqrt(ninel))
+    p = Int(sqrt(ninel))
     nn = (p+1)*(p+1)
     zerov = zeros(nel, 1)
     onev = ones(nel, 1)

@@ -7,8 +7,8 @@ reload("../julia-homg/Tensor.jl")
 reload("../julia-homg/Refel.jl")
 
 dim = 2
-order = int(input("Polynomial order: "))
-msize = int(input("Mesh size: "))
+order = user_input("Polynomial order: ")
+msize = user_input("Mesh size: ")
 # msize = 2
 nelems = [2^msize]
 
@@ -82,8 +82,8 @@ println(toc())
 #   inv_stiff_val[st:en] = eMat_inv[:];
 # end
 #
-# Iv=int64(I[:]);
-# Jv=int64(J[:]);
+# Iv=Int64(I[:]);
+# Jv=Int64(J[:]);
 # mv=mass_val[:];
 #
 # M = sparse(Iv,Jv,mv,dof,dof);
@@ -92,15 +92,15 @@ println(toc())
 # ii = Mesh.ismember(I,bdy);
 # jj = Mesh.ismember(J,bdy);
 #
-# stiff_val = stiff_val.*(int(!bool(ii))).*(int(!bool(jj)));
-# inv_stiff_val = inv_stiff_val.*(int(!bool(ii))).*(int(!bool(jj)));
+# stiff_val = stiff_val.*(Int(!bool(ii))).*(Int(!bool(jj)));
+# inv_stiff_val = inv_stiff_val.*(Int(!bool(ii))).*(Int(!bool(jj)));
 #
 # I = [I; bdy];
 # J = [J; bdy];
 # stiff_val = [stiff_val; ones(length(bdy), 1)];
 # inv_stiff_val = [inv_stiff_val; ones(length(bdy), 1)];
-# Iv=int64(I[:]);
-# Jv=int64(J[:]);
+# Iv=Int64(I[:]);
+# Jv=Int64(J[:]);
 # sv=stiff_val[:];
 # isv=inv_stiff_val[:];
 #

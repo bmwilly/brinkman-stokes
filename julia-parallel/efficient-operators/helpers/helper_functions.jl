@@ -1,6 +1,12 @@
-function input(prompt::String="")
+function user_input(prompt::String="")
   print(prompt)
-  chomp(readline())
+  x = readline()
+  f(x) = try
+    parse(Int, x)
+  catch
+    x
+  end
+  f(x)
 end
 
 meshgrid(v::AbstractVector) = meshgrid(v, v)
@@ -32,8 +38,8 @@ function meshgrid(vx, vy)
 end
 
 function ismember(main_array, sub_array)
-  out=int8(zeros(length(main_array)))
-  match_index = findin(int64(main_array),int64(sub_array))
+  out=Int8(zeros(length(main_array)))
+  match_index = findin(Int64(main_array),Int64(sub_array))
   out[match_index]=1
   out
 end

@@ -1,6 +1,6 @@
-reload("solvers/mg_q1grid.jl")
-reload("solvers/mg_q1diff.jl")
-reload("solvers/mg_zerobc.jl")
+include("mg_q1grid.jl")
+include("mg_q1diff.jl")
+include("mg_zerobc.jl")
 
 ###MG_DIFF_SETUP GMG diffusion problem on square domain
 # input
@@ -11,7 +11,7 @@ reload("solvers/mg_zerobc.jl")
 function mg_diff_setup(x, y)
 
 	n = length(x) - 1; np = n/2; nq = n/4
-  nel = int(np^2)
+  nel = Int(np^2)
 	nvtx = (n + 1) * (n + 1)
 	(X, Y) = meshgrid(x, y)
 	xx = reshape(X', nvtx, 1)

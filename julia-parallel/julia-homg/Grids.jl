@@ -75,7 +75,7 @@ type Grid
 end
 function assemble_poisson(grid, mu)
 	# fine grid material props ...
-	Mesh.set_coeff (grid.Mesh, mu) ;
+	Mesh.set_coeff(grid.Mesh, mu) ;
 	# assemble for this level ...
 	(grid.K, grid.M, grid.jacobi_inv_block_diag) = Mesh.assemble_poisson(grid.Mesh, grid.Mesh.order);
 	# syms x y z
@@ -259,9 +259,9 @@ function smooth(grid, v, rhs, u)
 end
 
 function set_coeff(grid, mu)
-	Mesh.set_coeff (grid.Mesh, mu) ;
+	Mesh.set_coeff(grid.Mesh, mu) ;
 	if (typeof(grid.Coarse) == Grid )
-		Mesh.set_coeff (grid.Coarse.Mesh, mu) ;
+		Mesh.set_coeff(grid.Coarse.Mesh, mu) ;
 	end
 end
 
@@ -272,7 +272,7 @@ function set_smoother(grid, sm)
 	end
 end
 
-function smoother_jacobi (grid, v, rhs, u)
+function smoother_jacobi(grid, v, rhs, u)
 	# standard jacobi smoother
 	if isempty(grid.jacobi_invdiag)
 		D = diag(grid.K);
@@ -286,7 +286,7 @@ function smoother_jacobi (grid, v, rhs, u)
 	return u
 end # jacobi
 
-function smoother_block_jacobi (grid, v, rhs, u)
+function smoother_block_jacobi(grid, v, rhs, u)
 	# block jacobi smoother
 	if ( isempty(grid.jacobi_inv_block_diag) )
 		error("inv block doagonal not assembled");
@@ -299,8 +299,8 @@ function smoother_block_jacobi (grid, v, rhs, u)
 	return u
 end # blk jacobi
 
-function smoother_sym_sor (grid, v, rhs, u)
-	if ( isempty ( grid.ssor_M ) )
+function smoother_sym_sor(grid, v, rhs, u)
+	if ( isempty( grid.ssor_M ) )
 		w = grid.sor_omega;
 		n = length(u);
 		grid.ssor_M = spdiagm( (1/w)*diag(grid.K), 0, n, n) + tril(grid.K,-1);
@@ -322,8 +322,8 @@ function set_sor_omega(grid, w)
 	return grid
 end
 
-function smoother_chebyshev (grid, v, rhs, u)
-	if ( isempty ( grid.eig_max ) )
+function smoother_chebyshev(grid, v, rhs, u)
+	if ( isempty( grid.eig_max ) )
 		D = diag(grid.K);
 		grid.jacobi_invdiag = 1./D;
 		Kc = spdiagm(grid.jacobi_invdiag,[0],length(D), length(D)) * grid.K;
@@ -344,7 +344,7 @@ function smoother_chebyshev (grid, v, rhs, u)
 	d = zeros(size(u));
 
 	# first loop
-	res = -residual (grid, rhs, u );
+	res = -residual(grid, rhs, u );
 	d = res/theta.* grid.jacobi_invdiag;
 	u = u + d;
 
@@ -353,7 +353,7 @@ function smoother_chebyshev (grid, v, rhs, u)
 		d1 = rhokp1 * rhok;
 		d2 = 2*rhokp1 / delta;
 		rhok = rhokp1;
-		res = -residual (grid, rhs, u );
+		res = -residual(grid, rhs, u );
 		d = d1 * d + d2 * res.*grid.jacobi_invdiag;
 		u = u + d;
 	end

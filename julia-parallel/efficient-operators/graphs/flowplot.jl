@@ -3,7 +3,7 @@ using PyPlot
 function flowplot(sol, domain)
 
   xst = sol["xst"]; By = sol["By"]; Bx = sol["Bx"]; A = sol["A"];
-  xy = sol["xy"]; xyp = sol["xyp"]; x = sol["x"]; y = sol["y"];
+  xy = sol["xy"]; xyp = sol["xyp"]; x = Array(sol["x"]); y = Array(sol["y"]);
   bound = sol["bound"]; bndxy = sol["bndxy"]; bnde = sol["bnde"];
   obs = sol["obs"];
   if domain == 3; kappa = sol["kappa"]; kp = reshape(kappa, length(x), length(y))'; end;

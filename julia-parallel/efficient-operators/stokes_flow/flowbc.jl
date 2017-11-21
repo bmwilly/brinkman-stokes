@@ -17,7 +17,7 @@ include("poiseuille_flow.jl")
 function flowbc(a, b, f, g, xy, bound, domain)
 
   nu = length(f); np = length(g)
-  nvtx = int(nu / 2); nbd = length(bound)
+  nvtx = Int(nu / 2); nbd = length(bound)
   nullcol = spzeros(nvtx, nbd)
   nullpcol = spzeros(np, nbd)
   Ax = a[1:nvtx, 1:nvtx]

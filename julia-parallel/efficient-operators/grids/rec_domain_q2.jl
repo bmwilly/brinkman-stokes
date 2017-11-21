@@ -52,7 +52,7 @@ function rec_domain_q2(x1, x2, y1, y2, h, xyo)
 
   kx = 1; ky = 1; mel = 0;
   nvv = zeros(1, 9);
-  mv = zeros(Int64, int(nx/2 * ny/2), 9)
+  mv = zeros(Int64, Int(nx/2 * ny/2), 9)
   for j = 1:ny/2
     for i = 1:nx/2
       mref = (nx + 1) * (ky - 1) + kx

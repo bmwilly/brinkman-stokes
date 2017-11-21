@@ -1,5 +1,5 @@
-reload("solvers/mg_pre.jl")
-reload("solvers/mg_post.jl")
+include("mg_pre.jl")
+include("mg_post.jl")
 
 ###MG_ITER performs one GMG iteration
 # input

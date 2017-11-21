@@ -7,7 +7,7 @@ reload("grids/findboundary.jl")
 function obstacle_domain()
 
   println("Grid generation for domain with obstacle.")
-  nc = int(input("grid parameter (3 for underlying 8x20 grid): "))
+  nc = user_input("grid parameter (3 for underlying 8x20 grid): ")
   # nc = 3;
 
   if nc < 3

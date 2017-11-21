@@ -27,7 +27,7 @@ function stokes_q2p1(grid)
     nu = 2nvtx
     np = 3length(xp)
     nel = length(mv[:, 1])
-    mp = [[1:3:3nel] [2:3:3nel] [3:3:3nel]]
+    mp = [collect(1:3:3nel) collect(2:3:3nel) collect(3:3:3nel)]
 
     println("setting up Q2-P1 matrices... ")
 
@@ -141,7 +141,7 @@ function stokes_q2p1(grid)
 
     println("done")
 
-    mats = {
+    mats = Dict(
       "A" => A,
       "B" => B,
       "G" => G,
@@ -150,6 +150,6 @@ function stokes_q2p1(grid)
       "By" => BBy,
       "f" => f,
       "g" => g
-    }
+    )
 
 end

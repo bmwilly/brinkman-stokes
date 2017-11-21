@@ -2,13 +2,13 @@
 # input
 # 	x 				x-grid coordinates
 # 	y 				y-grid coordinates
-# 	xy 				vertex coordinate vector 
-# 	mv 				Q2 macroelement mapping matrix 
-# 	bound 			boundary vertex vector 
-# 	mbound 			macroelement boundary edge vector 
-# output 
-# 	ev 				element mapping matrix 
-# 	ebound 			element boundary mapping matrix 
+# 	xy 				vertex coordinate vector
+# 	mv 				Q2 macroelement mapping matrix
+# 	bound 			boundary vertex vector
+# 	mbound 			macroelement boundary edge vector
+# output
+# 	ev 				element mapping matrix
+# 	ebound 			element boundary mapping matrix
 function mg_q1grid(x, y, xy, mv, bound, mbound)
 
 	xx = xy[:, 1]; yy = xy[:, 2]; nvtx = length(xx)

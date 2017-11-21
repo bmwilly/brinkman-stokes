@@ -98,12 +98,12 @@ function q2p1grid(grid)
   #
   # end
 
-  grid_out = {
+  grid_out = Dict(
     "x" => x,
     "y" => y,
     "xy" => xy,
     "xyp" => xyp,
     "ee" => ee
-  }
+  )
 
 end

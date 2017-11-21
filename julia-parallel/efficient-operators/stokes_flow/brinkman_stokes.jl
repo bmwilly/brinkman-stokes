@@ -1,9 +1,10 @@
 # load required packages and functions
 using MAT
 using Distances
-reload("stokes_flow/stokes_brinkman_q2p1.jl")
-reload("grids/q2p1grid.jl")
-reload("grids/channel_domain.jl")
+
+include("stokes_brinkman_q2p1.jl")
+include("../grids/q2p1grid.jl")
+include("../grids/channel_domain.jl")
 include("../helpers/helper_functions.jl")
 include("../../julia-homg/Basis.jl")
 include("../../julia-homg/Hexmesh.jl")
@@ -21,7 +22,7 @@ function brinkman_stokes(msize)
 
     # stokes q2-p1 matrix generator
     mv = channel_grid["mv"]
-    stokes_grid = merge(grid, {"mv" => mv})
+    stokes_grid = merge(grid, Dict("mv" => mv))
 
     xy = stokes_grid["xy"]
     nu = 2length(xy[:, 1])
@@ -29,16 +30,16 @@ function brinkman_stokes(msize)
     # stokes_mats = stokes_brinkman_q2p1(stokes_grid, K)
     stokes_mats = stokes_q2p1(stokes_grid)
 
-    bounds = {
+    bounds = Dict(
       "bound" => channel_grid["bound"],
       "bndxy" => channel_grid["bndxy"],
       "bnde" => channel_grid["bnde"],
       "obs" => channel_grid["obs"]
-    }
+    )
 
-    # order = int(input("Polynomial order: "))
+    # order = user_input("Polynomial order: ")
     order = 2;
-    # dim = int(input("Dimension: "));
+    # dim = user_input("Dimension: ");
     dim = 2;
     # nelems = [2^(msize-1)]
     nelems = [2^msize]
@@ -83,5 +84,5 @@ function brinkman_stokes(msize)
 
     # keys(mats) =
     # {"A", "B", "G", "Q", "Bx", "By", "kappa" "f", "g", "x", "y", "xyp", "bound"}
-    mats = merge(stokes_mats, grid, bounds, {"kappa" => kappa, "msize" => msize})
+    mats = merge(stokes_mats, grid, bounds, Dict("kappa" => kappa, "msize" => msize))
 end

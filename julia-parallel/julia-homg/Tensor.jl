@@ -29,7 +29,7 @@ function IAIX(A::Array, x::Array)
     y = reshape(y,size(y)[1].*size(y)[2].*size(y)[3],1)
 end
 function AIIX(A::Array, x::Array)
-    N = size (A, 1)
+    N = size(A, 1)
     y = reshape(x, N*N, N) * A'
     y = y[:]
 end
@@ -44,7 +44,7 @@ function grad(refel, u)
         du[:,3] = AIIX(refel.Dr, u);
     end
     return du
-end    
+end
 function grad2(A::Array, x::Array)
     IAX(A, x), AIX(A, x)
 end

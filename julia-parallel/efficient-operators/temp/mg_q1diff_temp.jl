@@ -37,7 +37,7 @@ h = 2^(1 - nc)
 println("Setting up MG data...")
 
 # top level
-mgdata = Array{Dict{},int(nc)}
+mgdata = Array{Dict}(undef, int(nc))
 mgdata[nc] = {
   "matrix" => Agal,
   "prolong" => mg_prolong(2^nc, 2^nc, x, y)
@@ -106,7 +106,7 @@ for k = 1:mel
 end
 ef1 = ones(size(e1))
 
-k2 = findall((xy[:,1] .== 1) & (xy[:,2] .< 1) & (xy[:,2] .> -1))
+k2 = findall((xy[:,1] .== 1) .& (xy[:,2] .< 1) .& (xy[:,2] .> -1))
 e2 = []
 for k = 1:mel
     if any(mv[k,6] .== k2)
@@ -124,7 +124,7 @@ for k = 1:mel
 end
 ef3 = 3 * ones(size(e3))
 
-k4 = findall((xy[:,1] .== -1) & (xy[:,2] .< 1) & (xy[:,2] .> -1))
+k4 = findall((xy[:,1] .== -1) .& (xy[:,2] .< 1) .& (xy[:,2] .> -1))
 e4 = []
 for k = 1:mel
     if any(mv[k,8] .== k4)

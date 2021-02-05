@@ -91,7 +91,7 @@ obstacle_domain()
 #
 # if nxyo != 0
 #   for i = 1:nvtx
-#     ix = findall((xyo[:, 1] .== xy[i, 1]) & (xyo[:, 2] .== xy[i, 2]))
+#     ix = findall((xyo[:, 1] .== xy[i, 1]) .& (xyo[:, 2] .== xy[i, 2]))
 #     if size(ix, 1) != 0
 #       xyg[i] = ix[1]
 #       if i < nvtx

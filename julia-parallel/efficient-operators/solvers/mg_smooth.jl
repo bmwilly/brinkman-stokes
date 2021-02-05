@@ -9,7 +9,7 @@
 # 	Qs 				dict containing smoothing operator in factored form
 function mg_smooth(As, level, sweeps, smooth, stype)
 
-	Qs = Array{Dict,Int(level)}
+	Qs = Array{Dict}(undef, Int(level))
 
 	for i = level:-1:2
 		A = As[i]["matrix"]

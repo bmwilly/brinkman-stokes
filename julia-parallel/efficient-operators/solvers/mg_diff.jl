@@ -13,7 +13,7 @@ function mg_diff(x, y, Agal)
 	println("Setting up MG data...")
 
 	# top level
-	mgdata = Array{Dict,Int(nc)}
+	mgdata = Array{Dict}(undef, Int(nc))
 	mgdata[nc] = Dict(
 		"matrix" => Agal,
 		"prolong" => mg_prolong(2^nc, 2^nc, x, y)

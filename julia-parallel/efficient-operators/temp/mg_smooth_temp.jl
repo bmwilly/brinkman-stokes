@@ -28,7 +28,7 @@ h = 2^(1 - nc)
 println("Setting up MG data...")
 
   # top level
-mgdata = Array{Dict{},int(nc)}
+mgdata = Array{Dict}(undef, int(nc))
 mgdata[nc] = {
     "matrix" => Agal,
     "prolong" => mg_prolong(2^nc, 2^nc, x, y)

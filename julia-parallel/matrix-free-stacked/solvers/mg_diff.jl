@@ -16,7 +16,7 @@ function mg_diff(kparams)
 	println("Setting up MG data...")
 
 	# top level
-	mgdata = Array{Dict{},int(nc)}
+	mgdata = Array{Dict}(undef, int(nc))
 	mgdata[nc] = {
 		"name" => "agal",
 		"matrix" => (u, params) -> agal(u, params),

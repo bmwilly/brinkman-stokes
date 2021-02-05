@@ -37,18 +37,18 @@ function mg_prolong(nelx::Int, nely::Int, x, y)
 
 	P = zeros(Int((2ecy + 1) * (2ecx + 1)), Int((ecy + 1) * (ecx + 1)))
 	for j = 2:ecy
-		cols = (j - 1) * (ecx + 1) + collect(1:(ecx + 1))
-		P[(2j - 3) * (2ecx + 1) + collect(1:(2ecx + 1)), cols] = dy[2j - 3] * p
-		P[(2j - 2) * (2ecx + 1) + collect(1:(2ecx + 1)), cols] = p
-		P[(2j - 1) * (2ecx + 1) + collect(1:(2ecx + 1)), cols] = dy[2j] * p
+		cols = (j - 1) * (ecx + 1) .+ collect(1:(ecx + 1))
+		P[(2j - 3) * (2ecx + 1) .+ collect(1:(2ecx + 1)), cols] = dy[2j - 3] * p
+		P[(2j - 2) * (2ecx + 1) .+ collect(1:(2ecx + 1)), cols] = p
+		P[(2j - 1) * (2ecx + 1) .+ collect(1:(2ecx + 1)), cols] = dy[2j] * p
 	end
 	j = 1
-	cols = (j - 1) * (ecx + 1) + collect(1:(ecx + 1))
-	P[(2j - 2) * (2ecx + 1) + collect(1:(2ecx + 1)), cols] = p
-	P[(2j - 1) * (2ecx + 1) + collect(1:(2ecx + 1)), cols] = dy[2j] * p
+	cols = (j - 1) * (ecx + 1) .+ collect(1:(ecx + 1))
+	P[(2j - 2) * (2ecx + 1) .+ collect(1:(2ecx + 1)), cols] = p
+	P[(2j - 1) * (2ecx + 1) .+ collect(1:(2ecx + 1)), cols] = dy[2j] * p
 	j = ecy + 1
-	P[(2j - 3) * (2ecx + 1) + collect(1:(2ecx + 1)), cols] = dy[2j - 3] * p
-	P[(2j - 2) * (2ecx + 1) + collect(1:(2ecx + 1)), cols] = p
+	P[(2j - 3) * (2ecx + 1) .+ collect(1:(2ecx + 1)), cols] = dy[2j - 3] * p
+	P[(2j - 2) * (2ecx + 1) .+ collect(1:(2ecx + 1)), cols] = p
 
 	P
 

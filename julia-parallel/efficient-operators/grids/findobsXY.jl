@@ -15,7 +15,7 @@ function findobsXY(obs, X, Y, bndxy)
             xr = maximum(bndxy[:, 1][obs[i, :]])
             yb = minimum(bndxy[:, 2][obs[i, :]])
             yt = maximum(bndxy[:, 2][obs[i, :]])
-            kk = findall((X .> xl) & (X .< xr) & (Y .< yt) & (Y .> yb))
+            kk = findall((X .> xl) .& (X .< xr) .& (Y .< yt) .& (Y .> yb))
             KK = vcat(KK, kk)
         end
     end

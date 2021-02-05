@@ -32,7 +32,7 @@ function rec_domain_q2(x1, x2, y1, y2, h, xyo)
     if nxyo != 0
         xyn = []
         for i = 1:nvtx
-            ix = findall((xyo[:, 1] .== xy[i, 1]) & (xyo[:, 2] .== xy[i, 2]))
+            ix = findall((xyo[:, 1] .== xy[i, 1]) .& (xyo[:, 2] .== xy[i, 2]))
             if size(ix, 1) != 0
                 xyg[i] = ix[1]
                 if i < nvtx

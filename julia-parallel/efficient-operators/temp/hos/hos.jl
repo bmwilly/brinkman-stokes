@@ -46,9 +46,9 @@ mv = qgrid(np, np, p)
 # compute boundary vertices and edges
 # four boundary edges
 k1 = findall(xy[:,2] .== -1)
-k2 = findall((xy[:,1] .== 1) & (xy[:,2] .< 1) & (xy[:,2] .> -1))
+k2 = findall((xy[:,1] .== 1) .& (xy[:,2] .< 1) .& (xy[:,2] .> -1))
 k3 = findall(xy[:,2] .== 1)
-k4 = findall((xy[:,1] .== -1) & (xy[:,2] .< 1) & (xy[:,2] .> -1))
+k4 = findall((xy[:,1] .== -1) .& (xy[:,2] .< 1) .& (xy[:,2] .> -1))
 bound = sort([k1; k2; k3; k4])
 
 ##############################

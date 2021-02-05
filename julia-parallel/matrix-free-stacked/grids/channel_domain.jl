@@ -57,7 +57,7 @@ function channel_domain(msize)
     end
     ef1 = ones(size(e1))
 
-    k2 = findall((xy[:,1] .== 1) & (xy[:,2] .< 1) & (xy[:,2] .> -1))
+    k2 = findall((xy[:,1] .== 1) .& (xy[:,2] .< 1) .& (xy[:,2] .> -1))
     e2 = Int[]
     for k = 1:mel
         if any(mv[k,6] .== k2)
@@ -75,7 +75,7 @@ function channel_domain(msize)
     end
     ef3 = 3 * ones(size(e3))
 
-    k4 = findall((xy[:,1] .== -1) & (xy[:,2] .< 1) & (xy[:,2] .> -1))
+    k4 = findall((xy[:,1] .== -1) .& (xy[:,2] .< 1) .& (xy[:,2] .> -1))
     e4 = Int[]
     for k = 1:mel
         if any(mv[k,8] .== k4)

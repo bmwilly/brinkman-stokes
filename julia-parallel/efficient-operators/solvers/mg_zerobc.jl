@@ -1,7 +1,7 @@
 ###MG_ZEROBC imposes zero boundary condition
 # input
 # 	A 				matrix with no boundary conditions imposed
-# 	xy 
+# 	xy
 # 	bound 			index set of Dirichlet boundary nodes
 # output
 # 	Ax 				modified matrix with boundary conditions imposed
@@ -16,6 +16,6 @@ function mg_zerobc(A, xy, bound)
 	dA[bound] = ones(nbd, 1)
 	Ax[:, bound] = nullcol
 	Ax[bound, :] = nullrow
-	Ax += spdiagm(vec(dA), 0, nvtx, nvtx)
-	
+	Ax += spdiagm(0 => vec(dA))
+
 end

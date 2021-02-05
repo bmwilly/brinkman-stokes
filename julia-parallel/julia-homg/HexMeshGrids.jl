@@ -24,32 +24,32 @@ function create_hexmesh_grids(dim, mu, xform, orders, nelems)
 # @author: Hari Sundar - hari@ices.utexas.edu
 # @date  : 28-Aug-2012, 31-Apr-2013
 
-num_hgrids = length(nelems);
-num_pgrids = length(orders);
-local grid
+    num_hgrids = length(nelems);
+    num_pgrids = length(orders);
+    local grid
 
-num_grids = num_hgrids + num_pgrids - 1;
+    num_grids = num_hgrids + num_pgrids - 1;
 
-m = Mesh.Hexmesh(tuple(repmat([nelems[1]], 1, dim)...), xform);
-coarse = Grids.Grid(m, orders[1]);
+    m = Mesh.Hexmesh(tuple(repeat([nelems[1]], 1, dim)...), xform);
+    coarse = Grids.Grid(m, orders[1]);
 
 # create h-grids
-for i=2:num_hgrids
-  m = Mesh.Hexmesh(tuple(repmat([nelems[i]], 1, dim)...), xform);
-  grid = Grids.Grid(m, orders[1], coarse);
-  coarse = grid;
-end
+    for i = 2:num_hgrids
+        m = Mesh.Hexmesh(tuple(repeat([nelems[i]], 1, dim)...), xform);
+        grid = Grids.Grid(m, orders[1], coarse);
+        coarse = grid;
+    end
 
-hfine = nelems[num_hgrids];
+    hfine = nelems[num_hgrids];
 
 # create p-grids
-for i=2:num_pgrids
-  m = Mesh.Hexmesh(tuple(repmat([hfine], 1, dim)...), xform);
-  grid = Grids.Grid(m, orders[i], coarse);
-  coarse = grid;
-end
+    for i = 2:num_pgrids
+        m = Mesh.Hexmesh(tuple(repeat([hfine], 1, dim)...), xform);
+        grid = Grids.Grid(m, orders[i], coarse);
+        coarse = grid;
+    end
 # Now assemble matrices ...
-Grids.assemble_poisson(grid, mu);
+    Grids.assemble_poisson(grid, mu);
 
 ## test for exact galerkin operator ...
 # coarse = grid;
@@ -59,6 +59,6 @@ Grids.assemble_poisson(grid, mu);
 # 	coarse = coarse.Coarse;
 # end
 
-return grid
+    return grid
 end
 end

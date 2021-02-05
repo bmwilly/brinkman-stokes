@@ -23,12 +23,12 @@ println("Grid generation for cavity domain.")
 p = int(input("Polynomial order: "))
 msize = int(input("Mesh size: "))
 n = 2^msize
-np = int(n/2)
+np = int(n / 2)
 nel = grid_element_num(np, np)
 
 # y-direction
 # yy = [(p-1)/(p*np):(p-1)/(p*np):1]
-yy = [2/(p*np):2/(p*np):1]
+yy = [2 / (p * np):2 / (p * np):1]
 ypos = [0, yy]
 yneg = -yy[length(yy):-1:1]
 y = [yneg, ypos]'
@@ -36,7 +36,7 @@ x = y
 
 # compute bicubic element coordinates
 nvtx = grid_node_num(np, np, p)
-(X,Y) = meshgrid(x,y)
+(X, Y) = meshgrid(x, y)
 xx = reshape(X', nvtx, 1)
 yy = reshape(Y', nvtx, 1)
 xy = [xx[:] yy[:]]
@@ -45,10 +45,10 @@ mv = qgrid(np, np, p)
 
 # compute boundary vertices and edges
 # four boundary edges
-k1 = find(xy[:,2] .== -1)
-k2 = find((xy[:,1] .== 1) & (xy[:,2] .< 1) & (xy[:,2] .> -1))
-k3 = find(xy[:,2] .== 1)
-k4 = find((xy[:,1] .== -1) & (xy[:,2] .< 1) & (xy[:,2] .> -1))
+k1 = findall(xy[:,2] .== -1)
+k2 = findall((xy[:,1] .== 1) & (xy[:,2] .< 1) & (xy[:,2] .> -1))
+k3 = findall(xy[:,2] .== 1)
+k4 = findall((xy[:,1] .== -1) & (xy[:,2] .< 1) & (xy[:,2] .> -1))
 bound = sort([k1; k2; k3; k4])
 
 ##############################
@@ -60,7 +60,7 @@ bound = sort([k1; k2; k3; k4])
 ########################################
 # stokes_mats = stokes_q2p1(stokes_grid)
 ########################################
-nngpt = (p+1) * (p+1)
+nngpt = (p + 1) * (p + 1)
 x = xy[:, 1]
 y = xy[:, 2]
 nvtx = length(x)
@@ -73,16 +73,16 @@ f = zeros(nu, 1)
 
 ## Gauss point integration rules
 # (p+1)x(p+1) Gauss points
-quadrule_1D = gauleg(-1, 1, p+1)
+quadrule_1D = gauleg(-1, 1, p + 1)
 quadrule_2D = tprod(quadrule_1D)
 s = quadrule_2D["x"][:,1]
 t = quadrule_2D["x"][:,2]
 wt = quadrule_2D["w"]
 
 # inner loop over elements
-xlv = zeros(nel, p*p)
-ylv = zeros(nel, p*p)
-for ivtx = 1:(p*p)
+xlv = zeros(nel, p * p)
+ylv = zeros(nel, p * p)
+for ivtx = 1:(p * p)
     xlv[:, ivtx] = x[mv[:, ivtx]]
     ylv[:, ivtx] = y[mv[:, ivtx]]
 end
@@ -115,22 +115,22 @@ end # end of Gauss point loop
 ## element assembly into global matrices
 # component velocity matrices
 @time (for krow = 1:nngpt
-  nrow = mv[:, krow]
-  for kcol = 1:nngpt
-    ncol = mv[:, kcol]
-    A += sparse(nrow, ncol, ae[:, krow, kcol], nu, nu)
-    A += sparse(nrow + nvtx, ncol + nvtx, ae[:, krow, kcol], nu, nu)
-  end
+    nrow = mv[:, krow]
+    for kcol = 1:nngpt
+        ncol = mv[:, kcol]
+        A += sparse(nrow, ncol, ae[:, krow, kcol], nu, nu)
+        A += sparse(nrow .+ nvtx, ncol .+ nvtx, ae[:, krow, kcol], nu, nu)
+    end
   # f[nrow, 1] += fe[:, krow]
 end)
 
 # Agal,fgal = nonzerobc(A, f, xy, bound)
-Ast,fst = hosbc(A, f, xy, bound)
+Ast, fst = hosbc(A, f, xy, bound)
 
 a_density = nnz(Ast) / (size(Ast, 1) * size(Ast, 2))
 println("A density: $(a_density)")
 
-@time for cnt = 1:100; u = rand(size(Ast,1), 1); w = Ast*u; end
+@time for cnt = 1:100; u = rand(size(Ast, 1), 1); w = Ast * u; end
 
 # Ax = A[1:nvtx, 1:nvtx]; Ay = A[nvtx + 1:nu, nvtx + 1:nu]
 # u = rand(size(Ast, 1), 1)

@@ -15,19 +15,19 @@ println("Grid generation for cavity domain.")
 msize = 2
 msize = int(input("Mesh size: "))
 n = 2^msize
-np = int(n/2)
+np = int(n / 2)
 nel = int(np^2)
 
 # y-direction
-yy = [1/np:1/np:1]
+yy = [1 / np:1 / np:1]
 ypos = [0, yy]
 yneg = -yy[length(yy):-1:1]
 y = [yneg, ypos]'
 x = y
 
 # compute biquadratic element coordinates
-nvtx = (n+1) * (n+1)
-(X,Y) = meshgrid(x,y)
+nvtx = (n + 1) * (n + 1)
+(X, Y) = meshgrid(x, y)
 xx = reshape(X', nvtx, 1)
 yy = reshape(Y', nvtx, 1)
 xy = [xx[:] yy[:]]
@@ -38,7 +38,7 @@ mel = 0
 mv = zeros(Int64, nel, 9)
 for j = 1:np
     for i = 1:np
-        mref = (n+1)*(ky-1) + kx
+        mref = (n + 1) * (ky - 1) + kx
         println(mref)
         mel += 1
         nvv = zeros(9)
@@ -60,7 +60,7 @@ end
 
 # compute boundary vertices and edges
 # four boundary edges
-k1 = find(xy[:,2] .== -1)
+k1 = findall(xy[:,2] .== -1)
 e1 = Int[]
 for k = 1:mel
     if any(mv[k,5] .== k1)
@@ -69,32 +69,32 @@ for k = 1:mel
 end
 ef1 = ones(size(e1))
 
-k2 = find((xy[:,1] .== 1) & (xy[:,2] .< 1) & (xy[:,2] .> -1))
+k2 = findall((xy[:,1] .== 1) & (xy[:,2] .< 1) & (xy[:,2] .> -1))
 e2 = Int[]
 for k = 1:mel
     if any(mv[k,6] .== k2)
         push!(e2, k)
     end
 end
-ef2 = 2*ones(size(e2))
+ef2 = 2 * ones(size(e2))
 
-k3 = find(xy[:,2] .== 1)
+k3 = findall(xy[:,2] .== 1)
 e3 = Int[]
 for k = 1:mel
     if any(mv[k,7] .== k3)
         push!(e3, k)
     end
 end
-ef3 = 3*ones(size(e3))
+ef3 = 3 * ones(size(e3))
 
-k4 = find((xy[:,1] .== -1) & (xy[:,2] .< 1) & (xy[:,2] .> -1))
+k4 = findall((xy[:,1] .== -1) & (xy[:,2] .< 1) & (xy[:,2] .> -1))
 e4 = Int[]
 for k = 1:mel
     if any(mv[k,8] .== k4)
         push!(e4, k)
     end
 end
-ef4 = 4*ones(size(e4))
+ef4 = 4 * ones(size(e4))
 
 bound = sort([k1; k2; k3; k4])
 mbound = [e1' ef1'; e2' ef2'; e3' ef3'; e4' ef4']
@@ -127,9 +127,9 @@ ny = length(y)
 
 for k = 2:2:ny
     yold = y[k]
-    ynew = 0.5*(y[k + 1] + y[k - 1])
-    l = find(yy == yold)
-    yv[l] = ynew
+    ynew = 0.5 * (y[k + 1] + y[k - 1])
+    l = findall(yy == yold)
+    yv[l] .= ynew
     y[k] = ynew
 end
 
@@ -139,9 +139,9 @@ nx = length(x)
 
 for k = 2:2:nx
     xold = x[k]
-    xnew = 0.5*(x[k + 1] + x[k - 1])
-    l = find(xx == xold)
-    xv[l] = xnew
+    xnew = 0.5 * (x[k + 1] + x[k - 1])
+    l = findall(xx == xold)
+    xv[l] .= xnew
     x[k] = xnew
 end
 
@@ -197,15 +197,15 @@ s = zeros(nngpt, 1)
 t = zeros(nngpt, 1)
 wt = zeros(nngpt, 1)
 gpt = sqrt(0.6);
-s[1] = -gpt; t[1] = -gpt; wt[1]=25/81;
-s[2] =  gpt; t[2] = -gpt; wt[2]=25/81;
-s[3] =  gpt; t[3] =  gpt; wt[3]=25/81;
-s[4] = -gpt; t[4] =  gpt; wt[4]=25/81;
-s[5] =  0.0; t[5] = -gpt; wt[5]=40/81;
-s[6] =  gpt; t[6] =  0.0; wt[6]=40/81;
-s[7] =  0.0; t[7] =  gpt; wt[7]=40/81;
-s[8] = -gpt; t[8] =  0.0; wt[8]=40/81;
-s[9] =  0.0; t[9] =  0.0; wt[9]=64/81;
+s[1] = -gpt; t[1] = -gpt; wt[1] = 25 / 81;
+s[2] =  gpt; t[2] = -gpt; wt[2] = 25 / 81;
+s[3] =  gpt; t[3] =  gpt; wt[3] = 25 / 81;
+s[4] = -gpt; t[4] =  gpt; wt[4] = 25 / 81;
+s[5] =  0.0; t[5] = -gpt; wt[5] = 40 / 81;
+s[6] =  gpt; t[6] =  0.0; wt[6] = 40 / 81;
+s[7] =  0.0; t[7] =  gpt; wt[7] = 40 / 81;
+s[8] = -gpt; t[8] =  0.0; wt[8] = 40 / 81;
+s[9] =  0.0; t[9] =  0.0; wt[9] = 64 / 81;
 
 # inner loop over elements
 xlv = zeros(nel, 4)
@@ -239,12 +239,12 @@ end # end of Gauss point loop
 ## element assembly into global matrices
 # component velocity matrices
 for krow = 1:9
-  nrow = mv[:, krow]
-  for kcol = 1:9
-    ncol = mv[:, kcol]
-    A += sparse(nrow, ncol, ae[:, krow, kcol], nu, nu)
-    A += sparse(nrow + nvtx, ncol + nvtx, ae[:, krow, kcol], nu, nu)
-  end
+    nrow = mv[:, krow]
+    for kcol = 1:9
+        ncol = mv[:, kcol]
+        A += sparse(nrow, ncol, ae[:, krow, kcol], nu, nu)
+        A += sparse(nrow .+ nvtx, ncol .+ nvtx, ae[:, krow, kcol], nu, nu)
+    end
 end
 
 mats = {
@@ -254,4 +254,4 @@ mats = {
 mats = merge(mats, grid)
 
 u = linspace(1, nu, nu)
-A*u
+A * u

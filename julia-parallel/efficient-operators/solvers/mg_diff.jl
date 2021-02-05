@@ -13,7 +13,7 @@ function mg_diff(x, y, Agal)
 	println("Setting up MG data...")
 
 	# top level
-	mgdata = Array(Dict, Int(nc))
+	mgdata = Array{Dict,Int(nc)}
 	mgdata[nc] = Dict(
 		"matrix" => Agal,
 		"prolong" => mg_prolong(2^nc, 2^nc, x, y)
@@ -21,7 +21,7 @@ function mg_diff(x, y, Agal)
 
 	xn = x; yn = y
 	# loop over remaining levels
-	for level = (nc-1):-1:2
+	for level = (nc - 1):-1:2
 		xn = xn[1:2:end]; yn = yn[1:2:end]
 		mgdata[level] = Dict(
 			"matrix" => mg_diff_setup(xn, yn),

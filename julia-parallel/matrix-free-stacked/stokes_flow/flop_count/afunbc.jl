@@ -1,12 +1,12 @@
 ###AFUNBC
-#input
+# input
     # u           vector to multiply
     # xy          Q2 nodal coordinate vector
     # xyp         Q1 nodal coordinate vector
     # mv          Q2 element mapping matrix
     # bound       indices of boundary points
     # ae          local Q2 diffusion derivative matrix
-#output
+# output
     # w           A * u
 function afunbc(u, kparams)
 
@@ -29,50 +29,50 @@ function afunbc(u, kparams)
       # @parallel for e = 1:nel
       # for e = 1:nel/nworkers()
     for e = 1:nel
-      ind = mv[e, :]'
-      indbd = findin(ind, bound)
-      indint = setdiff(int(linspace(1, 9, 9)), indbd)
-      indb = ind[indbd]
+        ind = mv[e, :]'
+        indbd = findin(ind, bound)
+        indint = setdiff(int(linspace(1, 9, 9)), indbd)
+        indb = ind[indbd]
 
-      ux = u[ind]
-      ux[indbd] = zeros(1, length(indbd))
+        ux = u[ind]
+        ux[indbd] = zeros(1, length(indbd))
 
-      uy = u[ind + nvtx]
-      uy[indbd] = zeros(1, length(indbd))
+        uy = u[ind + nvtx]
+        uy[indbd] = zeros(1, length(indbd))
 
-      wex = aes * ux
-      wey = aes * uy
+        wex = aes * ux
+        wey = aes * uy
 
-      m,n = size(aes); nflops += m*(2n-1)
-      m,n = size(aes); nflops += m*(2n-1)
+        m, n = size(aes); nflops += m * (2n - 1)
+        m, n = size(aes); nflops += m * (2n - 1)
 
       # impose boundary conditions
-      wex[indbd] = u[indb]
-      wey[indbd] = u[indb + nvtx]
+        wex[indbd] = u[indb]
+        wey[indbd] = u[indb + nvtx]
 
       # add interior points
-      w[ind[indint]] += wex[indint]
-      w[ind[indint] + nvtx] += wey[indint]
+        w[ind[indint]] += wex[indint]
+        w[ind[indint] + nvtx] += wey[indint]
 
-      nflops += length(wex[indint])
-      nflops += length(wey[indint])
+        nflops += length(wex[indint])
+        nflops += length(wey[indint])
 
       # add boundary points only when entry == 0
-      wbx = w[indb]
-      wby = w[indb + nvtx]
-      ind0x = find(wbx .== 0)
-      ind0y = find(wby .== 0)
-      webx = wex[indbd]
-      weby = wey[indbd]
-      w[indb[ind0x]] += webx[ind0x]
-      w[indb[ind0y] + nvtx] += weby[ind0y]
+        wbx = w[indb]
+        wby = w[indb + nvtx]
+        ind0x = findall(wbx .== 0)
+        ind0y = findall(wby .== 0)
+        webx = wex[indbd]
+        weby = wey[indbd]
+        w[indb[ind0x]] += webx[ind0x]
+        w[indb[ind0y] + nvtx] += weby[ind0y]
 
-      nflops += length(webx[ind0x])
-      nflops += length(weby[ind0y])
+        nflops += length(webx[ind0x])
+        nflops += length(weby[ind0y])
     end
 
 
     # end # parallel
 
-    vec(w),nflops
+    vec(w), nflops
 end

@@ -9,7 +9,7 @@
 # 	Qs 				dict containing smoothing operator in factored form
 function mg_smooth(As, level, sweeps, smooth, stype)
 
-	Qs = Array(Dict, Int(level))
+	Qs = Array{Dict,Int(level)}
 
 	for i = level:-1:2
 		A = As[i]["matrix"]
@@ -25,9 +25,9 @@ function mg_smooth(As, level, sweeps, smooth, stype)
 				Q2 = diagm(diag(A, 0)) +
 					diagm(diag(A, -n), -n) +
 					diagm(diag(A, n), n) +
-					diagm(diag(A, -n-1), -n-1) +
+					diagm(diag(A, -n - 1), -n - 1) +
 					diagm(diag(A, -1), -1) +
-					diagm(diag(A, n-1), n-1)
+					diagm(diag(A, n - 1), n - 1)
 
 				(L2, U2) = lu(Q2)
 
@@ -39,9 +39,9 @@ function mg_smooth(As, level, sweeps, smooth, stype)
 						Q4 = diagm(diag(A, 0)) +
 							diagm(diag(A, -n), -n) +
 							diagm(diag(A, n), n) +
-							diagm(diag(A, n+1), n+1) +
+							diagm(diag(A, n + 1), n + 1) +
 							diagm(diag(A, 1), 1) +
-							diagm(diag(A, -n+1), -n+1)
+							diagm(diag(A, -n + 1), -n + 1)
 
 						(L4, U4) = lu(Q4)
 
@@ -53,7 +53,7 @@ function mg_smooth(As, level, sweeps, smooth, stype)
 					L3 = spzeros(N, N)
 					U3 = L3; L4 = L3; U4 = L3
 				end
-			else
+    			else
 				L2 = sparse(N, N)
 				U2 = L2; L3 = L2; U3 = L2; L4 = L2; U4 = L2
 			end
@@ -61,9 +61,9 @@ function mg_smooth(As, level, sweeps, smooth, stype)
 		# point smoothers
 		else
 
-			#ILU
+			# ILU
 			if smooth == 3
-				#TODO
+				# TODO
 
 			# point Gauss-Seidel
 			elseif smooth == 2
@@ -74,9 +74,9 @@ function mg_smooth(As, level, sweeps, smooth, stype)
 				U2 = L2; L3 = L2; U3 = L2; L4 = L2; U4 = L2;
 
 			# point damped Jacobi
-			else
-				omega = 8/9 # relaxation factor
-				Q1 = (1/omega) * spdiagm(diag(A), 0, N, N)
+    			else
+				omega = 8 / 9 # relaxation factor
+				Q1 = (1 / omega) * spdiagm(0 => diag(A))
 				(L1, U1) = lu(full(Q1))
 				L1 = sparse(L1); U1 = sparse(U1)
 				l1, l2 = size(L1)

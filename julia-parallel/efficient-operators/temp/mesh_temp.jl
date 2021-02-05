@@ -14,5 +14,5 @@ msize = int(input("Mesh size: "))
 # msize = 2
 nelems = [2^msize]
 
-m = Mesh.Hexmesh(tuple(repmat(nelems, 1, dim)...), Xform.identity)
+m = Mesh.Hexmesh(tuple(repeat(nelems, 1, dim)...), Xform.identity)
 Mesh.plot(m)

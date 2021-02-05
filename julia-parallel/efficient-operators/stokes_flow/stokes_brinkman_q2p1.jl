@@ -3,11 +3,11 @@ include("../diffusion/qderiv.jl")
 include("../diffusion/lderiv.jl")
 
 ###STOKES_Q2P1 Q2-P1 matrix generator
-#input
+# input
 #    xy          Q2 nodal coordinate vector
 #    xyp         Q1 nodal coordinate vector
 #    mv          Q2 element mapping matrix
-#output
+# output
 #    A           Q2 vector diffusion matrix
 #    B           Q2-Q1 divergence matrix
 #    Bx          Q2 x-derivative matrix
@@ -49,15 +49,15 @@ function stokes_brinkman_q2p1(grid, K)
     t = zeros(nngpt, 1)
     wt = zeros(nngpt, 1)
     gpt = sqrt(0.6);
-    s[1] = -gpt; t[1] = -gpt; wt[1]=25/81;
-    s[2] =  gpt; t[2] = -gpt; wt[2]=25/81;
-    s[3] =  gpt; t[3] =  gpt; wt[3]=25/81;
-    s[4] = -gpt; t[4] =  gpt; wt[4]=25/81;
-    s[5] =  0.0; t[5] = -gpt; wt[5]=40/81;
-    s[6] =  gpt; t[6] =  0.0; wt[6]=40/81;
-    s[7] =  0.0; t[7] =  gpt; wt[7]=40/81;
-    s[8] = -gpt; t[8] =  0.0; wt[8]=40/81;
-    s[9] =  0.0; t[9] =  0.0; wt[9]=64/81;
+    s[1] = -gpt; t[1] = -gpt; wt[1] = 25 / 81;
+    s[2] =  gpt; t[2] = -gpt; wt[2] = 25 / 81;
+    s[3] =  gpt; t[3] =  gpt; wt[3] = 25 / 81;
+    s[4] = -gpt; t[4] =  gpt; wt[4] = 25 / 81;
+    s[5] =  0.0; t[5] = -gpt; wt[5] = 40 / 81;
+    s[6] =  gpt; t[6] =  0.0; wt[6] = 40 / 81;
+    s[7] =  0.0; t[7] =  gpt; wt[7] = 40 / 81;
+    s[8] = -gpt; t[8] =  0.0; wt[8] = 40 / 81;
+    s[9] =  0.0; t[9] =  0.0; wt[9] = 64 / 81;
 
     # inner loop over elements
     xlv = zeros(nel, 4)
@@ -105,30 +105,30 @@ function stokes_brinkman_q2p1(grid, K)
         end
 
         for j = 1:3
-          for i = 1:3
-            qe[:, i, j] += wght * chi[:, i] .* chi[:, j] .* jac[:]
-          end
+            for i = 1:3
+                qe[:, i, j] += wght * chi[:, i] .* chi[:, j] .* jac[:]
+            end
         end
     end # end of Gauss point loop
 
     ## element assembly into global matrices
     # component velocity matrices
     for krow = 1:9
-      nrow = mv[:, krow]
-      for kcol = 1:9
-        ncol = mv[:, kcol]
-        A += sparse(nrow, ncol, ae[:, krow, kcol], nu, nu)
-        A += sparse(nrow + nvtx, ncol + nvtx, ae[:, krow, kcol], nu, nu)
-        G += sparse(nrow, ncol, ge[:, krow, kcol], nu, nu)
-        G += sparse(nrow + nvtx, ncol + nvtx, ge[:, krow, kcol], nu, nu)
-        BBx += sparse(nrow, ncol, bbxe[:, krow, kcol], nvtx, nvtx)
-        BBy += sparse(nrow, ncol, bbye[:, krow, kcol], nvtx, nvtx)
-      end
-      for kcol = 1:3
-        ncol = mp[:, kcol]
-        Bx += sparse(ncol, nrow, bxe[:, kcol, krow], np, nvtx)
-        By += sparse(ncol, nrow, bye[:, kcol, krow], np, nvtx)
-      end
+        nrow = mv[:, krow]
+        for kcol = 1:9
+            ncol = mv[:, kcol]
+            A += sparse(nrow, ncol, ae[:, krow, kcol], nu, nu)
+            A += sparse(nrow .+ nvtx, ncol .+ nvtx, ae[:, krow, kcol], nu, nu)
+            G += sparse(nrow, ncol, ge[:, krow, kcol], nu, nu)
+            G += sparse(nrow .+ nvtx, ncol .+ nvtx, ge[:, krow, kcol], nu, nu)
+            BBx += sparse(nrow, ncol, bbxe[:, krow, kcol], nvtx, nvtx)
+            BBy += sparse(nrow, ncol, bbye[:, krow, kcol], nvtx, nvtx)
+        end
+        for kcol = 1:3
+            ncol = mp[:, kcol]
+            Bx += sparse(ncol, nrow, bxe[:, kcol, krow], np, nvtx)
+            By += sparse(ncol, nrow, bye[:, kcol, krow], np, nvtx)
+        end
     end
 
     # vector velocity matrices

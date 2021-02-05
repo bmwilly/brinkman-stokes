@@ -1,6 +1,6 @@
 using Basis: polynomial, gradient, gauss, gll
 export Refel
-type Refel
+struct Refel
 	dim
 	N # polynomial order
 	Nrp # number of 1D interpolation points
@@ -38,33 +38,33 @@ type Refel
 		elem.N = order
 		elem.Nrp = order + 1
 		(elem.r, elem.wgll) = Basis.gll(0, 0, elem.N)
-		r_hby2 = [0.5*(elem.r - 1);	0.5*(elem.r[2:end] + 1)]
-		r_2p = Basis.gll(0, 0, 2*elem.N)
+		r_hby2 = [0.5 * (elem.r - 1);	0.5 * (elem.r[2:end] + 1)]
+		r_2p = Basis.gll(0, 0, 2 * elem.N)
 		(elem.g, elem.w) = Basis.gauss(0, 0, elem.N)
-		elem.Vr = zeros(order+1, order+1)
-		elem.gradVr = zeros(order+1, order+1)
-		elem.Vg = zeros(order+1, order+1)
-		elem.gradVg = zeros(order+1, order+1)
-		Vph = zeros(order+1, 2*order+1)
-		Vpp = zeros(order+1, 2*order+1);
-		for i=1:elem.Nrp
-			elem.Vr[i,:] = Basis.polynomial(elem.r, 0, 0, i-1);
-			elem.gradVr[i,:] = Basis.gradient(elem.r, 0, 0, i-1);
-			elem.Vg[i,:] = Basis.polynomial(elem.g, 0, 0, i-1);
-			elem.gradVg[i,:] = Basis.gradient(elem.g, 0, 0, i-1);
-			Vph[i,:] = Basis.polynomial(r_hby2, 0, 0, i-1);
-			Vpp[i,:] = Basis.polynomial(r_2p[1], 0, 0, i-1);
+		elem.Vr = zeros(order + 1, order + 1)
+		elem.gradVr = zeros(order + 1, order + 1)
+		elem.Vg = zeros(order + 1, order + 1)
+		elem.gradVg = zeros(order + 1, order + 1)
+		Vph = zeros(order + 1, 2 * order + 1)
+		Vpp = zeros(order + 1, 2 * order + 1);
+		for i = 1:elem.Nrp
+			elem.Vr[i,:] = Basis.polynomial(elem.r, 0, 0, i - 1);
+			elem.gradVr[i,:] = Basis.gradient(elem.r, 0, 0, i - 1);
+			elem.Vg[i,:] = Basis.polynomial(elem.g, 0, 0, i - 1);
+			elem.gradVg[i,:] = Basis.gradient(elem.g, 0, 0, i - 1);
+			Vph[i,:] = Basis.polynomial(r_hby2, 0, 0, i - 1);
+			Vpp[i,:] = Basis.polynomial(r_2p[1], 0, 0, i - 1);
 		end
 		elem.Dr = transpose(elem.Vr \ elem.gradVr);
 		elem.Dg = transpose(elem.Vr \ elem.gradVg);
-		iVr = elem.Vr \ eye(order+1);
-		iVg = elem.Vg \ eye(order+1);
+		iVr = elem.Vr \ eye(order + 1);
+		iVg = elem.Vg \ eye(order + 1);
 		q1d = transpose(elem.Vr \ elem.Vg);
 		p_h_1d = transpose(elem.Vr \ Vph);
 		p_p_1d = transpose(elem.Vr \ Vpp);
 		elem.W = zeros(elem.Nrp^elem.dim, 1);
 		elem.Wgll = zeros(elem.Nrp^elem.dim, 1);
-		elem.Wfgll = zeros(elem.Nrp^(elem.dim-1), 1);
+		elem.Wfgll = zeros(elem.Nrp^(elem.dim - 1), 1);
 
 		if (d == 2)
 			elem.Q = kron(q1d, q1d) ;
@@ -73,8 +73,8 @@ type Refel
 			elem.Qx = kron(q1d, elem.Dg);
 			elem.Qy = kron(elem.Dg, q1d);
 			sk = 1;
-			for i=1:elem.Nrp
-				for j=1:elem.Nrp
+			for i = 1:elem.Nrp
+				for j = 1:elem.Nrp
 					elem.W[sk] = elem.w[i] * elem.w[j];
 					elem.Wgll[sk] = elem.wgll[i] * elem.wgll[j];
 					sk = sk + 1;
@@ -90,12 +90,12 @@ type Refel
 			elem.Qz = kron(kron(elem.Dg, q1d), q1d);
 			sk = 1;
 			sf = 1;
-			for i=1:elem.Nrp
-				for j=1:elem.Nrp
-					for k=1:elem.Nrp
+			for i = 1:elem.Nrp
+				for j = 1:elem.Nrp
+					for k = 1:elem.Nrp
 						elem.W[sk] = elem.w[i] * elem.w[j] * elem.w[k];
 						elem.Wgll[sk] = elem.wgll[i] * elem.wgll[j] * elem.wgll[k];
-						sk = sk + 1;
+		sk = sk + 1;
 					end
 					elem.Wfgll[sf] = elem.wgll[i] * elem.wgll[j];
 					sf = sf + 1;
@@ -104,9 +104,9 @@ type Refel
 		end
 
 		elem.Mr = iVr * iVr';
-		elem.invMr = elem.Mr \ eye(order+1);
+		elem.invMr = elem.Mr \ eye(order + 1);
 		elem.Mg = iVg * iVg';
-		elem.invMg = elem.Mg \ eye(order+1);
+		elem.invMg = elem.Mg \ eye(order + 1);
 
 		return elem
 	end

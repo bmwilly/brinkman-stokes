@@ -14,15 +14,15 @@ nelems = [2^msize]
 
 # nelems = [msize]; dim = 2; order = 2;
 
-m = Mesh.Hexmesh(tuple(repmat(nelems, 1, dim)...), Xform.identity)
+m = Mesh.Hexmesh(tuple(repeat(nelems, 1, dim)...), Xform.identity)
 # Mesh.plot(m)
-dof = prod([m.nelems...]*order + 1)
+dof = prod([m.nelems...] * order + 1)
 tic()
-K,M,iK = Mesh.assemble_poisson(m, order)
-k1,k2 = size(K)
-A = [K spzeros(k1,k2); spzeros(k1,k2) K]
+K, M, iK = Mesh.assemble_poisson(m, order)
+k1, k2 = size(K)
+A = [K spzeros(k1, k2); spzeros(k1, k2) K]
 println(toc())
-@time for cnt = 1:100; u = vec(rand(2dof, 1)); w = A*u; end
+@time for cnt = 1:100; u = vec(rand(2dof, 1)); w = A * u; end
 
 # u = linspace(1, 2dof, 2dof)
 # w = A*u
@@ -44,13 +44,13 @@ println(toc())
 # mass_val = zeros(ne * NPNP, 1);
 # stiff_val = zeros(ne * NPNP, 1);
 # inv_stiff_val = zeros(ne * NPNP, 1);
-# ind_inner1D = repmat((2:order), 1, order-1);
+# ind_inner1D = repeat((2:order), 1, order-1);
 # if self.dim == 2
 #
 #   ind_inner = ind_inner1D + (order+1) * (ind_inner1D'-1);
 # else
 #   ind_inner = ind_inner1D + (order+1) * (ind_inner1D'-1);
-#   ind_inner = repmat(ind_inner, [1,1,order-1]);
+#   ind_inner = repeat(ind_inner, [1,1,order-1]);
 #   for i = 1:order-1
 #     ind_inner[:,:,i] = ind_inner[:,:,i] + i * (order+1)^2;
 #   end
@@ -59,8 +59,8 @@ println(toc())
 # # loop over elements
 # for e=1:ne
 #   idx =  Mesh.get_node_indices(self, e, order);
-#   ind1 = repmat(idx,NP,1);
-#   ind2 = reshape(repmat(idx',NP,1),NPNP,1);
+#   ind1 = repeat(idx,NP,1);
+#   ind2 = reshape(repeat(idx',NP,1),NPNP,1);
 #   st = (e-1)*NPNP+1;
 #   en = e*NPNP;
 #

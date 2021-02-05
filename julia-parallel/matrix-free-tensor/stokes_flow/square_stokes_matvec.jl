@@ -9,19 +9,19 @@ function square_stokes_matvec(msize)
     ## define geometry
     println("Grid generation for cavity domain.")
     n = 2^msize
-    np = int(n/2)
+    np = int(n / 2)
     nel = int(np^2)
 
     # y-direction
-    yy = [1/np:1/np:1]
+    yy = [1 / np:1 / np:1]
     ypos = [0, yy]
     yneg = -yy[length(yy):-1:1]
     y = [yneg, ypos]'
     x = y
 
     # compute biquadratic element coordinates
-    nvtx = (n+1) * (n+1)
-    (X,Y) = meshgrid(x,y)
+    nvtx = (n + 1) * (n + 1)
+    (X, Y) = meshgrid(x, y)
     xx = reshape(X', nvtx, 1)
     yy = reshape(Y', nvtx, 1)
     xy = [xx[:] yy[:]]
@@ -32,7 +32,7 @@ function square_stokes_matvec(msize)
     mv = zeros(Int64, nel, 9)
     for j = 1:np
         for i = 1:np
-            mref = (n+1)*(ky-1) + kx
+            mref = (n + 1) * (ky - 1) + kx
             mel += 1
             nvv = zeros(9)
             nvv[1] = mref
@@ -53,7 +53,7 @@ function square_stokes_matvec(msize)
 
     # compute boundary vertices and edges
     # four boundary edges
-    k1 = find(xy[:,2] .== -1)
+    k1 = findall(xy[:,2] .== -1)
     e1 = []
     for k = 1:mel
         if any(mv[k,5] .== k1)
@@ -62,32 +62,32 @@ function square_stokes_matvec(msize)
     end
     ef1 = ones(size(e1))
 
-    k2 = find((xy[:,1] .== 1) & (xy[:,2] .< 1) & (xy[:,2] .> -1))
+    k2 = findall((xy[:,1] .== 1) & (xy[:,2] .< 1) & (xy[:,2] .> -1))
     e2 = []
     for k = 1:mel
         if any(mv[k,6] .== k2)
             e2 = [e2, k]
         end
     end
-    ef2 = 2*ones(size(e2))
+    ef2 = 2 * ones(size(e2))
 
-    k3 = find(xy[:,2] .== 1)
+    k3 = findall(xy[:,2] .== 1)
     e3 = []
     for k = 1:mel
         if any(mv[k,7] .== k3)
             e3 = [e3, k]
         end
     end
-    ef3 = 3*ones(size(e3))
+    ef3 = 3 * ones(size(e3))
 
-    k4 = find((xy[:,1] .== -1) & (xy[:,2] .< 1) & (xy[:,2] .> -1))
+    k4 = findall((xy[:,1] .== -1) & (xy[:,2] .< 1) & (xy[:,2] .> -1))
     e4 = []
     for k = 1:mel
         if any(mv[k,8] .== k4)
             e4 = [e4, k]
         end
     end
-    ef4 = 4*ones(size(e4))
+    ef4 = 4 * ones(size(e4))
 
     bound = sort([k1; k2; k3; k4])
     mbound = [e1' ef1'; e2' ef2'; e3' ef3'; e4' ef4']
@@ -97,7 +97,7 @@ function square_stokes_matvec(msize)
     bndxy = [-1 -1; 1 -1; 1 1; -1 1]
 
     ## centroid coordinate vector
-    #xyp = q2p1grid(x, y, xy, mv, bound)
+    # xyp = q2p1grid(x, y, xy, mv, bound)
 
     xx = xy[:, 1]
     yy = xy[:, 2]
@@ -111,9 +111,9 @@ function square_stokes_matvec(msize)
 
     for k = 2:2:ny
         yold = y[k]
-        ynew = 0.5*(y[k + 1] + y[k - 1])
-        l = find(yy == yold)
-        yv[l] = ynew
+        ynew = 0.5 * (y[k + 1] + y[k - 1])
+        l = findall(yy == yold)
+        yv[l] .= ynew
         y[k] = ynew
     end
 
@@ -123,9 +123,9 @@ function square_stokes_matvec(msize)
 
     for k = 2:2:nx
         xold = x[k]
-        xnew = 0.5*(x[k + 1] + x[k - 1])
-        l = find(xx == xold)
-        xv[l] = xnew
+        xnew = 0.5 * (x[k + 1] + x[k - 1])
+        l = findall(xx == xold)
+        xv[l] .= xnew
         x[k] = xnew
     end
 
@@ -142,13 +142,13 @@ function square_stokes_matvec(msize)
     xyp = [xc yc]
 
     # plotting of the grid
-    #adj = spzeros(nvtx, nvtx)
-    #for i = 1:nel
+    # adj = spzeros(nvtx, nvtx)
+    # for i = 1:nel
     #    adj[convert(Int, mv[i, 1]), convert(Int, mv[i, 2])] = 1
     #    adj[convert(Int, mv[i, 2]), convert(Int, mv[i, 3])] = 1
     #    adj[convert(Int, mv[i, 3]), convert(Int, mv[i, 4])] = 1
     #    adj[convert(Int, mv[i, 4]), convert(Int, mv[i, 1])] = 1
-    #end
+    # end
 
     # stokes q2-p1 matrix generator
     (ae, bxe, bye, bbxe, bbye) = stokes_q2p1(xy, xyp, mv)

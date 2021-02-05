@@ -21,11 +21,11 @@ println("Grid generation for cavity domain.")
 # msize = 2
 msize = int(input("Mesh size: "))
 n = 2^msize
-np = int(n/2)
+np = int(n / 2)
 nel = q3grid_element_num(np, np)
 
 # y-direction
-yy = [2/(3np):2/(3np):1]
+yy = [2 / (3np):2 / (3np):1]
 ypos = [0, yy]
 yneg = -yy[length(yy):-1:1]
 y = [yneg, ypos]'
@@ -33,7 +33,7 @@ x = y
 
 # compute bicubic element coordinates
 nvtx = q3grid_node_num(np, np)
-(X,Y) = meshgrid(x,y)
+(X, Y) = meshgrid(x, y)
 xx = reshape(X', nvtx, 1)
 yy = reshape(Y', nvtx, 1)
 xy = [xx[:] yy[:]]
@@ -108,18 +108,18 @@ end # end of Gauss point loop
 ## element assembly into global matrices
 # component velocity matrices
 for krow = 1:16
-  nrow = mv[:, krow]
-  for kcol = 1:16
-    ncol = mv[:, kcol]
-    A += sparse(nrow, ncol, ae[:, krow, kcol], nu, nu)
-    A += sparse(nrow + nvtx, ncol + nvtx, ae[:, krow, kcol], nu, nu)
-  end
+    nrow = mv[:, krow]
+    for kcol = 1:16
+        ncol = mv[:, kcol]
+        A += sparse(nrow, ncol, ae[:, krow, kcol], nu, nu)
+        A += sparse(nrow .+ nvtx, ncol .+ nvtx, ae[:, krow, kcol], nu, nu)
+    end
 end
 
 a_density = nnz(A) / (size(A, 1) * size(A, 2))
 println("A density: $(a_density)")
 
-@time for cnt = 1:100; u = rand(size(A,1), 1); w = A*u; end
+@time for cnt = 1:100; u = rand(size(A, 1), 1); w = A * u; end
 
 # nza = float(bool(A))
 # nzb = float(bool(u))

@@ -65,4 +65,4 @@ w = m_st_mg(u, mparams)
 #   u = linspace(1, 62, 62)
 #   w2 = K*u
 #
-# find(abs(w1 - w2) .> 1e-5)
+# findall(abs(w1 - w2) .> 1e-5)

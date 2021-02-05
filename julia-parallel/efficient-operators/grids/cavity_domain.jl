@@ -51,7 +51,7 @@ function cavity_domain(msize)
 
   # compute boundary vertices and edges
   # four boundary edges
-  k1 = find(xy[:,2] .== -1)
+  k1 = findall(xy[:,2] .== -1)
   e1 = Int[]
   for k = 1:mel
       if any(mv[k,5] .== k1)
@@ -60,7 +60,7 @@ function cavity_domain(msize)
   end
   ef1 = ones(size(e1))
 
-  k2 = find((xy[:,1] .== 1) .& (xy[:,2] .< 1) .& (xy[:,2] .> -1))
+  k2 = findall((xy[:,1] .== 1) .& (xy[:,2] .< 1) .& (xy[:,2] .> -1))
   e2 = Int[]
   for k = 1:mel
       if any(mv[k,6] .== k2)
@@ -69,7 +69,7 @@ function cavity_domain(msize)
   end
   ef2 = 2*ones(size(e2))
 
-  k3 = find(xy[:,2] .== 1)
+  k3 = findall(xy[:,2] .== 1)
   e3 = Int[]
   for k = 1:mel
       if any(mv[k,7] .== k3)
@@ -78,7 +78,7 @@ function cavity_domain(msize)
   end
   ef3 = 3*ones(size(e3))
 
-  k4 = find((xy[:,1] .== -1) .& (xy[:,2] .< 1) .& (xy[:,2] .> -1))
+  k4 = findall((xy[:,1] .== -1) .& (xy[:,2] .< 1) .& (xy[:,2] .> -1))
   e4 = Int[]
   for k = 1:mel
       if any(mv[k,8] .== k4)

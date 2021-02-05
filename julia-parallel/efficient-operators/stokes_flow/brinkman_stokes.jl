@@ -6,12 +6,12 @@ include("stokes_brinkman_q2p1.jl")
 include("../grids/q2p1grid.jl")
 include("../grids/channel_domain.jl")
 include("../helpers/helper_functions.jl")
-include("../../julia-homg/Basis.jl")
-include("../../julia-homg/Hexmesh.jl")
-include("../../julia-homg/Xform.jl")
-include("../../julia-homg/Grids.jl")
-include("../../julia-homg/Tensor.jl")
-include("../../julia-homg/Refel.jl")
+# include("../../julia-homg/Basis.jl")
+# include("../../julia-homg/Hexmesh.jl")
+# include("../../julia-homg/Xform.jl")
+# include("../../julia-homg/Grids.jl")
+# include("../../julia-homg/Tensor.jl")
+# include("../../julia-homg/Refel.jl")
 
 ###SQUARE_STOKES set up flow problem in unit square domain
 function brinkman_stokes(msize)
@@ -43,8 +43,8 @@ function brinkman_stokes(msize)
     dim = 2;
     # nelems = [2^(msize-1)]
     nelems = [2^msize]
-    m = Mesh.Hexmesh(tuple(repmat(nelems, 1, dim)...), Xform.identity)
-    dof = prod([m.nelems...]*order + 1)
+    m = Mesh.Hexmesh(tuple(repeat(nelems, 1, dim)...), Xform.identity)
+    dof = prod([m.nelems...] * order + 1)
 
     # brinkman obstacles
     centers = [
@@ -75,10 +75,10 @@ function brinkman_stokes(msize)
     # kp = squeeze(kp, 1)
     # kp = squeeze(kp, 1)
 
-    K,M,kappa = Mesh.assemble_poisson_brinkman(m, order, centers)
-    k1,k2 = size(K)
-    A = [K spzeros(k1,k2); spzeros(k1,k2) K]
-    G = [M spzeros(k1,k2); spzeros(k1,k2) M]
+    K, M, kappa = Mesh.assemble_poisson_brinkman(m, order, centers)
+    k1, k2 = size(K)
+    A = [K spzeros(k1, k2); spzeros(k1, k2) K]
+    G = [M spzeros(k1, k2); spzeros(k1, k2) M]
     stokes_mats["A"] = A
     stokes_mats["G"] = G
 

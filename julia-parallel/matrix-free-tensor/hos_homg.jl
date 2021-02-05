@@ -17,9 +17,9 @@ include("stokes_flow/ho_afun.jl")
 
 function hos_homg(order, msize, dim)
   # dim = 2
-  nelems = [2^msize]
+    nelems = [2^msize]
 
-  # m = Mesh.Hexmesh(tuple(repmat(nelems, 1, dim)...), Xform.identity)
+  # m = Mesh.Hexmesh(tuple(repeat(nelems, 1, dim)...), Xform.identity)
   # dof = prod([m.nelems...]*order + 1)
   # K,M,iK = Mesh.assemble_poisson(m, order)
   # k1,k2 = size(K)
@@ -28,20 +28,20 @@ function hos_homg(order, msize, dim)
   # for cnt = 1:100; u = vec(rand(2dof, 1)); w = A*u; end
   # etoc = toc()
 
-  m = Mesh.Hexmesh(tuple(repmat(nelems, 1, dim)...), Xform.identity)
-  Mesh.set_order(m,order);
-  refel = Refel( m.dim, order );
-  dof = prod([m.nelems...]*order + 1);
-  ne = prod([m.nelems...]);
+    m = Mesh.Hexmesh(tuple(repeat(nelems, 1, dim)...), Xform.identity)
+    Mesh.set_order(m, order);
+    refel = Refel(m.dim, order);
+    dof = prod([m.nelems...] * order + 1);
+    ne = prod([m.nelems...]);
   # storage for indices and values
-  NP = (order+1)^m.dim;
-  NPNP = NP * NP;
-  bdy = Mesh.get_boundary_node_indices(m, order);
-  pts =  Mesh.element_nodes(m, 1, refel);
-  (detJac, Jac) = Mesh.geometric_factors(m, refel, pts);
-  eMat = Mesh.element_stiffness(m, 1, refel, detJac, Jac);
+    NP = (order + 1)^m.dim;
+    NPNP = NP * NP;
+    bdy = Mesh.get_boundary_node_indices(m, order);
+    pts =  Mesh.element_nodes(m, 1, refel);
+    (detJac, Jac) = Mesh.geometric_factors(m, refel, pts);
+    eMat = Mesh.element_stiffness(m, 1, refel, detJac, Jac);
 
-  params = {
+    params = {
     "mesh" => m,
     "order" => order,
     "dof" => dof,
@@ -51,8 +51,8 @@ function hos_homg(order, msize, dim)
     "eMat" => eMat
   }
 
-  A = LinearOperator(2dof, Float64, u -> ho_afun(u, params))
-  tic()
-  for cnt = 1:100; u = rand(2dof); w = A*u; end
-  etoc = toc()
+    A = LinearOperator(2dof, Float64, u -> ho_afun(u, params))
+    tic()
+    for cnt = 1:100; u = rand(2dof); w = A * u; end
+    etoc = toc()
 end

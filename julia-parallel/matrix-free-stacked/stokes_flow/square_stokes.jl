@@ -25,14 +25,14 @@ function square_stokes(msize)
 
     order = 2; dim = 2;
     nelems = [2^(msize)]
-    m = Mesh.Hexmesh(tuple(repmat(nelems, 1, dim)...), Xform.identity)
-    dof = prod([m.nelems...]*order + 1)
-    Mesh.set_order(m,order);
-    refel = Refel( m.dim, order );
-    dof = prod([m.nelems...]*order + 1);
+    m = Mesh.Hexmesh(tuple(repeat(nelems, 1, dim)...), Xform.identity)
+    dof = prod([m.nelems...] * order + 1)
+    Mesh.set_order(m, order);
+    refel = Refel(m.dim, order);
+    dof = prod([m.nelems...] * order + 1);
     ne = prod([m.nelems...]);
     # storage for indices and values
-    NP = (order+1)^m.dim;
+    NP = (order + 1)^m.dim;
     NPNP = NP * NP;
     bdy = Mesh.get_boundary_node_indices(m, order);
 

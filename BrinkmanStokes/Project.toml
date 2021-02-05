@@ -1,0 +1,11 @@
+name = "BrinkmanStokes"
+uuid = "602420ef-525a-4173-a1a5-a096c4d1606e"
+authors = ["Brandon Williams <brandonwilliams9@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+Distances = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
+KrylovMethods = "9a2cd570-f05c-5dc1-9209-93ad6f5727f7"
+LinearOperators = "5c8ed15e-5a4c-59e4-a42b-c7e8811fb125"
+MAT = "23992714-dd62-5051-b70f-ba57cb901cac"
+PyPlot = "d330b81b-6aea-500a-939a-2ce795aea3ee"

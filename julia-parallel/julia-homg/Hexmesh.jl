@@ -9,7 +9,7 @@ import PyPlot
 using Distances
 export set_coeff
 
-type Hexmesh
+struct Hexmesh
 	dim#==2	TODO=#
 	nelems#==[8 8]	TODO=#
 	order
@@ -28,7 +28,8 @@ type Hexmesh
 		return mesh
 	end
 end
-type C
+
+struct C
 	num_nodes;
 	num_elements;
 	num_bdy_nodes
@@ -40,7 +41,8 @@ type C
 		return c;
 	end
 end
-type D
+
+struct D
 	rx;
 	ry;
 	rz;
@@ -398,8 +400,8 @@ end
 			(detJac,D) = geometric_factors(self, refel, pts);
 			idx =  get_node_indices(self, e, order);
 			eM = element_mass(self, e, refel, detJac);
-			ind1 = repmat(idx,NP,1);
-			ind2 = reshape(repmat(idx',NP,1),NPNP,1);
+			ind1 = repeat(idx,NP,1);
+			ind2 = reshape(repeat(idx',NP,1),NPNP,1);
 			st = (e-1)*NPNP+1;
 			en = e*NPNP;
 			I[st:en] = ind1;
@@ -424,8 +426,8 @@ end
 		# loop over elements
 		for e=1:ne
 			idx =  get_node_indices(self, e, order);
-			ind1 = repmat(idx,NP,1);
-			ind2 = reshape(repmat(idx',NP,1),NPNP,1);
+			ind1 = repeat(idx,NP,1);
+			ind2 = reshape(repeat(idx',NP,1),NPNP,1);
 			st = (e-1)*NPNP+1;
 			en = e*NPNP;
 			I[st:en] = ind1;
@@ -452,13 +454,13 @@ end
 		mass_val = zeros(ne * NPNP, 1);
 		stiff_val = zeros(ne * NPNP, 1);
 		# inv_stiff_val = zeros(ne * NPNP, 1);
-		# ind_inner1D = repmat((2:order), 1, order-1);
+		# ind_inner1D = repeat((2:order), 1, order-1);
 		# if self.dim == 2
 		#
 		# 	ind_inner = ind_inner1D + (order+1) * (ind_inner1D'-1);
 		# else
 		# 	ind_inner = ind_inner1D + (order+1) * (ind_inner1D'-1);
-		# 	# ind_inner = repmat(ind_inner, [1,1,order-1]);
+		# 	# ind_inner = repeat(ind_inner, [1,1,order-1]);
 		# 	ind_inner = repeat(ind_inner, outer = [1,1,order-1]);
 		# 	for i = 1:order-1
 		# 		# ind_inner[:,:,i] = ind_inner[:,:,i] + i * (order+1)^2;
@@ -469,8 +471,8 @@ end
 		# loop over elements
 		for e=1:ne
 			idx =  get_node_indices(self, e, order);
-			ind1 = repmat(idx,NP,1);
-			ind2 = reshape(repmat(idx',NP,1),NPNP,1);
+			ind1 = repeat(idx,NP,1);
+			ind2 = reshape(repeat(idx',NP,1),NPNP,1);
 			st = (e-1)*NPNP+1;
 			en = e*NPNP;
 
@@ -541,13 +543,13 @@ end
 		stiff_val = zeros(ne * NPNP, 1);
 		perm_val = zeros(dof, 1);
 		# inv_stiff_val = zeros(ne * NPNP, 1);
-		# ind_inner1D = repmat((2:order), 1, order-1);
+		# ind_inner1D = repeat((2:order), 1, order-1);
 		# if self.dim == 2
 		#
 		# 	ind_inner = ind_inner1D + (order+1) * (ind_inner1D'-1);
 		# else
 		# 	ind_inner = ind_inner1D + (order+1) * (ind_inner1D'-1);
-		# 	# ind_inner = repmat(ind_inner, [1,1,order-1]);
+		# 	# ind_inner = repeat(ind_inner, [1,1,order-1]);
 		# 	ind_inner = repeat(ind_inner, outer = [1,1,order-1]);
 		# 	for i = 1:order-1
 		# 		# ind_inner[:,:,i] = ind_inner[:,:,i] + i * (order+1)^2;
@@ -558,8 +560,8 @@ end
 		# loop over elements
 		for e=1:ne
 			idx =  get_node_indices(self, e, order);
-			ind1 = repmat(idx,NP,1);
-			ind2 = reshape(repmat(idx',NP,1),NPNP,1);
+			ind1 = repeat(idx,NP,1);
+			ind2 = reshape(repeat(idx',NP,1),NPNP,1);
 			st = (e-1)*NPNP+1;
 			en = e*NPNP;
 
@@ -683,8 +685,8 @@ end
 
 		for e=1:ne
 			(idx_c, idx_f) = get_interpolation_indices(self,e);
-			ind1 = repmat(idx_f,NP_c,1);
-			ind2 = reshape(repmat(idx_c',NP_f,1),NPNP,1);
+			ind1 = repeat(idx_f,NP_c,1);
+			ind2 = reshape(repeat(idx_c',NP_f,1),NPNP,1);
 			st = (e-1)*NPNP+1;
 			en = e*NPNP;
 			I[st:en] = ind1;
@@ -830,9 +832,9 @@ end
 		# get euclidean distances between nodal points and centers of brinkman obstacles
 		R = pairwise(Euclidean(), pts', centers')
 		R = minimum(R, 2)
-		# brinkman_pts[find(R .< 0.025)] = 1e6
-		brinkman_pts[find(R .< 0.075)] = 1e6
-		# brinkman_pts[find(R .< 0.2)] = 1e6
+		# brinkman_pts[findall(R .< 0.025)] = 1e6
+		brinkman_pts[findall(R .< 0.075)] = 1e6
+		# brinkman_pts[findall(R .< 0.2)] = 1e6
 		brinkman_pts
 	end
 
@@ -899,7 +901,7 @@ end
 		end
 		D=Mesh.D();
 		if (refel.dim == 1)
-			D.rx = 1./J;
+			D.rx = 1. / J;
 		elseif (refel.dim == 2)
 			D.rx =  ys./J;
 			D.sx = -yr./J;
@@ -945,7 +947,7 @@ end
 	end
 
 	function element_nodes(self, elem, refel)
-		h = 1./[self.nelems...]';
+		h = 1. / [self.nelems...]';
 		if ( self.dim == 2)
 			(i,j) = ind2sub(self.nelems, elem);
 			idx = [i j];
@@ -971,7 +973,7 @@ end
 		# returns location of gauss coordinates of order
 		# for element
 		if (self.order == refel.N)
-			h = 1./[self.nelems...]';
+			h = 1. / [self.nelems...]';
 
 			if ( self.dim == 2)
 				(i,j) = ind2sub(self.nelems, elem);
@@ -1045,8 +1047,8 @@ end
 		for e=1:ne
 			idx = get_linear_node_indices(self, e, order);
 
-			ind1 = repmat(idx,NP,1);
-			ind2 = reshape(repmat(idx',NP,1),NPNP,1);
+			ind1 = repeat(idx,NP,1);
+			ind2 = reshape(repeat(idx',NP,1),NPNP,1);
 			st = (e-1)*NPNP+1;
 			en = e*NPNP;
 			I[st:en] = ind1;
@@ -1136,7 +1138,7 @@ end
 			a[j] = v[div(rem(j-1, snext), s)+1]
 		end
 	end
-	function ndgrid{T}(vs::AbstractVector{T}...)
+	function ndgrid(vs::AbstractVector{T}...) where {T}
 		n = length(vs)
 		sz = map(length, vs)
 		out = ntuple(n, i->Array(T, sz))

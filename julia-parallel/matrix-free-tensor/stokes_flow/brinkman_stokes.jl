@@ -15,13 +15,13 @@ include("../../julia-homg/Refel.jl")
 
 function brinkman_stokes(msize)
 
-  channel_grid = channel_domain(msize) # Q2 grid for channel domain
-  grid = q2p1grid(channel_grid)
-  mv = channel_grid["mv"]
-  stokes_grid = merge(grid, {"mv" => mv})
-  stokes_mats = stokes_q2p1(stokes_grid) # stokes element matrices
+    channel_grid = channel_domain(msize) # Q2 grid for channel domain
+    grid = q2p1grid(channel_grid)
+    mv = channel_grid["mv"]
+    stokes_grid = merge(grid, {"mv" => mv})
+    stokes_mats = stokes_q2p1(stokes_grid) # stokes element matrices
 
-  bounds = {
+    bounds = {
     "bound" => channel_grid["bound"],
     "bndxy" => channel_grid["bndxy"],
     "bnde" => channel_grid["bnde"],
@@ -29,7 +29,7 @@ function brinkman_stokes(msize)
   }
 
   # brinkman obstacles
-  centers = [
+    centers = [
     0.15 0.2
     0.17 0.45
     0.15 0.8
@@ -55,20 +55,20 @@ function brinkman_stokes(msize)
   # ]
   # centers = [0.33 0.5]
 
-  order = 2; dim = 2;
-  nelems = [2^(msize)]
-  m = Mesh.Hexmesh(tuple(repmat(nelems, 1, dim)...), Xform.identity)
-  dof = prod([m.nelems...]*order + 1)
-  Mesh.set_order(m,order);
-  refel = Refel( m.dim, order );
-  dof = prod([m.nelems...]*order + 1);
-  ne = prod([m.nelems...]);
+    order = 2; dim = 2;
+    nelems = [2^(msize)]
+    m = Mesh.Hexmesh(tuple(repeat(nelems, 1, dim)...), Xform.identity)
+    dof = prod([m.nelems...] * order + 1)
+    Mesh.set_order(m, order);
+    refel = Refel(m.dim, order);
+    dof = prod([m.nelems...] * order + 1);
+    ne = prod([m.nelems...]);
   # storage for indices and values
-  NP = (order+1)^m.dim;
-  NPNP = NP * NP;
-  bdy = Mesh.get_boundary_node_indices(m, order);
+    NP = (order + 1)^m.dim;
+    NPNP = NP * NP;
+    bdy = Mesh.get_boundary_node_indices(m, order);
 
-  params = {
+    params = {
     "mesh" => m,
     "order" => order,
     "dof" => dof,
@@ -80,9 +80,9 @@ function brinkman_stokes(msize)
     "mv" => mv
   }
 
-  A = LinearOperator(2dof, Float64, u -> ho_afun(u, params))
-  G = LinearOperator(2dof, Float64, u -> ho_gfun(u, params))
+    A = LinearOperator(2dof, Float64, u -> ho_afun(u, params))
+    G = LinearOperator(2dof, Float64, u -> ho_gfun(u, params))
 
-  mats = merge(stokes_mats, stokes_grid, bounds, params, {"A" => A, "G" => G})
+    mats = merge(stokes_mats, stokes_grid, bounds, params, {"A" => A, "G" => G})
 
 end

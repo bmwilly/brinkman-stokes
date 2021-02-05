@@ -1,12 +1,15 @@
+using Debugger
+break_on(:error)
+
 include("stokes_flow/solve_stokes.jl")
 include("graphs/flowplot.jl")
 include("helpers/helper_functions.jl")
 
-domain = user_input("Choose domain (1/lid-driven cavity, 2/brinkman): ")
-msize = user_input("Mesh size: ")
-# domain = 1;
-# msize = 2;
-sol = solve_stokes(domain, msize)
+# domain = user_input("Choose domain (1/lid-driven cavity, 2/brinkman): ")
+# msize = user_input("Mesh size: ")
+domain = 1;
+msize = 2;
+@enter sol = solve_stokes(domain, msize)
 println("done")
 flowplot(sol, domain)
 

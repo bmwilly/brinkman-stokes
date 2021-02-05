@@ -9,17 +9,17 @@ include("../hos_homg.jl")
 dim = 2; msize = 5; order = 2;
 nelems = [2^msize]
 
-m = Mesh.Hexmesh(tuple(repmat(nelems, 1, dim)...), Xform.identity)
-dof = prod([m.nelems...]*order + 1)
+m = Mesh.Hexmesh(tuple(repeat(nelems, 1, dim)...), Xform.identity)
+dof = prod([m.nelems...] * order + 1)
 
 self = m;
 Mesh.set_order(self,order);
 # assemble the mass matrix
-refel = Refel( self.dim, order );
-dof = prod([self.nelems...]*order + 1);
+refel = Refel(self.dim, order);
+dof = prod([self.nelems...] * order + 1);
 ne = prod([self.nelems...]);
 # storage for indices and values
-NP = (order+1)^self.dim;
+NP = (order + 1)^self.dim;
 NPNP = NP * NP;
 
 I = zeros(ne * NPNP, 1);
@@ -27,26 +27,26 @@ J = zeros(ne * NPNP, 1);
 mass_val = zeros(ne * NPNP, 1);
 stiff_val = zeros(ne * NPNP, 1);
 inv_stiff_val = zeros(ne * NPNP, 1);
-ind_inner1D = repmat((2:order), 1, order-1);
+ind_inner1D = repeat((2:order), 1, order - 1);
 if self.dim == 2
 
-  ind_inner = ind_inner1D + (order+1) * (ind_inner1D'-1);
+    ind_inner = ind_inner1D + (order + 1) * (ind_inner1D' - 1);
 else
-  ind_inner = ind_inner1D + (order+1) * (ind_inner1D'-1);
-  # ind_inner = repmat(ind_inner, [1,1,order-1]);
-  ind_inner = repeat(ind_inner, outer = [1,1,order-1]);
-  for i = 1:order-1
+    ind_inner = ind_inner1D + (order + 1) * (ind_inner1D' - 1);
+  # ind_inner = repeat(ind_inner, [1,1,order-1]);
+    ind_inner = repeat(ind_inner, outer=[1,1,order - 1]);
+    for i = 1:order - 1
     # ind_inner[:,:,i] = ind_inner[:,:,i] + i * (order+1)^2;
-    ind_inner[:,:,i] += i * (order+1)^2;
-  end
+        ind_inner[:,:,i] += i * (order + 1)^2;
+    end
 end
 
 e = 1;
 idx =  Mesh.get_node_indices(self, e, order);
-ind1 = repmat(idx,NP,1);
-ind2 = reshape(repmat(idx',NP,1),NPNP,1);
-st = (e-1)*NPNP+1;
-en = e*NPNP;
+ind1 = repeat(idx, NP, 1);
+ind2 = reshape(repeat(idx', NP, 1), NPNP, 1);
+st = (e - 1) * NPNP + 1;
+en = e * NPNP;
 
 I[st:en] = ind1;
 J[st:en] = ind2;
@@ -67,7 +67,7 @@ eMat = Mesh.element_stiffness(self, e, refel, detJac, Jac);
 stiff_val[st:en] = eMat[:];
 
 eMat_inner_inv = inv(eMat[ind_inner[:],ind_inner[:]]);
-eMat_inv = diagm(diag(eMat,0));
+eMat_inv = diagm(diag(eMat, 0));
 
 eMat_inv[ind_inner[:],ind_inner[:]] =  eMat_inner_inv;
 inv_stiff_val[st:en] = eMat_inv[:];

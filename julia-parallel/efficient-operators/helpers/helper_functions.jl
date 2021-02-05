@@ -1,25 +1,24 @@
 function user_input(prompt::String="")
-  print(prompt)
-  x = readline()
-  f(x) = try
-    parse(Int, x)
-  catch
-    x
-  end
-  f(x)
+    print(prompt)
+    x = readline()
+    f(x) = try
+        parse(Int, x)
+    catch
+        x
+    end
+    f(x)
 end
 
 meshgrid(v::AbstractVector) = meshgrid(v, v)
 
-function meshgrid{T}(vx::AbstractVector{T}, vy::AbstractVector{T})
+function meshgrid(vx::AbstractVector{T}, vy::AbstractVector{T}) where {T}
     m, n = length(vy), length(vx)
     vx = reshape(vx, 1, n)
     vy = reshape(vy, m, 1)
-    (repmat(vx, m, 1), repmat(vy, 1, n))
+    (repeat(vx, m, 1), repeat(vy, 1, n))
 end
 
-function meshgrid{T}(vx::AbstractVector{T}, vy::AbstractVector{T},
-                     vz::AbstractVector{T})
+function meshgrid(vx::AbstractVector{T}, vy::AbstractVector{T}, vz::AbstractVector{T}) where {T}
     m, n, o = length(vy), length(vx), length(vz)
     vx = reshape(vx, 1, n, 1)
     vy = reshape(vy, m, 1, 1)
@@ -34,12 +33,12 @@ function meshgrid(vx, vy)
     m, n = length(vy), length(vx)
     vx = reshape(vx, 1, n)
     vy = reshape(vy, m, 1)
-    (repmat(vx, m, 1), repmat(vy, 1, n))
+    (repeat(vx, m, 1), repeat(vy, 1, n))
 end
 
 function ismember(main_array, sub_array)
-  out=Int8(zeros(length(main_array)))
-  match_index = findin(Int64(main_array),Int64(sub_array))
-  out[match_index]=1
-  out
+    out = Int8(zeros(length(main_array)))
+    match_index = findin(Int64(main_array), Int64(sub_array))
+    out[match_index] = 1
+    out
 end

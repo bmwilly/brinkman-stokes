@@ -14,14 +14,14 @@ centers = [0.33 0.5]
 
 order = 2; dim = 2;
 nelems = [2^(msize)]
-m = Mesh.Hexmesh(tuple(repmat(nelems, 1, dim)...), Xform.identity)
-dof = prod([m.nelems...]*order + 1)
+m = Mesh.Hexmesh(tuple(repeat(nelems, 1, dim)...), Xform.identity)
+dof = prod([m.nelems...] * order + 1)
 Mesh.set_order(m,order);
-refel = Refel( m.dim, order );
-dof = prod([m.nelems...]*order + 1);
+refel = Refel(m.dim, order);
+dof = prod([m.nelems...] * order + 1);
 ne = prod([m.nelems...]);
 # storage for indices and values
-NP = (order+1)^m.dim;
+NP = (order + 1)^m.dim;
 NPNP = NP * NP;
 I = zeros(ne * NPNP, 1);
 J = zeros(ne * NPNP, 1);
@@ -34,29 +34,29 @@ bdy = Mesh.get_boundary_node_indices(m, order);
 w = zeros(length(u))
 
 # zero dirichlet bdy conditions
-u = linspace(1,2dof,2dof);
+u = linspace(1, 2dof, 2dof);
 uu = copy(u)
 u[bdy] = zeros(length(bdy))
-u[bdy+dof] = zeros(length(bdy))
+u[bdy + dof] = zeros(length(bdy))
 Ux = zeros(NP, ne); Uy = zeros(NP, ne)
 
 # loop over elements
 for e = 1:ne
-  idx = Mesh.get_node_indices(mesh, e, order)
-    ind1 = repmat(idx,NP,1)
-    ind2 = reshape(repmat(idx',NP,1),NPNP,1);
-    st = (e-1)*NPNP+1;
-    en = e*NPNP;
+    idx = Mesh.get_node_indices(mesh, e, order)
+    ind1 = repeat(idx, NP, 1)
+    ind2 = reshape(repeat(idx', NP, 1), NPNP, 1);
+    st = (e - 1) * NPNP + 1;
+    en = e * NPNP;
     I[st:en] = ind1;
     J[st:en] = ind2;
-  pts = Mesh.element_nodes(mesh, e, refel)
-  (detJac, Jac) = Mesh.geometric_factors(mesh, refel, pts)
-  brinkman_pts = Mesh.brinkman_tensor(pts, centers);
-  eMat = Mesh.element_stiffness_brinkman(mesh, e, refel, detJac, Jac, brinkman_pts)
-  stiff_val[st:en] = eMat[:]
+    pts = Mesh.element_nodes(mesh, e, refel)
+    (detJac, Jac) = Mesh.geometric_factors(mesh, refel, pts)
+    brinkman_pts = Mesh.brinkman_tensor(pts, centers);
+    eMat = Mesh.element_stiffness_brinkman(mesh, e, refel, detJac, Jac, brinkman_pts)
+    stiff_val[st:en] = eMat[:]
 
   # w[st:en] += eMat * u[st:en]
-  w[idx] += eMat * u[idx]
+    w[idx] += eMat * u[idx]
 
 #   Ux[:, e] = u[idx]
 #   Uy[:, e] = u[idx+dof]
@@ -81,8 +81,8 @@ end
 
 # for e = 1:ne
 #   idx = Mesh.get_node_indices(mesh, e, order)
-#   ind1 = repmat(idx,NP,1)
-#   ind2 = reshape(repmat(idx',NP,1),NPNP,1);
+#   ind1 = repeat(idx,NP,1)
+#   ind2 = reshape(repeat(idx',NP,1),NPNP,1);
 #   st = (e-1)*NPNP+1;
 #   en = e*NPNP;
 #   I[st:en] = ind1;
@@ -93,5 +93,5 @@ end
 # end
 
 w[bdy] = uu[bdy]
-w[bdy+dof] = uu[bdy+dof]
+w[bdy + dof] = uu[bdy + dof]
 vec(w)

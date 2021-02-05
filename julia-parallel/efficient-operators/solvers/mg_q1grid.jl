@@ -53,7 +53,7 @@ function mg_q1grid(x, y, xy, mv, bound, mbound)
 	# define element edges
 	ect = 1
 	# bottom boundary edges
-	k1 = find(mbound[:, 2] .== 1)'
+	k1 = findall(mbound[:, 2] .== 1)'
 	for k = mbound[k1]
 		ebound[ect, 1] = 4k - 3
 		ebound[ect + 1, 1] = 4k - 2
@@ -63,7 +63,7 @@ function mg_q1grid(x, y, xy, mv, bound, mbound)
 	end
 
 	# right boundary edges
-	k2 = find(mbound[:, 2] .== 2)'
+	k2 = findall(mbound[:, 2] .== 2)'
 	for k = mbound[k2]
 		ebound[ect, 1] = 4k - 2
 		ebound[ect + 1, 1] = 4k - 1
@@ -73,7 +73,7 @@ function mg_q1grid(x, y, xy, mv, bound, mbound)
 	end
 
 	# top boundary edges
-	k3 = find(mbound[:, 2] .== 3)'
+	k3 = findall(mbound[:, 2] .== 3)'
 	for k = mbound[k3]
 		ebound[ect, 1] = 4k - 1
 		ebound[ect + 1, 1] = 4k
@@ -83,7 +83,7 @@ function mg_q1grid(x, y, xy, mv, bound, mbound)
 	end
 
 	# left boundary edges
-	k4 = find(mbound[:, 2] .== 4)'
+	k4 = findall(mbound[:, 2] .== 4)'
 	for k = mbound[k4]
 		ebound[ect, 1] = 4k
 		ebound[ect + 1, 1] = 4k - 3

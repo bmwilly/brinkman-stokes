@@ -16,20 +16,20 @@ reload("grids/findobsXY.jl")
 #   bound         boundary vertex vector
 function flowplot2(sol, domain)
 
-  xst = sol["xst"]; By = sol["By"]; Bx = sol["Bx"]; A = sol["A"];
-  xy = sol["xy"]; xyp = sol["xyp"]; x = sol["x"]; y = sol["y"];
-  bound = sol["bound"]; bndxy = sol["bndxy"]; bnde = sol["bnde"];
-  obs = sol["obs"]
+    xst = sol["xst"]; By = sol["By"]; Bx = sol["Bx"]; A = sol["A"];
+    xy = sol["xy"]; xyp = sol["xyp"]; x = sol["x"]; y = sol["y"];
+    bound = sol["bound"]; bndxy = sol["bndxy"]; bnde = sol["bnde"];
+    obs = sol["obs"]
 
-  nvtx = length(xy[:, 1]); nu = 2nvtx;
-  Asv = A[1:nvtx, 1:nvtx]
+    nvtx = length(xy[:, 1]); nu = 2nvtx;
+    Asv = A[1:nvtx, 1:nvtx]
 
   # compute auxiliary quantities
-  u = xst[1:nu]
-  p = xst[nu + 1:end]
-  f = [By -Bx] * u
-  (Asv, fsv) = streambc(Asv, f, xy, bound, domain)
-  phi = Asv\fsv
+    u = xst[1:nu]
+    p = xst[nu + 1:end]
+    f = [By -Bx] * u
+    (Asv, fsv) = streambc(Asv, f, xy, bound, domain)
+    phi = Asv \ fsv
 
   # # plot pressure
   # p = p[1:3:end]; xx = x[1:end]; yy = y[1:end]
@@ -63,15 +63,15 @@ function flowplot2(sol, domain)
   # xsol = unique(x)
   # ysol = unique(y)
 
-  spl = Spline2D(xy[:, 1], xy[:, 2], phi, s = length(xy[:, 1]))
-  z = evalgrid(spl, vec(x), vec(y))
+    spl = Spline2D(xy[:, 1], xy[:, 2], phi, s=length(xy[:, 1]))
+    z = evalgrid(spl, vec(x), vec(y))
 
   # if size(obs, 1) != 0
   #   KK = findobsXY(obs, X, Y, bndxy)
   #   z[KK] = NaN
   # end
 
-  plot(x = x, y = y, z = z, Geom.contour)
+    plot(x=x, y=y, z=z, Geom.contour)
 
   # (X, Y) = meshgrid(x, y)
   # # xysol = griddata(xy[:, 1], xy[:, 2], phi, X, Y)

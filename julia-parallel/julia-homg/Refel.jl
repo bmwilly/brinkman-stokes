@@ -1,6 +1,10 @@
-using Basis: polynomial, gradient, gauss, gll
+# using Basis: polynomial, gradient, gauss, gll
+
+module Refel
+
 export Refel
-struct Refel
+
+mutable struct Refel
 	dim
 	N # polynomial order
 	Nrp # number of 1D interpolation points
@@ -110,5 +114,7 @@ struct Refel
 
 		return elem
 	end
+
+end
 
 end

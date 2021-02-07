@@ -21,22 +21,22 @@ function mg_q1diff(xy, ev)
 	ae = zeros(nel, 4, 4)
 
 	# set up 2x2 Gauss points
-  s = zeros(4, 1); t = zeros(4, 1)
-	gpt = 1.0/sqrt(3.0)
+    s = zeros(4, 1); t = zeros(4, 1)
+	gpt = 1.0 / sqrt(3.0)
 	s[1] = -gpt;  t[1] = -gpt;
-  s[2] =  gpt;  t[2] = -gpt;
-  s[3] =  gpt;  t[3] =  gpt;
-  s[4] = -gpt;  t[4] =  gpt;
+    s[2] =  gpt;  t[2] = -gpt;
+    s[3] =  gpt;  t[3] =  gpt;
+    s[4] = -gpt;  t[4] =  gpt;
 
   # inner loop over elements
-  xlv = zeros(nel, 4); ylv = zeros(nel, 4)
-  for ivtx = 1:4
-      xlv[:, ivtx] = x[ev[:, ivtx]]
-      ylv[:, ivtx] = y[ev[:, ivtx]]
-  end
+    xlv = zeros(nel, 4); ylv = zeros(nel, 4)
+    for ivtx = 1:4
+        xlv[:, ivtx] = x[ev[:, ivtx]]
+        ylv[:, ivtx] = y[ev[:, ivtx]]
+    end
 
   # loop over 2x2 Gauss points
-  for igpt = 1:4
+    for igpt = 1:4
   	sigpt = s[igpt]
   	tigpt = t[igpt]
 
@@ -48,17 +48,17 @@ function mg_q1diff(xy, ev)
   			ae[:, i, j] += dphidy[:, i] .* dphidy[:, j] .* invjac[:]
   		end
   	end
-  end # Gauss point loop
+    end # Gauss point loop
 
   # assemble global matrix and source vector
-  for krow = 1:4
+    for krow = 1:4
   	nrow = Int(ev[:, krow])
   	for kcol = 1:4
   		ncol = Int(ev[:, kcol])
   		a += sparse(nrow, ncol, ae[:, krow, kcol], nvtx, nvtx)
   	end
-  end
+    end
 
-  (a, r, f)
+    (a, r, f)
 
 end

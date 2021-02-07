@@ -24,12 +24,12 @@ x = grid["x"]; y = grid["y"];
 spe10 = matread("data/spe10.mat")
 KU = spe10["KU"]; pU = spe10["pU"];
 layer = 1;
-K = KU[1, 1:((length(x)-1)/2), 1:((length(y)-1)/2), layer];
+K = KU[1, 1:((length(x) - 1) / 2), 1:((length(y) - 1) / 2), layer];
 K = squeeze(K[1,:,:], 1);
 K = K.^(-1);
 L = zeros(size(K));
-l1,l2 = size(L)
-L[l1/2-1:l1/2+2, l2/2-1:l2/2+2] = repeat([1e4], outer = [4, 4])
+l1, l2 = size(L)
+L[l1 / 2 - 1:l1 / 2 + 2, l2 / 2 - 1:l2 / 2 + 2] = repeat([1e4], outer=[4, 4])
 
 # stokes q2-p1 matrix generator
 stokes_grid = merge(grid, {"mv" => channel_grid["mv"]})
@@ -60,7 +60,7 @@ rhs = vec([fst; gst])
 ## compute solution
 K = [Ast Bst'; Bst spzeros(np, np)]
 
-nv = size(Ast, 1); np = size(Q, 1); nu = nv/2
+nv = size(Ast, 1); np = size(Q, 1); nu = nv / 2
 Agal = Ast[1:nu, 1:nu]
 (mgdata, smooth_data, sweeps, stype, npre, npost, nc) = mg_diff(x, y, Agal)
 
@@ -80,15 +80,15 @@ M = u -> m_st_mg(u, mparams)
 tol = 1e-6; maxit = 100;
 (xst, flag, err, iter, resvec) = gmres(
   K, rhs, length(rhs);
-  tol = tol, maxIter = maxit, M = M, out = 1
+  tol=tol, maxIter=maxit, M=M, out=1
 )
 
 if flag == 0
-  println("GMRES reached desired tolerance at iteration $(length(resvec))")
+    println("GMRES reached desired tolerance at iteration $(length(resvec))")
 end
 
 p = plot(
-  x = 1:1:length(resvec), y = log(10, resvec), Geom.line,
+  x=1:1:length(resvec), y=log(10, resvec), Geom.line,
   Guide.xlabel("Iteration"), Guide.ylabel("log_10(residual)")
 )
 draw(PNG("graphs/iters.png", 12inch, 6inch), p)
@@ -116,17 +116,17 @@ p = xst[nu + 1:end]
 ## plot pressure
 p = p[1:3:end]
 zp = reshape(p, length(xp), length(yp))'
-p1 = plot(x = xp, y = yp, z = zp, Geom.contour);
+p1 = plot(x=xp, y=yp, z=zp, Geom.contour);
 draw(PNG("graphs/brinkman_pressure.png", 8inch, 4inch), p1);
 
 ## plot velocity
 ux = reshape(u[1:nvtx], length(x), length(y))'
-p2 = plot(x = x, y = y, z = ux, Geom.contour);
+p2 = plot(x=x, y=y, z=ux, Geom.contour);
 draw(PNG("graphs/brinkman_velocity_x.png", 8inch, 4inch), p2);
 
-uy = reshape(u[nvtx+1:end], length(x), length(y))'
-p3 = plot(x = x, y = y, z = uy, Geom.contour);
+uy = reshape(u[nvtx + 1:end], length(x), length(y))'
+p3 = plot(x=x, y=y, z=uy, Geom.contour);
 draw(PNG("graphs/brinkman_velocity_y.png", 8inch, 4inch), p3);
 
-writecsv("/Users/bwilliams/Documents/temp/ux_julia.csv", ux)
-writecsv("/Users/bwilliams/Documents/temp/uy_julia.csv", uy)
+DelimitedFiles.writedlm("/Users/bwilliams/Documents/temp/ux_julia.csv", ux)
+DelimitedFiles.writedlm("/Users/bwilliams/Documents/temp/uy_julia.csv", uy)

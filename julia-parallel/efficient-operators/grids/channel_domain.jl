@@ -86,7 +86,9 @@ function channel_domain(msize)
     end
     ef4 = 4 * ones(size(e4))
 
-    outbc = user_input("outflow boundary: 1/natural, 2/prescribed: ")
+    # TODO
+    # outbc = user_input("outflow boundary: 1/natural, 2/prescribed: ")
+    outbc = 1
     if outbc == 2
         bound = sort([k1; k2; k3; k4])
         mbound = [e1' ef1'; e2' ef2'; e3' ef3'; e4' ef4']

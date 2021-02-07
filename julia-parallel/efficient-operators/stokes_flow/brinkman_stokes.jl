@@ -6,11 +6,11 @@ include("stokes_brinkman_q2p1.jl")
 include("../grids/q2p1grid.jl")
 include("../grids/channel_domain.jl")
 include("../helpers/helper_functions.jl")
-# include("../../julia-homg/Basis.jl")
-# include("../../julia-homg/Hexmesh.jl")
-# include("../../julia-homg/Xform.jl")
-# include("../../julia-homg/Grids.jl")
-# include("../../julia-homg/Tensor.jl")
+include("../../julia-homg/Basis.jl")
+include("../../julia-homg/Hexmesh.jl")
+include("../../julia-homg/Xform.jl")
+include("../../julia-homg/Grids.jl")
+include("../../julia-homg/Tensor.jl")
 # include("../../julia-homg/Refel.jl")
 
 ###SQUARE_STOKES set up flow problem in unit square domain
@@ -44,7 +44,7 @@ function brinkman_stokes(msize)
     # nelems = [2^(msize-1)]
     nelems = [2^msize]
     m = Mesh.Hexmesh(tuple(repeat(nelems, 1, dim)...), Xform.identity)
-    dof = prod([m.nelems...] * order + 1)
+    dof = prod([m.nelems...] * order .+ 1)
 
     # brinkman obstacles
     centers = [
@@ -82,7 +82,5 @@ function brinkman_stokes(msize)
     stokes_mats["A"] = A
     stokes_mats["G"] = G
 
-    # keys(mats) =
-    # {"A", "B", "G", "Q", "Bx", "By", "kappa" "f", "g", "x", "y", "xyp", "bound"}
     mats = merge(stokes_mats, grid, bounds, Dict("kappa" => kappa, "msize" => msize))
 end

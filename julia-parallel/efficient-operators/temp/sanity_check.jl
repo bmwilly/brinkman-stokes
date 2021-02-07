@@ -10,7 +10,7 @@ dim = 2; msize = 5; order = 2;
 nelems = [2^msize]
 
 m = Mesh.Hexmesh(tuple(repeat(nelems, 1, dim)...), Xform.identity)
-dof = prod([m.nelems...] * order + 1)
+dof = prod([m.nelems...] * order .+ 1)
 
 self = m;
 Mesh.set_order(self,order);

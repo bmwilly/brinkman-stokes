@@ -1,14 +1,14 @@
 ###MG_POST postsmoothing for GMG
 # input
-# 	A 				coefficient matrix 
+# 	A 				coefficient matrix
 # 	xs0 			initial iterate
 # 	f 				rhs
-# 	ns 				number of smoothing steps 
+# 	ns 				number of smoothing steps
 # 	Qs 				structure containing smoothing operators
 # 	level 			grid level
-# 	sweeps 			type of sweeping strategy used for Gauss-Seidel smoothing 
+# 	sweeps 			type of sweeping strategy used for Gauss-Seidel smoothing
 # output
-# 	xs 				result of postsmoothing applied to x0 
+# 	xs 				result of postsmoothing applied to x0
 function mg_post(A, xs0, f, ns, Qs, level, sweeps)
 
 	xs = xs0
@@ -21,15 +21,15 @@ function mg_post(A, xs0, f, ns, Qs, level, sweeps)
 	L3 = Qs[level]["L3"];	U3 = Qs[level]["U3"]
 	L4 = Qs[level]["L4"];	U4 = Qs[level]["U4"]
 
-	r = f - A*xs 
+	r = f - A*xs
 	if sweeps >= 4
-		xs += U4\(L4\r); r = f - A*xs 
+		xs += U4\(L4\r); r = f - A*xs
 	end
 	if sweeps >= 3
-		xs += U3\(L3\r); r = f - A*xs 
+		xs += U3\(L3\r); r = f - A*xs
 	end
 	if sweeps >= 2
-		xs += U2\(L2\r); r = f - A*xs 
+		xs += U2\(L2\r); r = f - A*xs
 	end
 	if sweeps >= 1
 		xs += U1\(L1\r)
@@ -37,16 +37,16 @@ function mg_post(A, xs0, f, ns, Qs, level, sweeps)
 
 	if ns > 1
 		k = 1
-		while k < ns 
-			r = f - A*xs 
+		while k < ns
+			r = f - A*xs
 			if sweeps >= 4
-				xs += U4\(L4\r); r = f - A*xs 
+				xs += U4\(L4\r); r = f - A*xs
 			end
 			if sweeps >= 3
-				xs += U3\(L3\r); r = f - A*xs 
+				xs += U3\(L3\r); r = f - A*xs
 			end
 			if sweeps >= 2
-				xs += U2\(L2\r); r = f - A*xs 
+				xs += U2\(L2\r); r = f - A*xs
 			end
 			if sweeps >= 1
 				xs += U1\(L1\r)

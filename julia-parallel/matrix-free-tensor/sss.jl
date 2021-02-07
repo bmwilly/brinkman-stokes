@@ -12,7 +12,7 @@ println("done")
 doplot = input("Create plot? (y/n): ")
 
 if doplot == "y"
-  flowplot(sol, kparams)
+    flowplot(sol, kparams)
 end
 
 # x = kparams["x"]; y = kparams["y"];
@@ -24,8 +24,8 @@ end
 # ux = reshape(u[1:nvtx], length(x), length(y))'
 # uy = reshape(u[nvtx+1:end], length(x), length(y))'
 
-# writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/matrix-free-tensor/temp/sol/x.csv", x)
-# writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/matrix-free-tensor/temp/sol/y.csv", y)
-# writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/matrix-free-tensor/temp/sol/ux.csv", ux)
-# writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/matrix-free-tensor/temp/sol/uy.csv", uy)
-# writecsv("$(homedir())/Documents/brinkman-stokes/julia-parallel/matrix-free-tensor/temp/sol/kp.csv", kp)
+# DelimitedFiles.writedlm("$(homedir())/Documents/brinkman-stokes/julia-parallel/matrix-free-tensor/temp/sol/x.csv", x)
+# DelimitedFiles.writedlm("$(homedir())/Documents/brinkman-stokes/julia-parallel/matrix-free-tensor/temp/sol/y.csv", y)
+# DelimitedFiles.writedlm("$(homedir())/Documents/brinkman-stokes/julia-parallel/matrix-free-tensor/temp/sol/ux.csv", ux)
+# DelimitedFiles.writedlm("$(homedir())/Documents/brinkman-stokes/julia-parallel/matrix-free-tensor/temp/sol/uy.csv", uy)
+# DelimitedFiles.writedlm("$(homedir())/Documents/brinkman-stokes/julia-parallel/matrix-free-tensor/temp/sol/kp.csv", kp)

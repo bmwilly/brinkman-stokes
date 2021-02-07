@@ -7,7 +7,7 @@ dim = int(input("Dimension: "))
 
 nelems = [2^msize]
 m = Mesh.Hexmesh(tuple(repeat(nelems, 1, dim)...), Xform.identity)
-dof = prod([m.nelems...] * order + 1)
+dof = prod([m.nelems...] * order .+ 1)
 K, M = Mesh.assemble_poisson(m, order)
 k1, k2 = size(K)
 A = [K spzeros(k1, k2); spzeros(k1, k2) K]

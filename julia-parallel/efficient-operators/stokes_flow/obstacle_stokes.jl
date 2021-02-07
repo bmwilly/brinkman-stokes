@@ -6,19 +6,19 @@ reload("stokes_flow/stokes_q2p1.jl")
 function obstacle_stokes()
 
   # generate Q2 grid for obstacle domain
-  obstacle_grid = obstacle_domain()
-  grid = q2p1grid(obstacle_grid)
+    obstacle_grid = obstacle_domain()
+    grid = q2p1grid(obstacle_grid)
 
   # stokes q2-p1 matrix generator
-  stokes_grid = merge(grid, {"mv" => obstacle_grid["mv"]})
-  stokes_mats = stokes_q2p1(stokes_grid)
+    stokes_grid = merge(grid, {"mv" => obstacle_grid["mv"]})
+    stokes_mats = stokes_q2p1(stokes_grid)
 
-  bounds = {
+    bounds = {
     "bound" => obstacle_grid["bound"],
     "bndxy" => obstacle_grid["bndxy"],
     "bnde" => obstacle_grid["bnde"],
     "obs" => obstacle_grid["obs"]
   }
-  mats = merge(stokes_mats, grid, bounds)
+    mats = merge(stokes_mats, grid, bounds)
 
 end

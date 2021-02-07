@@ -16,7 +16,7 @@ nelems = [2^msize]
 
 m = Mesh.Hexmesh(tuple(repeat(nelems, 1, dim)...), Xform.identity)
 # Mesh.plot(m)
-dof = prod([m.nelems...] * order + 1)
+dof = prod([m.nelems...] * order .+ 1)
 tic()
 K, M, iK = Mesh.assemble_poisson(m, order)
 k1, k2 = size(K)

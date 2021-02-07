@@ -1,15 +1,16 @@
-
 module Mesh
-include("Refel.jl")
-include("Basis.jl")
-include("Tensor.jl")
-include("BaseCustom.jl")
+# include("Refel.jl")
+using .Refel
+# using .Basis
+# include("Basis.jl")
+# include("Tensor.jl")
+# include("BaseCustom.jl")
 
 import PyPlot
 using Distances
 export set_coeff
 
-struct Hexmesh
+mutable struct Hexmesh
 	dim#==2	TODO=#
 	nelems#==[8 8]	TODO=#
 	order

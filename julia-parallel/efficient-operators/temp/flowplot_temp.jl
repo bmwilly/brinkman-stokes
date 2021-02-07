@@ -26,8 +26,8 @@ u = xst[1:nu]
 p = xst[nu + 1:end]
 f = [By -Bx] * u
 (Asv, fsv) = streambc(Asv, f, xy, bound, domain)
-phi = Asv\fsv
-writecsv("/Users/bwilliams/Downloads/phij.csv", phi)
+phi = Asv \ fsv
+DelimitedFiles.writedlm("/Users/bwilliams/Downloads/phij.csv", phi)
 
 # grid = RectangleGrid(xy[:, 1], xy[:, 2])
 # grid = RectangleGrid(vec(x), vec(y))
@@ -73,12 +73,12 @@ writecsv("/Users/bwilliams/Downloads/phij.csv", phi)
 #   z[KK] = NaN
 # end
 #
-# writecsv("/Users/bwilliams/Downloads/zj.csv", z)
+# DelimitedFiles.writedlm("/Users/bwilliams/Downloads/zj.csv", z)
 #
 z = readcsv("/Users/bwilliams/Downloads/xysol.csv")
 z = z'
-writecsv("/Users/bwilliams/Downloads/z.csv",z)
-plot(x = x, y = y, z = z, Geom.contour)
+DelimitedFiles.writedlm("/Users/bwilliams/Downloads/z.csv",z)
+plot(x=x, y=y, z=z, Geom.contour)
 
 
 # plot(bndxy[bnde[1, 1], 1], bndxy[bnde[1, 2], 1], bndxy[bnde[1, 1], 2], bndxy[bnde[1, 2], 2])
@@ -92,8 +92,8 @@ plot(x = x, y = y, z = z, Geom.contour)
 # )
 # #
 p = plot(
-  layer(x = x, y = y, z = z, Geom.contour),
-  layer(x = [bndxy[5:8, 1], bndxy[5, 1]], y = [bndxy[5:8, 2], bndxy[5, 2]], Geom.path)
+  layer(x=x, y=y, z=z, Geom.contour),
+  layer(x=[bndxy[5:8, 1], bndxy[5, 1]], y=[bndxy[5:8, 2], bndxy[5, 2]], Geom.path)
 )
 draw(PNG("graphs/mat-flow.png", 8inch, 4inch), p)
 

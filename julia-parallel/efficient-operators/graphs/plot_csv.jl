@@ -6,10 +6,10 @@ ux = readcsv("/Users/bwilliams/Documents/brinkman-stokes/julia-parallel/efficien
 uy = readcsv("/Users/bwilliams/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/uy.csv")
 
 figure();
-streamplot(x, y, ux, uy, density = 4, color = ux);
+streamplot(x, y, ux, uy, density=4, color=ux);
 axis([-1,1,-1,1]);
 
 figure();
 # pcolor(x, y, kp, cmap = "Greys");
-quiver(x, y, ux, uy, ux, scale = 2);
+quiver(x, y, ux, uy, ux, scale=2);
 axis([-1,1,-1,1]);

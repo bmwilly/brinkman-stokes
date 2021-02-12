@@ -1,10 +1,5 @@
 
 module Grids
-# include("Refel.jl")
-# include("Basis.jl")
-# include("Tensor.jl")
-# include("BaseCustom.jl")
-# include("Hexmesh.jl")
 
 struct Grid
 	level

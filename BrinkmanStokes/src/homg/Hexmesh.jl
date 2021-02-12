@@ -1,10 +1,4 @@
 module Mesh
-# include("Refel.jl")
-using .Refel
-# using .Basis
-# include("Basis.jl")
-# include("Tensor.jl")
-# include("BaseCustom.jl")
 
 import PyPlot
 using Distances

@@ -1,9 +1,5 @@
 # using Basis: polynomial, gradient, gauss, gll
 
-module Refel
-
-export Refel
-
 mutable struct Refel
 	dim
 	N # polynomial order
@@ -114,7 +110,5 @@ mutable struct Refel
 
 		return elem
 	end
-
-end
 
 end

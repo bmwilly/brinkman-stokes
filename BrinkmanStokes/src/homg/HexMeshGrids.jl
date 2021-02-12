@@ -1,8 +1,5 @@
 module HexMeshGrids
 
-include("Hexmesh.jl")
-include("Grids.jl")
-
 function create_hexmesh_grids(dim, mu, xform, orders, nelems)
 # function grid = create_hexmesh_grids(dim, mu, xform, orders, nelems)
 #

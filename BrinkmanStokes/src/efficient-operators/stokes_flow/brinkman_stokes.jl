@@ -6,12 +6,6 @@ include("stokes_brinkman_q2p1.jl")
 include("../grids/q2p1grid.jl")
 include("../grids/channel_domain.jl")
 include("../helpers/helper_functions.jl")
-include("../../julia-homg/Basis.jl")
-include("../../julia-homg/Hexmesh.jl")
-include("../../julia-homg/Xform.jl")
-include("../../julia-homg/Grids.jl")
-include("../../julia-homg/Tensor.jl")
-# include("../../julia-homg/Refel.jl")
 
 ###SQUARE_STOKES set up flow problem in unit square domain
 function brinkman_stokes(msize)

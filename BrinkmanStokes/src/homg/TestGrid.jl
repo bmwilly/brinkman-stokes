@@ -1,10 +1,5 @@
 module TestGrid
 
-include("Xform.jl")
-include("HexMesh.jl")
-include("Grids.jl")
-include("HexMeshGrids.jl")
-
 # mu = (x,y)->(1 + 1e6*( cos(2*pi*x)^2 + cos(2*pi*y)^2 ))
 #
 # g = HexMeshGrids.create_hexmesh_grids(2, mu, Xform.shell, [1 2 4], [8 16 32]);

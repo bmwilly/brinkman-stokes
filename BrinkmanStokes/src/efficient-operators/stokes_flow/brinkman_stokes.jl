@@ -2,10 +2,13 @@
 using MAT
 using Distances
 
+using BrinkmanStokes: Mesh, Xform
+
 include("stokes_brinkman_q2p1.jl")
 include("../grids/q2p1grid.jl")
 include("../grids/channel_domain.jl")
 include("../helpers/helper_functions.jl")
+
 
 ###SQUARE_STOKES set up flow problem in unit square domain
 function brinkman_stokes(msize)

@@ -1,9 +1,11 @@
 using Debugger
 break_on(:error)
 
-include("stokes_flow/solve_stokes.jl")
-include("graphs/flowplot.jl")
-include("helpers/helper_functions.jl")
+using BrinkmanStokes
+
+include("efficient-operators/stokes_flow/solve_stokes.jl")
+include("efficient-operators/graphs/flowplot.jl")
+include("efficient-operators/helpers/helper_functions.jl")
 
 # TODO
 # domain = user_input("Choose domain (1/lid-driven cavity, 2/brinkman): ")

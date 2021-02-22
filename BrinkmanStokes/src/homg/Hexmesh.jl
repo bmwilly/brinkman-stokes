@@ -4,6 +4,8 @@ import PyPlot
 using Distances
 export set_coeff
 
+using BrinkmanStokes: Refel
+
 mutable struct Hexmesh
 	dim#==2	TODO=#
 	nelems#==[8 8]	TODO=#

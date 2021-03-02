@@ -38,7 +38,7 @@ mutable struct Refel
 		elem.N = order
 		elem.Nrp = order + 1
 		(elem.r, elem.wgll) = Basis.gll(0, 0, elem.N)
-		r_hby2 = [0.5 * (elem.r - 1);	0.5 * (elem.r[2:end] + 1)]
+		r_hby2 = [0.5 * (elem.r .- 1);	0.5 * (elem.r[2:end] .+ 1)]
 		r_2p = Basis.gll(0, 0, 2 * elem.N)
 		(elem.g, elem.w) = Basis.gauss(0, 0, elem.N)
 		elem.Vr = zeros(order + 1, order + 1)

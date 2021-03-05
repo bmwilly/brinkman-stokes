@@ -528,7 +528,7 @@ end
 		set_order(self,order);
 		# assemble the mass matrix
 		refel = Refel( self.dim, order );
-		dof = prod([self.nelems...]*order + 1);
+		dof = prod([self.nelems...]*order .+ 1);
 		ne = prod([self.nelems...]);
 		# storage for indices and values
 		NP = (order+1)^self.dim;

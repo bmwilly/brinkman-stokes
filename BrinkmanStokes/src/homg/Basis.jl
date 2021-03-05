@@ -1,5 +1,6 @@
 module Basis
 
+using LinearAlgebra
 using SpecialFunctions
 
 export polynomial, gradient, gauss, gll
@@ -50,7 +51,7 @@ function gradient(r::Array, alpha::Real, beta::Real, N::Integer)
 	r = reshape(r, size(r)[1], 1)
 	dP = zeros(length(r), 1);
 	if N == 0
-		dP[:,:] = 0.0;
+		dP[:,:] .= 0.0;
 	else
 		dP = sqrt(N * (N + alpha + beta + 1)) * polynomial(r[:], alpha + 1, beta + 1, N - 1);
 	end
@@ -74,14 +75,14 @@ function gauss(alpha::Real, beta::Real, N::Integer)
 	# Form symmetric matrix from recurrence.
 	# J = zeros(N+1);
 	h1 = 2 * collect(0:N) .+ alpha .+ beta
-	J = diagm(vec(-1 / 2 * (alpha^2 - beta^2) ./ (h1 + 2) ./ h1)) + diagm(2. / (h1[1:N] + 2) .* sqrt([1:N] .* ([1:N] + alpha + beta) .* ([1:N] + alpha) .* ([1:N] + beta) ./ (h1[1:N] + 1) ./ (h1[1:N] + 3)), 1)
+	J = diagm(0 => vec(-1 / 2 * (alpha^2 - beta^2) ./ (h1 .+ 2) ./ h1)) + diagm(1 => 2 ./ (h1[1:N] .+ 2) .* sqrt.(collect(1:N) .* (collect(1:N) .+ alpha .+ beta) .* (collect(1:N) .+ alpha) .* (collect(1:N) .+ beta) ./ (h1[1:N] .+ 1) ./ (h1[1:N] .+ 3)))
 	if alpha + beta < 10 * eps()
 		J[1,1] = 0.0
 	end
 	J = J + J'
 	# Compute quadrature by eigenvalue solve
-    (D, V) = eig(J)
-	x = reshape(D, size(D)[1], 1)
+	x = eigvals(J)
+	V = eigvecs(J)
 	w = (V[1,:]').^2 * 2^(alpha + beta + 1) / (alpha + beta + 1) * gamma(alpha + 1) * gamma(beta + 1) / gamma(alpha + beta + 1)
 	return x, w
 end

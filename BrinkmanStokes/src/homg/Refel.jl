@@ -1,5 +1,7 @@
 # using Basis: polynomial, gradient, gauss, gll
 
+using LinearAlgebra
+
 mutable struct Refel
 	dim
 	N # polynomial order
@@ -57,8 +59,8 @@ mutable struct Refel
 		end
 		elem.Dr = transpose(elem.Vr \ elem.gradVr);
 		elem.Dg = transpose(elem.Vr \ elem.gradVg);
-		iVr = elem.Vr \ eye(order + 1);
-		iVg = elem.Vg \ eye(order + 1);
+		iVr = elem.Vr \ I(order + 1);
+		iVg = elem.Vg \ I(order + 1);
 		q1d = transpose(elem.Vr \ elem.Vg);
 		p_h_1d = transpose(elem.Vr \ Vph);
 		p_p_1d = transpose(elem.Vr \ Vpp);
@@ -104,9 +106,9 @@ mutable struct Refel
 		end
 
 		elem.Mr = iVr * iVr';
-		elem.invMr = elem.Mr \ eye(order + 1);
+		elem.invMr = elem.Mr \ I(order + 1);
 		elem.Mg = iVg * iVg';
-		elem.invMg = elem.Mg \ eye(order + 1);
+		elem.invMg = elem.Mg \ I(order + 1);
 
 		return elem
 	end

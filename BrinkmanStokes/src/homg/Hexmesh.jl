@@ -703,7 +703,7 @@ end
 		# determine global node indices for a given element
 
 		if ( self.dim == 2)
-			(i,j) = ind2sub(self.nelems, eid);
+			(i, j) = Tuple(CartesianIndices(self.nelems)[eid]);
 			i_low   = (i-1)*order + 1;   i_high =  i*order + 1;
 			j_low   = (j-1)*order + 1;   j_high =  j*order + 1;
 
@@ -713,7 +713,7 @@ end
 			x=[1:length(m)]
 			idx = sub2ind([self.nelems...]'*order + 1,m[x],n[x])
 		else
-			(i,j,k) = ind2sub(self.nelems, eid);
+			(i,j,k) = Tuple(CartesianIndices(self.nelems)[eid]);
 
 			i_low   = (i-1)*order + 1;   i_high =  i*order + 1;
 			j_low   = (j-1)*order + 1;   j_high =  j*order + 1;
@@ -732,13 +732,13 @@ end
 	function get_linear_node_indices( self, eid, order )
 		# determine global node indices for a given element
 		if ( self.dim == 2)
-			(i,j) = ind2sub(self.nelems*order, eid);
+			(i,j) = Tuple(CartesianIndices(self.nelems * order)[eid]);
 
 			(i,j) = ndgrid(i:i+1, j:j+1);
 
 			idx     = sub2ind([self.nelems...]'*order + 1, i[:], j[:]);
 		else
-			(i,j,k) = ind2sub(self.nelems*order, eid);
+			(i,j,k) = Tuple(CartesianIndices(self.nelems * order)[eid]);
 
 			(i,j,k) = ndgrid(i:i+1, j:j+1, k:k+1);
 
@@ -749,7 +749,7 @@ end
 	function get_interpolation_indices( self, eid )
 		# determine global node indices for a given element
 		if ( self.dim == 2)
-			(i,j) = ind2sub(self.nelems, eid);
+			(i,j) = Tuple(CartesianIndices(self.nelems)[eid]);
 
 			i_low       = (i-1)*self.order + 1;   i_high =  i*self.order + 1;
 			j_low       = (j-1)*self.order + 1;   j_high =  j*self.order + 1;
@@ -759,7 +759,7 @@ end
 			(i,j)       = ndgrid(2*i_low-1:2*i_high-1, 2*j_low-1:2*j_high-1);
 			idx_fine    = sub2ind(2*[self.nelems...]*self.order + 1, i[:], j[:]);
 		else
-			(i,j,k) = ind2sub(self.nelems, eid);
+			(i,j,k) = Tuple(CartesianIndices(self.nelems)[eid]);
 
 			i_low       = (i-1)*self.order + 1;   i_high =  i*self.order + 1;
 			j_low       = (j-1)*self.order + 1;   j_high =  j*self.order + 1;
@@ -922,7 +922,7 @@ end
 	function linear_element_nodes(self, elem, order)
 
 		if (self.dim == 2)
-			(i,j) = ind2sub(self.nelems*order, elem);
+			(i,j) = Tuple(CartesianIndices(self.nelems * order)[elem]);
 
 			x1d = getGLLcoords(order, self.nelems(1));
 			y1d = getGLLcoords(order, self.nelems(2));
@@ -930,7 +930,7 @@ end
 			(x, y) = ndgrid(x1d(i:i+1), y1d(j:j+1));
 			pts = [x[:] y[:]];
 		else
-			(i,j,k) = ind2sub(self.nelems*order, elem);
+			(i,j,k) = Tuple(CartesianIndices(self.nelems * order)[elem]);
 
 			x1d = getGLLcoords(order, self.nelems(1));
 			y1d = getGLLcoords(order, self.nelems(2));
@@ -946,10 +946,10 @@ end
 	function element_nodes(self, elem, refel)
 		h = 1. / [self.nelems...]';
 		if ( self.dim == 2)
-			(i,j) = ind2sub(self.nelems, elem);
+			(i,j) = Tuple(CartesianIndices(self.nelems)[elem]);
 			idx = [i j];
 		else
-			(i,j,k) = ind2sub(self.nelems, elem);
+			(i,j,k) = Tuple(CartesianIndices(self.nelems)[elem]);
 			idx = [i j k];
 		end
 		p_mid = (idx - 0.5) .* h;
@@ -973,10 +973,10 @@ end
 			h = 1. / [self.nelems...]';
 
 			if ( self.dim == 2)
-				(i,j) = ind2sub(self.nelems, elem);
+				(i,j) = Tuple(CartesianIndices(self.nelems)[elem]);
 				idx = [i j];
 			else
-				(i,j,k) = ind2sub(self.nelems, elem);
+				(i,j,k) = Tuple(CartesianIndices(self.nelems)[elem]);
 				idx = [i j k];
 			end
 			p_mid = (idx - 0.5) .* h;
@@ -993,7 +993,7 @@ end
 			assert(refel.N == 1);
 			# ... get gll points ...
 			if (self.dim == 2)
-				(i,j) = ind2sub(tuple([self.nelems...]'*self.order), elem);
+				(i,j) = Tuple(CartesianIndices(tuple([self.nelems...]'*self.order))[elem]);
 
 				x1d = getGLLcoords(self.order, self.nelems[1]);
 				y1d = getGLLcoords(self.order, self.nelems[2]);
@@ -1005,7 +1005,7 @@ end
 
 				pts = [x[:] y[:]];
 			else
-				(i,j,k) = ind2sub(tuple([self.nelems...]'*self.order), elem);
+				(i,j,k) = Tuple(CartesianIndices(tuple([self.nelems...]'*self.order))[elem]);
 
 				x1d = getGLLcoords(self.order, self.nelems[1]);
 				y1d = getGLLcoords(self.order, self.nelems[2]);

@@ -382,7 +382,7 @@ end
 		set_order(self, order);
 		# assemble the mass matrix
 		refel = Refel( self.dim, order );
-		dof = prod([self.nelems...]*order + 1);
+		dof = prod([self.nelems...]*order .+ 1);
 		ne = prod([self.nelems...]);
 		# storage for indices and values
 		NP = (order+1)^self.dim;
@@ -412,7 +412,7 @@ end
 		set_order(self, order);
 		# assemble the stiffness matrix
 		refel = Refel( self.dim, order );
-		dof = prod([self.nelems...]*order + 1);
+		dof = prod([self.nelems...]*order .+ 1);
 		ne = prod([self.nelems...]);
 		# storage for indices and values
 		NP = (order+1)^self.dim;
@@ -440,7 +440,7 @@ end
 		set_order(self,order);
 		# assemble the mass matrix
 		refel = Refel( self.dim, order );
-		dof = prod([self.nelems...]*order + 1);
+		dof = prod([self.nelems...]*order .+ 1);
 		ne = prod([self.nelems...]);
 		# storage for indices and values
 		NP = (order+1)^self.dim;
@@ -621,7 +621,7 @@ end
 	function assemble_permeability(self, order, centers)
 		set_order(self, order);
 		refel = Refel(self.dim, order);
-		dof = prod([self.nelems...]*order + 1);
+		dof = prod([self.nelems...]*order .+ 1);
 		ne = prod([self.nelems...]);
 		perm_val = zeros(dof, 1);
 		# loop over elements
@@ -636,7 +636,7 @@ end
 	function assemble_rhs(self, fx, order)
 		set_order(self, order)
 		refel = Refel(self.dim, order)
-		dof = prod([self.nelems...]*order + 1)
+		dof = prod([self.nelems...]*order .+ 1)
 		ne = prod([self.nelems...])
 		f = zeros(dof,1)
 		# loop over elements
@@ -660,8 +660,8 @@ end
 		refel = Refel( self.dim, self.order );
 
 		if ( order == self.order )
-			dof_coarse = prod([self.nelems...] * self.order + 1);
-			dof_fine   = prod(2*[self.nelems...] * self.order + 1);
+			dof_coarse = prod([self.nelems...] * self.order .+ 1);
+			dof_fine   = prod(2*[self.nelems...] * self.order .+ 1);
 			NP_c = (self.order+1)^self.dim;
 			NP_f = (2*self.order+1)^self.dim;
 			Pe = refel.Ph;
@@ -669,8 +669,8 @@ end
 			assert(order == 2*self.order);
 			NP_c = (self.order+1)^self.dim;
 			NP_f = (order+1)^self.dim;
-			dof_coarse = prod([self.nelems...] * self.order + 1);
-			dof_fine   = prod([self.nelems...] * order + 1);
+			dof_coarse = prod([self.nelems...] * self.order .+ 1);
+			dof_fine   = prod([self.nelems...] * order .+ 1);
 			Pe = refel.Pp;
 		end
 		ne  = prod([self.nelems...]);
@@ -711,7 +711,7 @@ end
 			m=i[:]
 			n=j[:]
 			x=[1:length(m)]
-			idx = sub2ind([self.nelems...]'*order + 1,m[x],n[x])
+			idx = sub2ind([self.nelems...]'*order .+ 1,m[x],n[x])
 		else
 			(i,j,k) = Tuple(CartesianIndices(self.nelems)[eid]);
 
@@ -725,7 +725,7 @@ end
 			n=j[:]
 			o=k[:]
 			x=[1:length(m)]
-			idx = sub2ind([self.nelems...]'*order + 1,m[x],n[x],o[x])
+			idx = sub2ind([self.nelems...]'*order .+ 1,m[x],n[x],o[x])
 		end
 		return idx
 	end
@@ -736,13 +736,13 @@ end
 
 			(i,j) = ndgrid(i:i+1, j:j+1);
 
-			idx     = sub2ind([self.nelems...]'*order + 1, i[:], j[:]);
+			idx     = sub2ind([self.nelems...]'*order .+ 1, i[:], j[:]);
 		else
 			(i,j,k) = Tuple(CartesianIndices(self.nelems * order)[eid]);
 
 			(i,j,k) = ndgrid(i:i+1, j:j+1, k:k+1);
 
-			idx     = sub2ind([self.nelems...]'*order + 1, i[:], j[:], k[:] );
+			idx     = sub2ind([self.nelems...]'*order .+ 1, i[:], j[:], k[:] );
 		end
 		return idx
 	end
@@ -754,10 +754,10 @@ end
 			i_low       = (i-1)*self.order + 1;   i_high =  i*self.order + 1;
 			j_low       = (j-1)*self.order + 1;   j_high =  j*self.order + 1;
 			(i,j)       = ndgrid(i_low:i_high, j_low:j_high);
-			idx_coarse  = sub2ind([self.nelems...]*self.order + 1, i[:], j[:]);
+			idx_coarse  = sub2ind([self.nelems...]*self.order .+ 1, i[:], j[:]);
 
 			(i,j)       = ndgrid(2*i_low-1:2*i_high-1, 2*j_low-1:2*j_high-1);
-			idx_fine    = sub2ind(2*[self.nelems...]*self.order + 1, i[:], j[:]);
+			idx_fine    = sub2ind(2*[self.nelems...]*self.order .+ 1, i[:], j[:]);
 		else
 			(i,j,k) = Tuple(CartesianIndices(self.nelems)[eid]);
 
@@ -765,10 +765,10 @@ end
 			j_low       = (j-1)*self.order + 1;   j_high =  j*self.order + 1;
 			k_low       = (k-1)*self.order + 1;   k_high =  k*self.order + 1;
 			(i,j,k)     = ndgrid(i_low:i_high, j_low:j_high, k_low:k_high);
-			idx_coarse  = sub2ind([self.nelems...]*self.order + 1, i[:], j[:], k[:] );
+			idx_coarse  = sub2ind([self.nelems...]*self.order .+ 1, i[:], j[:], k[:] );
 
 			(i,j,k)     = ndgrid(2*i_low-1:2*i_high-1, 2*j_low-1:2*j_high-1, 2*k_low-1:2*k_high-1);
-			idx_fine    = sub2ind(2*[self.nelems...]*self.order + 1, i[:], j[:], k[:] );
+			idx_fine    = sub2ind(2*[self.nelems...]*self.order .+ 1, i[:], j[:], k[:] );
 		end
 		return idx_coarse, idx_fine
 	end
@@ -1027,7 +1027,7 @@ end
 
 		refel = Refel( self.dim, 1 );
 
-		dof = prod( [self.nelems...]*order + 1);
+		dof = prod( [self.nelems...]*order .+ 1);
 		ne  = prod( [self.nelems...]*order ) ;
 
 		# storage for indices and values
@@ -1115,7 +1115,7 @@ end
 		#   stats for the mesh
 		C=Mesh.C();
 		d               = length(nelems);
-		C.num_nodes     = prod([nelems...]*order + 1);
+		C.num_nodes     = prod([nelems...]*order .+ 1);
 		C.num_elements  = prod([nelems...]);
 		C.num_bdy_nodes = C.num_nodes - prod([nelems...]*order - 1);
 
@@ -1138,7 +1138,7 @@ end
 	function ndgrid(vs::AbstractVector{T}...) where {T}
 		n = length(vs)
 		sz = map(length, vs)
-		out = ntuple(n, i->Array(T, sz))
+		out = ntuple(i->Array{T}(undef, sz), n)
 		s = 1
 		for i=1:n
 			a = out[i]::Array

@@ -707,11 +707,10 @@ end
 			i_low   = (i-1)*order + 1;   i_high =  i*order + 1;
 			j_low   = (j-1)*order + 1;   j_high =  j*order + 1;
 
-			(i,j) = ndgrid(i_low:i_high, j_low:j_high);
-			m=i[:]
-			n=j[:]
-			x=[1:length(m)]
-			idx = sub2ind([self.nelems...]'*order .+ 1,m[x],n[x])
+			shape = [self.nelems...]' * order .+ 1
+			indices = (i_low:i_high, j_low:j_high)
+			idx = LinearIndices(Dims(shape))[CartesianIndices(indices)][:]
+
 		else
 			(i,j,k) = Tuple(CartesianIndices(self.nelems)[eid]);
 
@@ -719,13 +718,10 @@ end
 			j_low   = (j-1)*order + 1;   j_high =  j*order + 1;
 			k_low   = (k-1)*order + 1;   k_high =  k*order + 1;
 
-			(i,j,k) = ndgrid(i_low:i_high, j_low:j_high, k_low:k_high);
+			shape = [self.nelems...]' * order .+ 1
+			indices = (i_low:i_high, j_low:j_high, k_low:k_high)
+			idx = LinearIndices(Dims(shape))[CartesianIndices(indices)][:]
 
-			m=i[:]
-			n=j[:]
-			o=k[:]
-			x=[1:length(m)]
-			idx = sub2ind([self.nelems...]'*order .+ 1,m[x],n[x],o[x])
 		end
 		return idx
 	end
@@ -734,15 +730,17 @@ end
 		if ( self.dim == 2)
 			(i,j) = Tuple(CartesianIndices(self.nelems * order)[eid]);
 
-			(i,j) = ndgrid(i:i+1, j:j+1);
+			shape = [self.nelems...]'*order .+ 1
+			indices = (i:i+1, j:j+1)
+			idx = LinearIndices(Dims(shape))[CartesianIndices(indices)][:]
 
-			idx     = sub2ind([self.nelems...]'*order .+ 1, i[:], j[:]);
 		else
 			(i,j,k) = Tuple(CartesianIndices(self.nelems * order)[eid]);
 
-			(i,j,k) = ndgrid(i:i+1, j:j+1, k:k+1);
+			shape = [self.nelems...]'*order .+ 1
+			indices = (i:i+1, j:j+1, k:k+1)
+			idx = LinearIndices(Dims(shape))[CartesianIndices(indices)][:]
 
-			idx     = sub2ind([self.nelems...]'*order .+ 1, i[:], j[:], k[:] );
 		end
 		return idx
 	end
@@ -753,22 +751,28 @@ end
 
 			i_low       = (i-1)*self.order + 1;   i_high =  i*self.order + 1;
 			j_low       = (j-1)*self.order + 1;   j_high =  j*self.order + 1;
-			(i,j)       = ndgrid(i_low:i_high, j_low:j_high);
-			idx_coarse  = sub2ind([self.nelems...]*self.order .+ 1, i[:], j[:]);
 
-			(i,j)       = ndgrid(2*i_low-1:2*i_high-1, 2*j_low-1:2*j_high-1);
-			idx_fine    = sub2ind(2*[self.nelems...]*self.order .+ 1, i[:], j[:]);
+			shape = [self.nelems...]' * order .+ 1
+			indices = (i_low:i_high, j_low:j_high)
+			idx_coarse = LinearIndices(Dims(shape))[CartesianIndices(indices)][:]
+
+			indices = (2*i_low-1:2*i_high-1, 2*j_low-1:2*j_high-1)
+			idx_fine = LinearIndices(Dims(shape))[CartesianIndices(indices)][:]
+
 		else
 			(i,j,k) = Tuple(CartesianIndices(self.nelems)[eid]);
 
 			i_low       = (i-1)*self.order + 1;   i_high =  i*self.order + 1;
 			j_low       = (j-1)*self.order + 1;   j_high =  j*self.order + 1;
 			k_low       = (k-1)*self.order + 1;   k_high =  k*self.order + 1;
-			(i,j,k)     = ndgrid(i_low:i_high, j_low:j_high, k_low:k_high);
-			idx_coarse  = sub2ind([self.nelems...]*self.order .+ 1, i[:], j[:], k[:] );
 
-			(i,j,k)     = ndgrid(2*i_low-1:2*i_high-1, 2*j_low-1:2*j_high-1, 2*k_low-1:2*k_high-1);
-			idx_fine    = sub2ind(2*[self.nelems...]*self.order .+ 1, i[:], j[:], k[:] );
+			shape = [self.nelems...]' * order .+ 1
+			indices = (i_low:i_high, j_low:j_high, k_low:k_high)
+			idx_coarse = LinearIndices(Dims(shape))[CartesianIndices(indices)][:]
+
+			indices = (2*i_low-1:2*i_high-1, 2*j_low-1:2*j_high-1, 2*k_low-1:2*k_high-1)
+			idx_fine = LinearIndices(Dims(shape))[CartesianIndices(indices)][:]
+
 		end
 		return idx_coarse, idx_fine
 	end
@@ -898,7 +902,7 @@ end
 		end
 		D=Mesh.D();
 		if (refel.dim == 1)
-			D.rx = 1. / J;
+			D.rx = 1 ./ J;
 		elseif (refel.dim == 2)
 			D.rx =  ys./J;
 			D.sx = -yr./J;
@@ -944,7 +948,7 @@ end
 	end
 
 	function element_nodes(self, elem, refel)
-		h = 1. / [self.nelems...]';
+		h = 1 ./ [self.nelems...]';
 		if ( self.dim == 2)
 			(i,j) = Tuple(CartesianIndices(self.nelems)[elem]);
 			idx = [i j];
@@ -952,7 +956,7 @@ end
 			(i,j,k) = Tuple(CartesianIndices(self.nelems)[elem]);
 			idx = [i j k];
 		end
-		p_mid = (idx - 0.5) .* h;
+		p_mid = (idx .- 0.5) .* h;
 		p_gll = refel.r * 0.5 * h;
 		nodes = p_mid .+ p_gll;
 		if ( self.dim == 2)
@@ -970,7 +974,7 @@ end
 		# returns location of gauss coordinates of order
 		# for element
 		if (self.order == refel.N)
-			h = 1. / [self.nelems...]';
+			h = 1 ./ [self.nelems...]';
 
 			if ( self.dim == 2)
 				(i,j) = Tuple(CartesianIndices(self.nelems)[elem]);
@@ -979,7 +983,7 @@ end
 				(i,j,k) = Tuple(CartesianIndices(self.nelems)[elem]);
 				idx = [i j k];
 			end
-			p_mid = (idx - 0.5) .* h;
+			p_mid = (idx .- 0.5) .* h;
 			p_gau = refel.g * 0.5 * h;
 			nodes = p_mid .+ p_gau;
 			if ( self.dim == 2)

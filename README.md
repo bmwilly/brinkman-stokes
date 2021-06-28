@@ -19,9 +19,14 @@ matrix-free methods using matrix-matrix products.
 Example usage:
 
 ```shell
-$ cd julia-parallel/efficient-operators
+$ cd BrinkmanStokes
 $ julia
-julia> include("sss.jl")
+```
+
+```julia
+julia> ]
+pkg> activate .
+julia> include("src/sss.jl")
 ```
 
 will start an interactive session that will prompt

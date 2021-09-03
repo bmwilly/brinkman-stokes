@@ -4,7 +4,7 @@ import PyPlot
 using Distances
 export set_coeff
 
-using BrinkmanStokes: Refel
+using BrinkmanStokes: Refel, Tensor
 
 mutable struct Hexmesh
 	dim#==2	TODO=#
@@ -890,13 +890,13 @@ end
 			xr  = refel.Dg * pts;
 			J = xr;
 		elseif (refel.dim == 2)
-			(xr, xs) = Tensor.grad2(refel.Dg, pts[:,1]);
-			(yr, ys) = Tensor.grad2(refel.Dg, pts[:,2]);
+			(xr, xs) = Tensor.grad2(Array(refel.Dg), pts[:,1]);
+			(yr, ys) = Tensor.grad2(Array(refel.Dg), pts[:,2]);
 			J = -xs.*yr + xr.*ys;
 		else
-			(xr, xs, xt) = Tensor.grad3(refel.Dg, pts[:,1]);
-			(yr, ys, yt) = Tensor.grad3(refel.Dg, pts[:,2]);
-			(zr, zs, zt) = Tensor.grad3(refel.Dg, pts[:,3]);
+			(xr, xs, xt) = Tensor.grad3(Array(refel.Dg), pts[:,1]);
+			(yr, ys, yt) = Tensor.grad3(Array(refel.Dg), pts[:,2]);
+			(zr, zs, zt) = Tensor.grad3(Array(refel.Dg), pts[:,3]);
 
 			J = xr.*(ys.*zt-zs.*yt) - yr.*(xs.*zt-zs.*xt) + zr.*(xs.*yt-ys.*xt);
 		end

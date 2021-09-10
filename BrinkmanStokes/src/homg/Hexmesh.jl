@@ -39,7 +39,7 @@ struct C
 	end
 end
 
-struct D
+mutable struct D
 	rx;
 	ry;
 	rz;
@@ -884,7 +884,7 @@ end
 		return eStiff + eMass
 	end
 
-	function geometric_factors( self, refel, pts )
+	function geometric_factors( self, refel::Refel, pts::Matrix{Float64} )
 		# change to using Qx etc ?
 		if (refel.dim == 1)
 			xr  = refel.Dg * pts;

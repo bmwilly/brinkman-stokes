@@ -19,8 +19,8 @@ matrix-free methods using matrix-matrix products.
 Example usage:
 
 ```shell
-$ cd BrinkmanStokes
-$ julia
+cd BrinkmanStokes
+julia
 ```
 
 ```julia

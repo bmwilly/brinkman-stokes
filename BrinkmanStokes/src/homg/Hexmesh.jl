@@ -832,7 +832,7 @@ end
 
 		# get euclidean distances between nodal points and centers of brinkman obstacles
 		R = pairwise(Euclidean(), pts', centers')
-		R = minimum(R, 2)
+		R[R .> 2] .= 2
 		# brinkman_pts[findall(R .< 0.025)] = 1e6
 		brinkman_pts[findall(R .< 0.075)] = 1e6
 		# brinkman_pts[findall(R .< 0.2)] = 1e6

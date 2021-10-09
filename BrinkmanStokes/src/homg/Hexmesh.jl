@@ -2,6 +2,7 @@ module Mesh
 
 import PyPlot
 using Distances
+using LinearAlgebra
 export set_coeff
 
 using BrinkmanStokes: Refel, Tensor
@@ -405,7 +406,7 @@ end
 			J[st:en] = ind2;
 			val[st:en] = eM[:]
 		end
-		M = sparse(int64(I[:]),int64(J[:]),val[:],dof,dof);
+		M = sparse(convert(Array{Int64}, I[:]),convert(Array{Int64}, J[:]),val[:],dof,dof);
 		return M;
 	end
 	function assemble_stiffness(self, order)
@@ -491,8 +492,8 @@ end
 			# inv_stiff_val[st:en] = eMat_inv[:];
 		end
 
-		Iv=int64(I[:]);
-		Jv=int64(J[:]);
+		Iv=convert(Array{Int64}, I[:]);
+		Jv=convert(Array{Int64}, J[:]);
 		mv=mass_val[:];
 
 		M = sparse(Iv,Jv,mv,dof,dof);
@@ -508,8 +509,8 @@ end
 		J = [J; bdy];
 		stiff_val = [stiff_val; ones(length(bdy), 1)];
 		# inv_stiff_val = [inv_stiff_val; ones(length(bdy), 1)];
-		Iv=int64(I[:]);
-		Jv=int64(J[:]);
+		Iv=convert(Array{Int64}, I[:]);
+		Jv=convert(Array{Int64}, J[:]);
 		sv=stiff_val[:];
 		# isv=inv_stiff_val[:];
 
@@ -583,8 +584,8 @@ end
 			# inv_stiff_val[st:en] = eMat_inv[:];
 		end
 
-		Iv=int64(I[:]);
-		Jv=int64(J[:]);
+		Iv=convert(Array{Int64}, I[:]);
+		Jv=convert(Array{Int64}, J[:]);
 		mv=mass_val[:];
 
 		M = sparse(Iv,Jv,mv,dof,dof);
@@ -600,8 +601,8 @@ end
 		J = [J; bdy];
 		stiff_val = [stiff_val; ones(length(bdy), 1)];
 		# inv_stiff_val = [inv_stiff_val; ones(length(bdy), 1)];
-		Iv=int64(I[:]);
-		Jv=int64(J[:]);
+		Iv=convert(Array{Int64}, I[:]);
+		Jv=convert(Array{Int64}, J[:]);
 		sv=stiff_val[:];
 		# isv=inv_stiff_val[:];
 
@@ -832,10 +833,10 @@ end
 
 		# get euclidean distances between nodal points and centers of brinkman obstacles
 		R = pairwise(Euclidean(), pts', centers')
-		R[R .> 2] .= 2
+		# R[R .> 2] .= 2
 		# brinkman_pts[findall(R .< 0.025)] = 1e6
-		brinkman_pts[findall(R .< 0.075)] = 1e6
-		# brinkman_pts[findall(R .< 0.2)] = 1e6
+        # brinkman_pts[findall(R .< 0.075)] = 1e6
+        # brinkman_pts[findall(R .< 0.2)] = 1e6
 		brinkman_pts
 	end
 
@@ -1065,7 +1066,7 @@ end
 			eMat = element_stiffness(self, e, refel, detJac, Jac);
 			stiff_val[st:en] = eMat[:];
 		end
-		M = sparse(int64(I[:]),int64(J[:]),mass_val[:],dof,dof);
+		M = sparse(convert(Array{Int64}, I[:]),convert(Array{Int64}, J[:]),mass_val[:],dof,dof);
 		# zero dirichlet bdy conditions
 		bdy = get_boundary_node_indices(self, order);
 
@@ -1077,7 +1078,7 @@ end
 		J = [J; bdy];
 		stiff_val = [stiff_val; ones(length(bdy), 1)];
 
-		K = sparse(int64(I[:]),int64(J[:]),stiff_val[:],dof,dof);
+		K = sparse(convert(Array{Int64}, I[:]),convert(Array{Int64}, J[:]),stiff_val[:],dof,dof);
 		return K, M
 	end
 	function getGLLcoords(order, elems)

@@ -1,3 +1,5 @@
+using SparseArrays
+
 ###MG_Q1DIFF bilinear diffusion matrix generator for GMG
 # input
 # 	xy 				vertex coordinate vector

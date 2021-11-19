@@ -3,6 +3,7 @@ module Mesh
 import PyPlot
 using Distances
 using LinearAlgebra
+using SparseArrays
 export set_coeff
 
 using BrinkmanStokes: Refel, Tensor

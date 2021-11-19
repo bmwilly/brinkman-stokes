@@ -2,6 +2,8 @@ include("../diffusion/deriv.jl")
 include("../diffusion/qderiv.jl")
 include("../diffusion/lderiv.jl")
 
+using SparseArrays
+
 ###STOKES_Q2P1 Q2-P1 matrix generator
 # input
 #    xy          Q2 nodal coordinate vector
@@ -16,7 +18,9 @@ include("../diffusion/lderiv.jl")
 #    g           pressure RHS vector
 function stokes_brinkman_q2p1(grid, K)
 
-    xy = grid["xy"]; xyp = grid["xyp"]; mv = grid["mv"]
+    xy = grid["xy"]
+    xyp = grid["xyp"]
+    mv = grid["mv"]
 
     nngpt = 9
     x = xy[:, 1]
@@ -48,16 +52,34 @@ function stokes_brinkman_q2p1(grid, K)
     s = zeros(nngpt, 1)
     t = zeros(nngpt, 1)
     wt = zeros(nngpt, 1)
-    gpt = sqrt(0.6);
-    s[1] = -gpt; t[1] = -gpt; wt[1] = 25 / 81;
-    s[2] =  gpt; t[2] = -gpt; wt[2] = 25 / 81;
-    s[3] =  gpt; t[3] =  gpt; wt[3] = 25 / 81;
-    s[4] = -gpt; t[4] =  gpt; wt[4] = 25 / 81;
-    s[5] =  0.0; t[5] = -gpt; wt[5] = 40 / 81;
-    s[6] =  gpt; t[6] =  0.0; wt[6] = 40 / 81;
-    s[7] =  0.0; t[7] =  gpt; wt[7] = 40 / 81;
-    s[8] = -gpt; t[8] =  0.0; wt[8] = 40 / 81;
-    s[9] =  0.0; t[9] =  0.0; wt[9] = 64 / 81;
+    gpt = sqrt(0.6)
+    s[1] = -gpt
+    t[1] = -gpt
+    wt[1] = 25 / 81
+    s[2] = gpt
+    t[2] = -gpt
+    wt[2] = 25 / 81
+    s[3] = gpt
+    t[3] = gpt
+    wt[3] = 25 / 81
+    s[4] = -gpt
+    t[4] = gpt
+    wt[4] = 25 / 81
+    s[5] = 0.0
+    t[5] = -gpt
+    wt[5] = 40 / 81
+    s[6] = gpt
+    t[6] = 0.0
+    wt[6] = 40 / 81
+    s[7] = 0.0
+    t[7] = gpt
+    wt[7] = 40 / 81
+    s[8] = -gpt
+    t[8] = 0.0
+    wt[8] = 40 / 81
+    s[9] = 0.0
+    t[9] = 0.0
+    wt[9] = 64 / 81
 
     # inner loop over elements
     xlv = zeros(nel, 4)
@@ -149,15 +171,15 @@ function stokes_brinkman_q2p1(grid, K)
     # G = K .* G
 
     mats = Dict(
-      "A" => A, # velocity matrix
-      "B" => B, # vector velocity matrix
-      "G" => G, # mass matrix
-      "Q" => Q, # pressure matrix
-      "Bx" => BBx,
-      "By" => BBy,
-      "P" => K, # permeability tensor
-      "f" => f,
-      "g" => g
+        "A" => A, # velocity matrix
+        "B" => B, # vector velocity matrix
+        "G" => G, # mass matrix
+        "Q" => Q, # pressure matrix
+        "Bx" => BBx,
+        "By" => BBy,
+        "P" => K, # permeability tensor
+        "f" => f,
+        "g" => g
     )
 
 end

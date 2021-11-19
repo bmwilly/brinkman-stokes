@@ -785,12 +785,12 @@ end
 		if (self.dim == 2)
 			(x,y) = ndgrid(1:self.nelems[1]*order+1,1:self.nelems[2]*order+1);
 
-			idx = [ findin(x,1);findin(x,(self.nelems[1]*order+1));findin(y,1);findin(y,(self.nelems[2]*order+1))];
+			idx = [ findall(in(1), x);findall(in(self.nelems[1]*order+1),x);findall(in(1),y);findall(in(self.nelems[2]*order+1), y)];
 			idx = unique(sort(idx));
 		else
 			(x,y,z) = ndgrid(1:self.nelems[1]*order+1,1:self.nelems[2]*order+1,1:self.nelems[3]*order+1);
 
-			idx = [ findin(x,1); findin(x,(self.nelems[1]*order+1)); findin(y,1); findin(y,(self.nelems[2]*order+1)); findin(z,1); findin(z,(self.nelems[3]*order+1))];
+			idx = [ findall(in(1),x); findall(in(self.nelems[1]*order+1),x); findall(in(1),y); findall(in(self.nelems[2]*order+1),y); findall(in(1),z); findall(in(self.nelems[3]*order+1),z)];
 
 			idx = unique(sort(idx));
 		end
@@ -802,12 +802,12 @@ end
 		#    Jacobi smoother
 		if (self.dim == 2)
 			(x,y) = ndgrid(1:self.nelems[1]*order+1,1:self.nelems[2]*order+1);
-			idx = [ findin(mod(x,order),1);findin(mod(y,order),1);];
+			idx = [ findall(in(1),mod(x,order));findall(in(1),mod(y,order));];
 			idx = unique(sort(idx));
 		else
 			(x,y,z) = ndgrid(1:self.nelems[1]*order+1,1:self.nelems[2]*order+1,1:self.nelems[3]*order+1);
 
-			idx = [ findin(mod(x,order),1); findin(mod(y,order),1); findin(mod(z,order),1);];
+			idx = [ findall(in(1),mod(x,order)); findall(in(1),mod(y,order)); findall(in(1),mod(z,order));];
 
 			idx = unique(sort(idx));
 		end
@@ -1157,7 +1157,7 @@ end
 	end
 	function ismember(main_array, sub_array)
 		out=int8(zeros(length(main_array)))
-		match_index = findin(int64(main_array),int64(sub_array))
+		match_index = findall(in(int64(sub_array)),int64(main_array))
 		out[match_index]=1
 		out
 	end

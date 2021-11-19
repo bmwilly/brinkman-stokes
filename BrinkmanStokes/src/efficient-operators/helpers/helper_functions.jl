@@ -1,11 +1,12 @@
-function user_input(prompt::String="")
+function user_input(prompt::String = "")
     print(prompt)
     x = readline()
-    f(x) = try
-        parse(Int, x)
-    catch
-        x
-    end
+    f(x) =
+        try
+            parse(Int, x)
+        catch
+            x
+        end
     f(x)
 end
 
@@ -38,7 +39,7 @@ end
 
 function ismember(main_array, sub_array)
     out = Int8(zeros(length(main_array)))
-    match_index = findin(Int64(main_array), Int64(sub_array))
+    match_index = findall(in(Int64(sub_array)), Int64(main_array))
     out[match_index] = 1
     out
 end

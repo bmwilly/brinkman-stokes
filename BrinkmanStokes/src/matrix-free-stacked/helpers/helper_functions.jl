@@ -31,7 +31,7 @@ function meshgrid(vx, vy)
 end
 
 function ismember(main_array, sub_array)
-    out = int8(zeros(length(main_array)))
+    out = Int8.(zeros(length(main_array)))
     match_index = findall(in(int64(sub_array)), int64(main_array))
     out[match_index] = 1
     out

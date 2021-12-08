@@ -1157,8 +1157,8 @@ end
 	end
 	function ismember(main_array, sub_array)
 		out=Int8.(zeros(length(main_array)))
-		match_index = findall(in(int64(sub_array)),int64(main_array))
-		out[match_index]=1
+		match_index = findall(in(sub_array),main_array)
+		out[match_index] .= 1
 		out
 	end
 end

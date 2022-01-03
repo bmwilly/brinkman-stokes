@@ -500,11 +500,12 @@ end
 		M = sparse(Iv,Jv,mv,dof,dof);
 		# zero dirichlet bdy conditions
 		bdy = get_boundary_node_indices(self, order);
-		ii = ismember(I,bdy);
-		jj = ismember(J,bdy);
+		ii = convert(BitArray, ismember(I,bdy));
+		jj = convert(BitArray, ismember(J,bdy));
+		idx = Int.((.!ii) .* (.!jj))
 
-		stiff_val = stiff_val.*(int(!bool(ii))).*(int(!bool(jj)));
-		# inv_stiff_val = inv_stiff_val.*(int(!bool(ii))).*(int(!bool(jj)));
+		stiff_val = stiff_val.*(idx);
+		# inv_stiff_val = inv_stiff_val.*(idx);
 
 		I = [I; bdy];
 		J = [J; bdy];
@@ -592,11 +593,14 @@ end
 		M = sparse(Iv,Jv,mv,dof,dof);
 		# zero dirichlet bdy conditions
 		bdy = get_boundary_node_indices(self, order);
-		ii = ismember(I,bdy);
-		jj = ismember(J,bdy);
+		ii = convert(BitArray, ismember(I,bdy));
+		jj = convert(BitArray, ismember(J,bdy));
+		idx = Int.((.!ii) .* (.!jj))
 
-		stiff_val = stiff_val.*(int(!bool(ii))).*(int(!bool(jj)));
-		# inv_stiff_val = inv_stiff_val.*(int(!bool(ii))).*(int(!bool(jj)));
+		stiff_val = stiff_val.*(idx);
+		# inv_stiff_val = inv_stiff_val.*(idx);
+
+		2 + "asdf";
 
 		I = [I; bdy];
 		J = [J; bdy];
@@ -794,6 +798,7 @@ end
 
 			idx = unique(sort(idx));
 		end
+		# return map(i -> (i[2]-1)*10 + i[1], idx)
 		return idx
 	end
 	function get_element_boundary_node_indices(self, order)
@@ -1071,10 +1076,11 @@ end
 		# zero dirichlet bdy conditions
 		bdy = get_boundary_node_indices(self, order);
 
-		ii = ismember(I,bdy);
-		jj = ismember(J,bdy);
+		ii = convert(BitArray, ismember(I,bdy));
+		jj = convert(BitArray, ismember(J,bdy));
+		idx = Int.((.!ii) .* (.!jj))
 
-		stiff_val = stiff_val.*(int(!bool(ii))).*(int(!bool(jj)));
+		stiff_val = stiff_val.*(idx);
 		I = [I; bdy];
 		J = [J; bdy];
 		stiff_val = [stiff_val; ones(length(bdy), 1)];

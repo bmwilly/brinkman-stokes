@@ -600,7 +600,7 @@ end
 		stiff_val = stiff_val.*(idx);
 		# inv_stiff_val = inv_stiff_val.*(idx);
 
-		2 + "asdf";
+		# 2 + "asdf";
 
 		I = [I; bdy];
 		J = [J; bdy];

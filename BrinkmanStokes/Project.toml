@@ -1,6 +1,6 @@
 name = "BrinkmanStokes"
 uuid = "602420ef-525a-4173-a1a5-a096c4d1606e"
-authors = ["Brandon Williams <brandonwilliams9@gmail.com>"]
+authors = ["Brandon Williams <bwilliams9@pm.me>"]
 version = "0.1.0"
 
 [deps]

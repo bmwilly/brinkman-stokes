@@ -43,10 +43,10 @@ function q3deriv(s, t, xl, yl)
     # end
 
     for ivtx = 1:9
-        dxds[:] += xl[:,ivtx] .* onev * dchids[ivtx]
-        dxdt[:] += xl[:,ivtx] .* onev * dchidt[ivtx]
-        dyds[:] += yl[:,ivtx] .* onev * dchids[ivtx]
-        dydt[:] += yl[:,ivtx] .* onev * dchidt[ivtx]
+        dxds[:] += xl[:, ivtx] .* onev * dchids[ivtx]
+        dxdt[:] += xl[:, ivtx] .* onev * dchidt[ivtx]
+        dyds[:] += yl[:, ivtx] .* onev * dchids[ivtx]
+        dydt[:] += yl[:, ivtx] .* onev * dchidt[ivtx]
     end
 
     # for ivtx = 1:16

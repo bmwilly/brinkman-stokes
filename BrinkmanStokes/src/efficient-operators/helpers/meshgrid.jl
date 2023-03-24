@@ -7,7 +7,11 @@ function meshgrid(vx::AbstractVector{T}, vy::AbstractVector{T}) where {T}
     (repeat(vx, m, 1), repeat(vy, 1, n))
 end
 
-function meshgrid(vx::AbstractVector{T}, vy::AbstractVector{T}, vz::AbstractVector{T}) where {T}
+function meshgrid(
+    vx::AbstractVector{T},
+    vy::AbstractVector{T},
+    vz::AbstractVector{T},
+) where {T}
     m, n, o = length(vy), length(vx), length(vz)
     vx = reshape(vx, 1, n, 1)
     vy = reshape(vy, m, 1, 1)

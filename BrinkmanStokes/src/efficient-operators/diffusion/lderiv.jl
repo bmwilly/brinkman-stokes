@@ -30,10 +30,10 @@ function lderiv(s, t, xl, yl)
     invjac = copy(zerov)
 
     for ivtx = 1:4
-        dxds[:] += xl[:,ivtx] .* onev * dphids[ivtx]
-        dxdt[:] += xl[:,ivtx] .* onev * dphidt[ivtx]
-        dyds[:] += yl[:,ivtx] .* onev * dphids[ivtx]
-        dydt[:] += yl[:,ivtx] .* onev * dphidt[ivtx]
+        dxds[:] += xl[:, ivtx] .* onev * dphids[ivtx]
+        dxdt[:] += xl[:, ivtx] .* onev * dphidt[ivtx]
+        dyds[:] += yl[:, ivtx] .* onev * dphids[ivtx]
+        dydt[:] += yl[:, ivtx] .* onev * dphidt[ivtx]
     end
 
     chi = zeros(nel, 3)

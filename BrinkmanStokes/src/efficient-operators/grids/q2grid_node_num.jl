@@ -5,5 +5,5 @@
 # output
 #   node_num        number of nodes in the grid
 function q2grid_node_num(nelemx, nelemy)
-  (2nelemx + 1) * (2nelemy + 1)
+    (2nelemx + 1) * (2nelemy + 1)
 end

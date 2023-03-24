@@ -18,13 +18,19 @@ function qshape(s, t)
     dpsidt = zeros(9, 1)
 
     # one-dimensional shape functions
-    ellx[1] = 0.5s * (s - 1);       elly[1] = 0.5t * (t - 1)
-    ellx[2] = 1 - (s * s);          elly[2] = 1 - (t * t)
-    ellx[3] = 0.5s * (s + 1);       elly[3] = 0.5t * (t + 1)
+    ellx[1] = 0.5s * (s - 1)
+    elly[1] = 0.5t * (t - 1)
+    ellx[2] = 1 - (s * s)
+    elly[2] = 1 - (t * t)
+    ellx[3] = 0.5s * (s + 1)
+    elly[3] = 0.5t * (t + 1)
 
-    dellx[1] = s - 0.5;             delly[1] = t - 0.5
-    dellx[2] = -2s;                 delly[2] = -2t
-    dellx[3] = s + 0.5;             delly[3] = t + 0.5
+    dellx[1] = s - 0.5
+    delly[1] = t - 0.5
+    dellx[2] = -2s
+    delly[2] = -2t
+    dellx[3] = s + 0.5
+    delly[3] = t + 0.5
 
     # two-dimensional shape functions
     psi[1] = ellx[1] * elly[1]

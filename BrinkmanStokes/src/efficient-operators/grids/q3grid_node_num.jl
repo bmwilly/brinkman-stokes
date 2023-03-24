@@ -5,5 +5,5 @@
 # output
 #   node_num        number of nodes in the grid
 function q3grid_node_num(nelemx, nelemy)
-  (3nelemx + 1) * (3nelemy + 1)
+    (3nelemx + 1) * (3nelemy + 1)
 end

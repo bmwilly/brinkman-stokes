@@ -10,15 +10,15 @@
 # output
 #   node_num        number of nodes
 function grid_node_num(nelemx, nelemy, p)
-  # if element == 2
-  #   node_num = q2grid_node_num(nelemx, nelemy)
-  # elseif element == 3
-  #   node_num = q3grid_node_num(nelemx, nelemy)
-  # elseif element == 4
-  #   node_num = q4grid_node_num(nelemx, nelemy)
-  # else
-  #   error("invalide element type ...aborted...")
-  # end
-  # node_num
-  (p*nelemx + 1) * (p*nelemy + 1)
+    # if element == 2
+    #   node_num = q2grid_node_num(nelemx, nelemy)
+    # elseif element == 3
+    #   node_num = q3grid_node_num(nelemx, nelemy)
+    # elseif element == 4
+    #   node_num = q4grid_node_num(nelemx, nelemy)
+    # else
+    #   error("invalide element type ...aborted...")
+    # end
+    # node_num
+    (p * nelemx + 1) * (p * nelemy + 1)
 end

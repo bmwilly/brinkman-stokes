@@ -15,7 +15,7 @@ function hderiv(s, t, xl, yl)
     nel = length(xl[:, 1])
     ninel = length(xl[1, :])
     p = Int(sqrt(ninel))
-    nn = (p+1)*(p+1)
+    nn = (p + 1) * (p + 1)
     zerov = zeros(nel, 1)
     onev = ones(nel, 1)
 
@@ -31,10 +31,10 @@ function hderiv(s, t, xl, yl)
     invjac = copy(zerov)
 
     for ivtx = 1:ninel
-        dxds[:] += xl[:,ivtx] .* onev * dpsids[ivtx]
-        dxdt[:] += xl[:,ivtx] .* onev * dpsidt[ivtx]
-        dyds[:] += yl[:,ivtx] .* onev * dpsids[ivtx]
-        dydt[:] += yl[:,ivtx] .* onev * dpsidt[ivtx]
+        dxds[:] += xl[:, ivtx] .* onev * dpsids[ivtx]
+        dxdt[:] += xl[:, ivtx] .* onev * dpsidt[ivtx]
+        dyds[:] += yl[:, ivtx] .* onev * dpsids[ivtx]
+        dydt[:] += yl[:, ivtx] .* onev * dpsidt[ivtx]
     end
 
     jac[:] = dxds[:] .* dydt[:] - dxdt[:] .* dyds[:]

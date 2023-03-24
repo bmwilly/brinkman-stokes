@@ -35,7 +35,7 @@ function deriv(s, t, xl, yl)
         dydt[:] += yl[:, ivtx] .* onev * dphidt[ivtx]
     end
 
-    jac[:] = dxds[:].*dydt[:] - dxdt[:].*dyds[:]
+    jac[:] = dxds[:] .* dydt[:] - dxdt[:] .* dyds[:]
 
     # check element jacobian
     if any(jac .< 1e-9)

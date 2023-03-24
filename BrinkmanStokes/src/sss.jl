@@ -34,8 +34,8 @@ flowplot(sol, domain)
 # ux = reshape(u[1:nvtx], length(x), length(y))';
 # uy = reshape(u[nvtx+1:end], length(x), length(y))';
 #
-# DelimitedFiles.writedlm("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/x.csv", x)
-# DelimitedFiles.writedlm("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/y.csv", y)
-# DelimitedFiles.writedlm("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/ux.csv", ux)
-# DelimitedFiles.writedlm("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/uy.csv", uy)
-# DelimitedFiles.writedlm("$(homedir())/Documents/brinkman-stokes/julia-parallel/efficient-operators/temp/sol/kp.csv", kp)
+# DelimitedFiles.writedlm("efficient-operators/temp/sol/x.csv", x)
+# DelimitedFiles.writedlm("efficient-operators/temp/sol/y.csv", y)
+# DelimitedFiles.writedlm("efficient-operators/temp/sol/ux.csv", ux)
+# DelimitedFiles.writedlm("efficient-operators/temp/sol/uy.csv", uy)
+# DelimitedFiles.writedlm("efficient-operators/temp/sol/kp.csv", kp)

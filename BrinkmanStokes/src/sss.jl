@@ -12,7 +12,12 @@ include("efficient-operators/helpers/helper_functions.jl")
 # msize = user_input("Mesh size: ")
 domain = 2;
 msize = 2;
-@enter sol = solve_stokes(domain, msize)
+# @enter sol = solve_stokes(domain, msize)
+
+@debug begin
+    sol = solve_stokes(domain, msize)
+end
+
 println("done")
 flowplot(sol, domain)
 

@@ -8,6 +8,8 @@ export set_coeff
 
 using BrinkmanStokes: Refel, Tensor
 
+using Debugger
+
 mutable struct Hexmesh
     dim #==2	TODO=#
     nelems #==[8 8]	TODO=#
@@ -605,8 +607,6 @@ function assemble_poisson_brinkman(self, order, centers)
     stiff_val = [stiff_val; ones(length(bdy), 1)]
     # inv_stiff_val = [inv_stiff_val; ones(length(bdy), 1)];
 
-    # using Debugger
-    # @bp
     Iv = convert(Array{Int64}, I[:])
     Jv = convert(Array{Int64}, J[:])
     sv = stiff_val[:]

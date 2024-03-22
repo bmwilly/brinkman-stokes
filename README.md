@@ -10,14 +10,25 @@ Details and benchmarks can be found
 
 ## Setup
 
-All commands in this README assume you are in the `julia` REPL in the `BrinkmanStokes` folder:
+### Install julia
+
+Install julia using the [official instructions](<https://julialang.org/downloads/>), which will also install `juliaup`. Then
+
+```shell
+juliaup add 1.10.2
+juliaup default 1.10.2
+```
+
+### Install package and dependencies
+
+All `julia` commands should be run from the package directory `BrinkmanStokes`:
 
 ```shell
 cd BrinkmanStokes
 julia
 ```
 
-Install [julia](https://julialang.org/downloads/). Then
+Then
 
 ```julia
 julia> ]

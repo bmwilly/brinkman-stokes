@@ -1,9 +1,9 @@
-using Pkg
-Pkg.activate(".")
+# using Pkg
+# Pkg.activate(".")
 
-using Revise
+# using Revise
 using Debugger
-break_on(:error)
+# break_on(:error)
 
 using BrinkmanStokes
 
@@ -21,10 +21,7 @@ include("efficient-operators/helpers/helper_functions.jl")
 domain = 2;
 msize = 2;
 # @enter sol = solve_stokes(domain, msize)
-
-@debug begin
-    sol = solve_stokes(domain, msize)
-end
+sol = solve_stokes(domain, msize)
 
 println("done")
 flowplot(sol, domain)

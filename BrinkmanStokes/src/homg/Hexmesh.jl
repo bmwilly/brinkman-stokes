@@ -607,8 +607,10 @@ function assemble_poisson_brinkman(self, order, centers)
     stiff_val = [stiff_val; ones(length(bdy), 1)]
     # inv_stiff_val = [inv_stiff_val; ones(length(bdy), 1)];
 
-    Iv = convert(Array{Int64}, I[:])
-    Jv = convert(Array{Int64}, J[:])
+    @bp
+    Iv = [isa(index, CartesianIndex) ? LinearIndices(size(I))[index] : round(Int, index) for index in I[:]]
+    # Iv = convert(Array{Int64}, I[:])
+    # Jv = convert(Array{Int64}, J[:])
     sv = stiff_val[:]
     # isv=inv_stiff_val[:];
 

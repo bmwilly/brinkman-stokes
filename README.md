@@ -15,17 +15,15 @@ Details and benchmarks can be found
 Install julia using the [official instructions](<https://julialang.org/downloads/>), which will also install `juliaup`. Then
 
 ```shell
-juliaup add 1.10.2
-juliaup default 1.10.2
+$ juliaup add 1.10.2
+$ juliaup default 1.10.2
 ```
 
 ### Install package and dependencies
 
-All `julia` commands should be run from the package directory `BrinkmanStokes`:
-
 ```shell
-cd BrinkmanStokes
-julia
+$ cd BrinkmanStokes
+$ julia
 ```
 
 Then
@@ -47,10 +45,12 @@ matrix-free methods using matrix-matrix products.
 
 Example usage:
 
+```shell
+$ julia --project=BrinkmanStokes
+```
+
 ```julia
-julia> ]
-pkg> activate .
-julia> include("src/sss.jl")
+julia> include("BrinkmanStokes/src/sss.jl")
 ```
 
 will start an interactive session that will prompt

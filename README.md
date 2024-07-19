@@ -19,6 +19,30 @@ $ juliaup add 1.10.2
 $ juliaup default 1.10.2
 ```
 
+### Install Python
+
+Python is required for the plotting scripts. Install Python using your favorite method. We recommend using `pyenv`:
+
+```shell
+brew install pyenv  # on macOS
+pyenv install 3.12.3
+pyenv local 3.12.3
+pyenv -m venv env
+source env/bin/activate
+pip install -r requirements.txt
+```
+
+Then in julia:
+
+```julia
+ENV["PYTHON"] = "/Users/bwilliams/projects/personal/brinkman-stokes/env/bin/python"  # or wherever your python is
+
+using Pkg
+
+Pkg.add("PyCall")
+Pkg.build("PyCall")
+```
+
 ### Install package and dependencies
 
 ```shell

@@ -5,6 +5,9 @@
 using Debugger
 # break_on(:error)
 
+2 + 3.0
+println("does this work? ")
+
 using BrinkmanStokes
 
 # Revise.include("efficient-operators/stokes_flow/solve_stokes.jl")

@@ -1,12 +1,12 @@
-function bar(a, b)
+def bar(a, b):
     return a + b
-end
 
-function foo(a, b)
+
+def foo(a, b):
     c = bar(a, b)
-    println(c)
+    print(c)
     return c
-end
+
 
 d = 1
 e = foo(d, 2)

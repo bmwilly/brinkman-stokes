@@ -3,7 +3,7 @@ addpath(genpath('/Users/bwilliams/Documents/masters-thesis/MATLAB/homg'));
 % addpath(genpath('/Users/bwilliams/Documents/brinkman-stokes/matlab/matrix-free-tensor'));
 addpath(genpath('/Users/bwilliams/Documents/brinkman-stokes/matlab/global-matrix'));
 
-% order = 2; msize = 4; dim = 2; 
+% order = 2; msize = 4; dim = 2;
 % t = hos_homg(order, msize, dim);
 
 % orders = [2,3,4,5,6,7,8,9,10];
@@ -33,20 +33,20 @@ msizes = [8];
 % %   pts = m.element_nodes(1, refel);
 % %   [detJac, Jac] = m.geometric_factors(refel, pts);
 % %   eMat = m.element_stiffness(1, refel, detJac, Jac);
-% % 
+% %
 % %   params = struct('mesh', m, 'order', order,'dof', dof,'ne', ne, 'NP', NP,'bdy', bdy,'eMat', eMat)
-% % 
+% %
 % %   tic;
 % %   for cnt = 1:100; u = rand(2*dof, 1); w = ho_afun(u, params); end;
 % %   etoc = toc;
 %   otimes = [otimes t];
 % end
 
-mtimes = []; 
-dim = 2; 
+mtimes = [];
+dim = 2;
 order = 2;
-for msize = msizes 
-    t = hos_homg(order, msize, dim); 
+for msize = msizes
+    t = hos_homg(order, msize, dim);
     mtimes = [mtimes t];
 end
 

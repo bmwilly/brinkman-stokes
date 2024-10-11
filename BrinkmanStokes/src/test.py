@@ -3,7 +3,7 @@ def bar(a, b):
 
 
 def foo(a, b):
-    c = bar(a, b)
+    c = bar(a, "b")
     print(c)
     return c
 

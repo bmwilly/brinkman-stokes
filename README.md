@@ -15,8 +15,8 @@ Details and benchmarks can be found
 Install julia using the [official instructions](<https://julialang.org/downloads/>), which will also install `juliaup`. Then
 
 ```shell
-$ juliaup add 1.10.2
-$ juliaup default 1.10.2
+juliaup add 1.10.2
+juliaup default 1.10.2
 ```
 
 ### Install Python
@@ -27,15 +27,15 @@ Python is required for the plotting scripts. Install Python using your favorite 
 brew install pyenv  # on macOS
 pyenv install 3.12.3
 pyenv local 3.12.3
-pyenv -m venv env
-source env/bin/activate
+pyenv -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
 Then in julia:
 
 ```julia
-ENV["PYTHON"] = "/Users/bwilliams/projects/personal/brinkman-stokes/env/bin/python"  # or wherever your python is
+ENV["PYTHON"] = "/Users/bwilliams/projects/personal/brinkman-stokes/.venv/bin/python"  # or wherever your python is
 
 using Pkg
 
@@ -46,8 +46,8 @@ Pkg.build("PyCall")
 ### Install package and dependencies
 
 ```shell
-$ cd BrinkmanStokes
-$ julia
+cd BrinkmanStokes
+julia
 ```
 
 Then
@@ -70,7 +70,7 @@ matrix-free methods using matrix-matrix products.
 Example usage:
 
 ```shell
-$ julia --project=BrinkmanStokes
+julia --project=BrinkmanStokes
 ```
 
 ```julia

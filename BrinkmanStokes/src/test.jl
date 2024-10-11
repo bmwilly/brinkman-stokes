@@ -1,11 +1,11 @@
 function bar(a, b)
-    return a + b
+	return a + b
 end
 
 function foo(a, b)
-    c = bar(a, b)
-    println(c)
-    return c
+	c = bar(a, "b")
+	println(c)
+	return c
 end
 
 d = 1

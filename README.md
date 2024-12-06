@@ -15,8 +15,8 @@ Details and benchmarks can be found
 Install julia using the [official instructions](<https://julialang.org/downloads/>), which will also install `juliaup`. Then
 
 ```shell
-juliaup add 1.10.2
-juliaup default 1.10.2
+juliaup add 1.11
+juliaup default 1.11
 ```
 
 ### Install Python
@@ -43,21 +43,45 @@ Pkg.add("PyCall")
 Pkg.build("PyCall")
 ```
 
-### Install package and dependencies
+### Install packages
 
 ```shell
-cd BrinkmanStokes
-julia
+julia --project=BrinkmanStokes
 ```
 
 Then
 
 ```julia
 julia> ]
-pkg> activate .
 (BrinkmanStokes) pkg> instantiate
 (BrinkmanStokes) pkg> precompile
 ```
+
+#### Updating packages
+
+Use `juliaup` to install and use the desired version of Julia:
+
+```shell
+juliaup add <new_version>
+juliaup default <new_version>
+```
+
+Then start Julia:
+
+```shell
+julia --project=BrinkmanStokes
+```
+
+and update the packages:
+
+```julia
+julia> ]
+(BrinkmanStokes) pkg> update
+(BrinkmanStokes) pkg> instantiate
+(BrinkmanStokes) pkg> resolve
+```
+
+Then commit the changes to the `Manifest.toml` and `Project.toml` files.
 
 ## Basic usage
 

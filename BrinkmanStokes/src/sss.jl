@@ -23,7 +23,25 @@ include("efficient-operators/helpers/helper_functions.jl")
 # msize = user_input("Mesh size: ")
 domain = 2;
 msize = 2;
-# @enter sol = solve_stokes(domain, msize)
+
+# Check the dimensions of the centers matrix
+centers = [
+  0.15 0.2
+  0.17 0.45
+  0.15 0.8
+  0.3  0.3
+  0.4  0.55
+  0.4  0.8
+  0.7  0.4
+  0.7  0.8
+  0.8  0.1
+  0.9  0.35
+]
+if size(centers, 2) != 2
+    error("The centers matrix must have 2 columns.")
+end
+
+# Ensure the domain and msize variables are correctly passed
 sol = solve_stokes(domain, msize)
 
 println("done")

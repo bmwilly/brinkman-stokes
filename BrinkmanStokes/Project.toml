@@ -23,3 +23,4 @@ SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
 
 [compat]
 JuliaFormatter = "1.0.62"
+PyCall = "1.96.4"

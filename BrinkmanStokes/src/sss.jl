@@ -2,10 +2,9 @@
 # Pkg.activate(".")
 
 # using Revise
-using Debugger
+# using Debugger
 # break_on(:error)
 
-2 + 3.0
 println("does this work? ")
 
 using BrinkmanStokes

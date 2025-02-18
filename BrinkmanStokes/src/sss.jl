@@ -1,17 +1,13 @@
 # using Pkg
 # Pkg.activate(".")
 
-# using Revise
-# using Debugger
-# break_on(:error)
+using Revise
+using Debugger
+break_on(:error)
 
 println("does this work? ")
 
 using BrinkmanStokes
-
-# Revise.include("efficient-operators/stokes_flow/solve_stokes.jl")
-# Revise.include("efficient-operators/graphs/flowplot.jl")
-# Revise.include("efficient-operators/helpers/helper_functions.jl")
 
 include("efficient-operators/stokes_flow/solve_stokes.jl")
 include("efficient-operators/graphs/flowplot.jl")

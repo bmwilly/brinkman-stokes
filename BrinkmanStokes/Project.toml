@@ -23,6 +23,7 @@ SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
 
 [compat]
+DelimitedFiles = "1.9.1"
 JuliaFormatter = "1.0.62"
 LanguageServer = "4.5.1"
 PyCall = "1.96.4"

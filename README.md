@@ -21,15 +21,14 @@ juliaup default 1.11
 
 ### Install Python
 
-Python is required for the plotting scripts. Install Python using your favorite method. We recommend using `pyenv`:
+Python is required for the plotting scripts. Install Python using your favorite method. We recommend using [uv](https://docs.astral.sh/uv/):
 
 ```shell
-brew install pyenv  # on macOS
-pyenv install 3.12.3
-pyenv local 3.12.3
-pyenv -m venv .venv
+curl -LsSf https://astral.sh/uv/install.sh | sh  # install uv
+uv python install 3.12
+uv venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+uv synv
 ```
 
 Then in julia:

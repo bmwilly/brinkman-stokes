@@ -8,6 +8,8 @@ flow written in Julia.
 Details and benchmarks can be found
 [here](https://github.com/bmwilly/brinkman-stokes/blob/master/B.%20Williams%20-%20A%20scalable%20matrix-free%20Stokes-Brinkman%20solver%20in%20Julia.pdf).
 
+**NOTE**: This code and paper was for my master's thesis. It has been updated to use modern Julia. To view the code as it existed when I submitted my thesis, see the [thesis-submission](https://github.com/bmwilly/brinkman-stokes/tree/thesis-submission) tag.
+
 ## Setup
 
 ### Install julia

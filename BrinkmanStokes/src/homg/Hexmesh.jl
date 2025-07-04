@@ -607,9 +607,8 @@ function assemble_poisson_brinkman(self, order, centers)
 	stiff_val = [stiff_val; ones(length(bdy), 1)]
 	# inv_stiff_val = [inv_stiff_val; ones(length(bdy), 1)];
 
-	Iv = [isa(index, CartesianIndex) ? LinearIndices(size(I))[index[1], index[2]] : round(Int, index) for index in I[:]]
-	# Iv = convert(Array{Int64}, I[:])
-	# Jv = convert(Array{Int64}, J[:])
+	Iv = convert(Array{Int64}, I[:])
+	Jv = convert(Array{Int64}, J[:])
 	sv = stiff_val[:]
 	# isv=inv_stiff_val[:];
 
@@ -801,12 +800,19 @@ function get_boundary_node_indices(self, order)
 	if (self.dim == 2)
 		(x, y) = ndgrid(1:self.nelems[1]*order+1, 1:self.nelems[2]*order+1)
 
-		idx = [findall(in(1), x); findall(in(self.nelems[1] * order + 1), x); findall(in(1), y); findall(in(self.nelems[2] * order + 1), y)]
+		idx = [LinearIndices(x)[findall(in(1), x)]; LinearIndices(x)[findall(in(self.nelems[1] * order + 1), x)]; LinearIndices(x)[findall(in(1), y)]; LinearIndices(x)[findall(in(self.nelems[2] * order + 1), y)]]
 		idx = unique(sort(idx))
 	else
 		(x, y, z) = ndgrid(1:self.nelems[1]*order+1, 1:self.nelems[2]*order+1, 1:self.nelems[3]*order+1)
 
-		idx = [findall(in(1), x); findall(in(self.nelems[1] * order + 1), x); findall(in(1), y); findall(in(self.nelems[2] * order + 1), y); findall(in(1), z); findall(in(self.nelems[3] * order + 1), z)]
+		idx = [
+			LinearIndices(x)[findall(in(1), x)];
+			LinearIndices(x)[findall(in(self.nelems[1] * order + 1), x)];
+			LinearIndices(x)[findall(in(1), y)];
+			LinearIndices(x)[findall(in(self.nelems[2] * order + 1), y)];
+			LinearIndices(x)[findall(in(1), z)];
+			LinearIndices(x)[findall(in(self.nelems[3] * order + 1), z)]
+		]
 
 		idx = unique(sort(idx))
 	end
@@ -819,12 +825,12 @@ function get_element_boundary_node_indices(self, order)
 	#    Jacobi smoother
 	if (self.dim == 2)
 		(x, y) = ndgrid(1:self.nelems[1]*order+1, 1:self.nelems[2]*order+1)
-		idx = [findall(in(1), mod(x, order)); findall(in(1), mod(y, order))]
+		idx = [LinearIndices(x)[findall(in(1), mod(x, order))]; LinearIndices(x)[findall(in(1), mod(y, order))]]
 		idx = unique(sort(idx))
 	else
 		(x, y, z) = ndgrid(1:self.nelems[1]*order+1, 1:self.nelems[2]*order+1, 1:self.nelems[3]*order+1)
 
-		idx = [findall(in(1), mod(x, order)); findall(in(1), mod(y, order)); findall(in(1), mod(z, order))]
+		idx = [LinearIndices(x)[findall(in(1), mod(x, order))]; LinearIndices(x)[findall(in(1), mod(y, order))]; LinearIndices(x)[findall(in(1), mod(z, order))]]
 
 		idx = unique(sort(idx))
 	end

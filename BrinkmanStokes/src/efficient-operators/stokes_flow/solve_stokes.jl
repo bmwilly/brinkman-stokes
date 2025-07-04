@@ -2,6 +2,7 @@ using DelimitedFiles
 using KrylovMethods
 using PyPlot
 # using IterativeSolvers
+include("../../output_utils.jl")
 include("square_stokes.jl")
 include("brinkman_stokes.jl")
 include("flowbc.jl")
@@ -94,28 +95,20 @@ function solve_stokes(domain::Int, msize::Int)
 		println("GMRES reached desired tolerance at iteration $(length(resvec))")
 	end
 
-	# Define repo root for output files and plots
-	repo_root = joinpath(@__DIR__, "..")
-
-	# Create convergence plot
-	plots_dir = joinpath(repo_root, "output", "plots")
-	mkpath(plots_dir)
-
+	# Create convergence plot using unified output system
+	convergence_file = get_output_file("efficient-operators", domain, msize, "convergence.png"; subdir = "plots")
 	figure(figsize = (10, 6))
 	plot(1:length(resvec), log10.(resvec), "b-", linewidth = 2)
 	xlabel("Iteration")
 	ylabel("log₁₀(residual)")
-	title("GMRES Convergence")
+	title("GMRES Convergence (Domain=$domain, Size=$msize)")
 	grid(true)
-	convergence_file = joinpath(plots_dir, "convergence_msize$(msize).png")
 	savefig(convergence_file, dpi = 150, bbox_inches = "tight")
 	println("Convergence plot saved to: $(convergence_file)")
 	close("all")
 
-	# Write to output folder in repo root, regardless of current working directory
-	output_dir = joinpath(repo_root, "output")
-	mkpath(output_dir)  # Create output directory if it doesn't exist
-	outfile = joinpath(output_dir, "brinkman_iters$(msize).csv")
+	# Write CSV file using unified output system
+	outfile = get_output_file("efficient-operators", domain, msize, "convergence_data.csv")
 	DelimitedFiles.writedlm(outfile, log.(10, resvec))
 
 	sol = Dict(

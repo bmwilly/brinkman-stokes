@@ -1,4 +1,5 @@
 using PyPlot
+include("../../output_utils.jl")
 
 function flowplot(sol, domain)
 
@@ -36,25 +37,28 @@ function flowplot(sol, domain)
 	ux = reshape(u[1:nvtx], length(x), length(y))'
 	uy = reshape(u[nvtx+1:end], length(x), length(y))'
 
-	# Create output directory for plots
-	plots_dir = joinpath(@__DIR__, "../../../output/plots")
-	mkpath(plots_dir)
+	# Get msize from solution data
+	msize = sol["msize"]
 
+	# Create streamlines plot using unified output system
+	streamlines_file = get_output_file("efficient-operators", domain, msize, "streamlines.png"; subdir = "plots")
 	figure(figsize = (10, 8))
 	streamplot(x, y, ux, uy, density = 4, color = ux)
 	axis([-1, 1, -1, 1])
-	title("Streamlines")
+	title("Streamlines (Domain=$domain, Size=$msize)")
 	colorbar()
-	savefig(joinpath(plots_dir, "streamlines.png"), dpi = 150, bbox_inches = "tight")
-	println("Streamlines plot saved to: $(joinpath(plots_dir, "streamlines.png"))")
+	savefig(streamlines_file, dpi = 150, bbox_inches = "tight")
+	println("Streamlines plot saved to: $(streamlines_file)")
 
+	# Create velocity field plot using unified output system
+	velocity_file = get_output_file("efficient-operators", domain, msize, "velocity_field.png"; subdir = "plots")
 	figure(figsize = (10, 8))
 	# pcolor(x, y, kp, cmap = "Greys");
 	quiver(x, y, ux, uy, ux, scale = 20)
 	axis([-1, 1, -1, 1])
-	title("Velocity Field")
-	savefig(joinpath(plots_dir, "velocity_field.png"), dpi = 150, bbox_inches = "tight")
-	println("Velocity field plot saved to: $(joinpath(plots_dir, "velocity_field.png"))")
+	title("Velocity Field (Domain=$domain, Size=$msize)")
+	savefig(velocity_file, dpi = 150, bbox_inches = "tight")
+	println("Velocity field plot saved to: $(velocity_file)")
 
 	# Close figures to free memory
 	close("all")

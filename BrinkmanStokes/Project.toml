@@ -25,5 +25,6 @@ SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
 [compat]
 DelimitedFiles = "1.9.1"
 JuliaFormatter = "1.0.62"
+KrylovMethods = "0.6.0"
 LanguageServer = "4.5.1"
 PyCall = "1.96.4"

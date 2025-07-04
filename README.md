@@ -5,8 +5,84 @@
 High-order, parallel, matrix-free finite element solver for Stokes and Brinkman
 flow written in Julia.
 
-Details and bechmarks can be found
+Details and benchmarks can be found
 [here](https://github.com/bmwilly/brinkman-stokes/blob/master/B.%20Williams%20-%20A%20scalable%20matrix-free%20Stokes-Brinkman%20solver%20in%20Julia.pdf).
+
+**NOTE**: This code and paper was for my master's thesis. It has been updated to use modern Julia. To view the code as it existed when I submitted my thesis, see the [thesis-submission](https://github.com/bmwilly/brinkman-stokes/tree/thesis-submission) tag.
+
+## Setup
+
+### Install julia
+
+Install julia using the [official instructions](<https://julialang.org/downloads/>), which will also install `juliaup`. Then
+
+```shell
+juliaup add 1.11
+juliaup default 1.11
+```
+
+### Install Python
+
+Python is required for the plotting scripts. Install Python using your favorite method. We recommend using [uv](https://docs.astral.sh/uv/):
+
+```shell
+curl -LsSf https://astral.sh/uv/install.sh | sh  # install uv
+uv python install 3.12
+uv venv .venv
+source .venv/bin/activate
+uv synv
+```
+
+Then in julia:
+
+```julia
+ENV["PYTHON"] = "/Users/bwilliams/projects/personal/brinkman-stokes/.venv/bin/python"  # or wherever your python is
+
+using Pkg
+
+Pkg.add("PyCall")
+Pkg.build("PyCall")
+```
+
+### Install packages
+
+```shell
+julia --project=BrinkmanStokes
+```
+
+Then
+
+```julia
+julia> ]
+(BrinkmanStokes) pkg> instantiate
+(BrinkmanStokes) pkg> precompile
+```
+
+#### Updating packages
+
+Use `juliaup` to install and use the desired version of Julia:
+
+```shell
+juliaup add <new_version>
+juliaup default <new_version>
+```
+
+Then start Julia:
+
+```shell
+julia --project=BrinkmanStokes
+```
+
+and update the packages:
+
+```julia
+julia> ]
+(BrinkmanStokes) pkg> update
+(BrinkmanStokes) pkg> instantiate
+(BrinkmanStokes) pkg> resolve
+```
+
+Then commit the changes to the `Manifest.toml` and `Project.toml` files.
 
 ## Basic usage
 
@@ -17,11 +93,15 @@ assembled matrices, matrix-free methods using matrix-vector products, and
 matrix-free methods using matrix-matrix products.
 
 Example usage:
+
+```shell
+julia --project=BrinkmanStokes
 ```
-$ cd julia-parallel/efficient-operators
-$ julia
-julia> include("sss.jl")
+
+```julia
+julia> include("BrinkmanStokes/src/sss.jl")
 ```
+
 will start an interactive session that will prompt
 you for a type of test problem to solve (lid-driven cavity or Brinkman flow
 through obstacles), mesh size, preconditioning steps, etc.

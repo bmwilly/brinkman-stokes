@@ -30,7 +30,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh  # install uv
 uv python install 3.12
 uv venv .venv
 source .venv/bin/activate
-uv synv
+uv sync
 ```
 
 Then in julia:

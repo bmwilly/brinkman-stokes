@@ -4,6 +4,7 @@ using PyPlot
 # using IterativeSolvers
 using SparseArrays
 using Statistics
+using LinearAlgebra
 include("../../output_utils.jl")
 include("square_stokes.jl")
 include("brinkman_stokes.jl")
@@ -153,7 +154,22 @@ function solve_stokes(domain::Int, msize::Int; use_mg::Bool = false)
 
 	# Apply boundary conditions
 	println("Applying boundary conditions...")
-	Ast, Bst, fst, gst = flowbc(A, B, f, g, xy, bound, domain)
+	println("  Original system dimensions:")
+	println("    A matrix: $(size(A))")
+	println("    B matrix: $(size(B))")
+	println("    f vector: $(length(f))")
+	println("    g vector: $(length(g))")
+	println("    Boundary nodes: $(length(bound))")
+
+	@time begin
+		Ast, Bst, fst, gst = flowbc(A, B, f, g, xy, bound, domain)
+	end
+
+	println("  Constrained system dimensions:")
+	println("    Ast matrix: $(size(Ast))")
+	println("    Bst matrix: $(size(Bst))")
+	println("    fst vector: $(length(fst))")
+	println("    gst vector: $(length(gst))")
 
 	np = length(gst)
 	rhs = [fst; gst]
@@ -163,7 +179,9 @@ function solve_stokes(domain::Int, msize::Int; use_mg::Bool = false)
 
 	# Assemble saddle-point system matrix
 	println("Assembling saddle-point system...")
-	K = [Ast Bst'; Bst spzeros(np, np)]
+	@time begin
+		K = [Ast Bst'; Bst spzeros(np, np)]
+	end
 
 	println("  System matrix: $(size(K, 1))×$(size(K, 2))")
 	println("  Nonzeros: $(nnz(K))")
@@ -212,6 +230,13 @@ function solve_stokes(domain::Int, msize::Int; use_mg::Bool = false)
 	tol = 1e-6                       # Convergence tolerance
 	maxIter = 100                    # Maximum iterations
 
+	# Add timeout for large problems
+	timeout_seconds = 300  # 5 minutes timeout
+	if size(K, 1) > 10000
+		timeout_seconds = 1800  # 30 minutes for very large problems
+		println("  Large system detected - extending timeout to $(timeout_seconds/60) minutes")
+	end
+
 	println("GMRES Configuration:")
 	println("  Restart: $(restrt)")
 	println("  Tolerance: $(tol)")
@@ -219,14 +244,114 @@ function solve_stokes(domain::Int, msize::Int; use_mg::Bool = false)
 	println("  Preconditioning: $(use_mg ? "Multigrid" : "None")")
 	println()
 
-	# Solve the linear system
-	println("Solving linear system...")
+	# Analyze system properties before solving
+	println("Analyzing system matrix properties...")
 	@time begin
-		xst, flag, err, iter, resvec = gmres(
-			K, rhs, restrt;
-			tol = tol, maxIter = maxIter, M = M, out = 1,
-		)
+		println("  Matrix dimensions: $(size(K))")
+		println("  Matrix nnz: $(nnz(K))")
+		println("  Matrix density: $(round(nnz(K)/length(K)*100, digits=4))%")
+
+		# Check matrix symmetry
+		K_symmetric = ishermitian(K)
+		println("  Matrix is symmetric: $(K_symmetric)")
+
+		# Sample some matrix-vector products for timing
+		test_vec = randn(size(K, 2))
+		@time K_test = K * test_vec
+		println("  Sample matrix-vector product completed")
+
+		# Check for obvious issues
+		rhs_norm = norm(rhs)
+		println("  RHS norm: $(rhs_norm)")
+		if rhs_norm < 1e-14
+			println("  WARNING: RHS norm is very small - may indicate singular system")
+		end
+
+		# Check diagonal entries
+		K_diag = diag(K)
+		min_diag = minimum(abs.(K_diag[K_diag.!=0]))
+		max_diag = maximum(abs.(K_diag))
+		println("  Diagonal entries - min: $(min_diag), max: $(max_diag)")
+		if min_diag / max_diag < 1e-12
+			println("  WARNING: Large diagonal ratio suggests ill-conditioning")
+		end
+
+		# Memory usage estimate
+		matrix_memory_mb = (nnz(K) * 16 + size(K, 1) * 8) / 1024^2  # 16 bytes per nonzero + 8 per index
+		println("  Estimated matrix memory: $(round(matrix_memory_mb, digits=2)) MB")
 	end
+	println()
+
+	# Create custom GMRES callback for detailed logging
+	iteration_count = 0
+	last_log_time = time()
+
+	function gmres_callback(x, r)
+		global iteration_count, last_log_time
+		iteration_count += 1
+		current_time = time()
+
+		if iteration_count == 1 || iteration_count % 10 == 0 || (current_time - last_log_time) > 30.0
+			residual_norm = norm(r)
+			println("  GMRES iteration $(iteration_count): residual = $(residual_norm)")
+			last_log_time = current_time
+		end
+
+		# Check for stagnation
+		if iteration_count > 50 && length(resvec) > 10
+			recent_progress = resvec[end-9] / resvec[end]
+			if recent_progress < 1.01  # Less than 1% improvement over 10 iterations
+				println("  WARNING: GMRES appears to be stagnating (progress ratio: $(recent_progress))")
+			end
+		end
+
+		return false  # Continue iteration
+	end
+
+	# Solve the linear system with timeout
+	println("Solving linear system...")
+	println("Starting GMRES iteration...")
+	println("Timeout set to: $(timeout_seconds) seconds")
+	start_solve_time = time()
+
+	# Wrap GMRES in a timeout mechanism
+	solve_task = @async begin
+		gmres(K, rhs, restrt; tol = tol, maxIter = maxIter, M = M, out = 1)
+	end
+
+	# Check for timeout
+	xst, flag, err, iter, resvec = nothing, -99, Inf, 0, Float64[]
+	solve_completed = false
+
+	while !solve_completed && (time() - start_solve_time) < timeout_seconds
+		if istaskdone(solve_task)
+			try
+				xst, flag, err, iter, resvec = fetch(solve_task)
+				solve_completed = true
+			catch e
+				println("ERROR: GMRES failed with exception: $e")
+				break
+			end
+		else
+			sleep(1.0)  # Check every second
+			elapsed = time() - start_solve_time
+			if elapsed > 30 && elapsed % 30 < 1  # Log every 30 seconds after first 30 seconds
+				println("  GMRES still running... elapsed time: $(round(elapsed, digits=1))s")
+			end
+		end
+	end
+
+	if !solve_completed
+		println("ERROR: GMRES timed out after $(timeout_seconds) seconds")
+		println("Consider:")
+		println("  1. Using multigrid preconditioning (set use_mg=true)")
+		println("  2. Reducing mesh size")
+		println("  3. Checking matrix conditioning")
+		error("GMRES solver timeout - system may be ill-conditioned")
+	end
+
+	solve_time = time() - start_solve_time
+	println("Total solve time: $(round(solve_time, digits=2)) seconds")
 
 	# Report convergence results
 	println()

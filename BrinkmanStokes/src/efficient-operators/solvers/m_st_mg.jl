@@ -8,25 +8,27 @@ include("mg_iter.jl")
 # 	x_it 			result of MG preconditioning operation
 function m_st_mg(x_it, mparams)
 
-    nv = mparams["nv"]; np = size(mparams["Q"], 1); nu = nv / 2
-    rvx = x_it[1:nu]
-    rvy = x_it[(nu + 1):nv]
-    rp = x_it[(nv + 1):(nv + np)]
+	nv = mparams["nv"]
+	np = size(mparams["Q"], 1)
+	nu = nv ÷ 2
+	rvx = x_it[1:nu]
+	rvy = x_it[(nu+1):nv]
+	rp = x_it[(nv+1):(nv+np)]
 
-    zvx = mg_iter(
-        mparams["mgdata"], zeros(size(rvx)), rvx,
-        mparams["smooth_data"], mparams["nc"],
-        mparams["npre"], mparams["npost"], mparams["sweeps"]
-    )
+	zvx = mg_iter(
+		mparams["mgdata"], zeros(size(rvx)), rvx,
+		mparams["smooth_data"], mparams["nc"],
+		mparams["npre"], mparams["npost"], mparams["sweeps"],
+	)
 
-    zvy = mg_iter(
-        mparams["mgdata"], zeros(size(rvy)), rvy,
-        mparams["smooth_data"], mparams["nc"],
-        mparams["npre"], mparams["npost"], mparams["sweeps"]
-    )
+	zvy = mg_iter(
+		mparams["mgdata"], zeros(size(rvy)), rvy,
+		mparams["smooth_data"], mparams["nc"],
+		mparams["npre"], mparams["npost"], mparams["sweeps"],
+	)
 
-    zp = diag(mparams["Q"]) .\ rp
+	zp = diag(mparams["Q"]) .\ rp
 
-    return x_it = [zvx; zvy; zp]
+	return x_it = [zvx; zvy; zp]
 
 end

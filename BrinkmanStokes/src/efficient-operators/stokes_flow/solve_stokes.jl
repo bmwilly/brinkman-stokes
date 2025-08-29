@@ -154,25 +154,14 @@ function solve_stokes(domain::Int, msize::Int; use_mg::Bool = false)
 
 	# Apply boundary conditions
 	println("Applying boundary conditions...")
-	println("  Original system dimensions:")
-	println("    A matrix: $(size(A))")
-	println("    B matrix: $(size(B))")
-	println("    f vector: $(length(f))")
-	println("    g vector: $(length(g))")
-	println("    Boundary nodes: $(length(bound))")
+	println("  Boundary nodes: $(length(bound))")
 
 	@time begin
 		Ast, Bst, fst, gst = flowbc(A, B, f, g, xy, bound, domain)
 	end
 
-	println("  Constrained system dimensions:")
-	println("    Ast matrix: $(size(Ast))")
-	println("    Bst matrix: $(size(Bst))")
-	println("    fst vector: $(length(fst))")
-	println("    gst vector: $(length(gst))")
-
 	np = length(gst)
-	rhs = [fst; gst]
+	rhs = vec([fst; gst])  # Ensure RHS is a Vector, not Matrix
 
 	println("  Constrained velocity DOFs: $(size(Ast, 1))")
 	println("  Pressure DOFs: $(np)")
@@ -244,69 +233,32 @@ function solve_stokes(domain::Int, msize::Int; use_mg::Bool = false)
 	println("  Preconditioning: $(use_mg ? "Multigrid" : "None")")
 	println()
 
-	# Analyze system properties before solving
-	println("Analyzing system matrix properties...")
-	@time begin
-		println("  Matrix dimensions: $(size(K))")
-		println("  Matrix nnz: $(nnz(K))")
-		println("  Matrix density: $(round(nnz(K)/length(K)*100, digits=4))%")
+	# Quick system validation
+	println("Validating system matrix...")
 
-		# Check matrix symmetry
-		K_symmetric = ishermitian(K)
-		println("  Matrix is symmetric: $(K_symmetric)")
+	# Check for problematic values
+	K_has_nan = any(isnan, K.nzval)
+	K_has_inf = any(isinf, K.nzval)
+	rhs_has_nan = any(isnan, rhs)
+	rhs_has_inf = any(isinf, rhs)
 
-		# Sample some matrix-vector products for timing
-		test_vec = randn(size(K, 2))
-		@time K_test = K * test_vec
-		println("  Sample matrix-vector product completed")
+	if K_has_nan || K_has_inf || rhs_has_nan || rhs_has_inf
+		println("  ERROR: Matrix or RHS contains NaN/Inf values!")
+		println("  Matrix NaN: $(K_has_nan), Inf: $(K_has_inf)")
+		println("  RHS NaN: $(rhs_has_nan), Inf: $(rhs_has_inf)")
+		error("System contains invalid values - check matrix assembly")
+	end
 
-		# Check for obvious issues
-		rhs_norm = norm(rhs)
-		println("  RHS norm: $(rhs_norm)")
-		if rhs_norm < 1e-14
-			println("  WARNING: RHS norm is very small - may indicate singular system")
-		end
+	# Basic system info
+	rhs_norm = norm(rhs)
+	println("  System size: $(size(K, 1)), RHS norm: $(round(rhs_norm, digits=3))")
 
-		# Check diagonal entries
-		K_diag = diag(K)
-		min_diag = minimum(abs.(K_diag[K_diag.!=0]))
-		max_diag = maximum(abs.(K_diag))
-		println("  Diagonal entries - min: $(min_diag), max: $(max_diag)")
-		if min_diag / max_diag < 1e-12
-			println("  WARNING: Large diagonal ratio suggests ill-conditioning")
-		end
-
-		# Memory usage estimate
-		matrix_memory_mb = (nnz(K) * 16 + size(K, 1) * 8) / 1024^2  # 16 bytes per nonzero + 8 per index
-		println("  Estimated matrix memory: $(round(matrix_memory_mb, digits=2)) MB")
+	if rhs_norm < 1e-14
+		println("  WARNING: RHS norm is very small - may indicate singular system")
 	end
 	println()
 
-	# Create custom GMRES callback for detailed logging
-	iteration_count = 0
-	last_log_time = time()
 
-	function gmres_callback(x, r)
-		global iteration_count, last_log_time
-		iteration_count += 1
-		current_time = time()
-
-		if iteration_count == 1 || iteration_count % 10 == 0 || (current_time - last_log_time) > 30.0
-			residual_norm = norm(r)
-			println("  GMRES iteration $(iteration_count): residual = $(residual_norm)")
-			last_log_time = current_time
-		end
-
-		# Check for stagnation
-		if iteration_count > 50 && length(resvec) > 10
-			recent_progress = resvec[end-9] / resvec[end]
-			if recent_progress < 1.01  # Less than 1% improvement over 10 iterations
-				println("  WARNING: GMRES appears to be stagnating (progress ratio: $(recent_progress))")
-			end
-		end
-
-		return false  # Continue iteration
-	end
 
 	# Solve the linear system with timeout
 	println("Solving linear system...")
@@ -314,44 +266,46 @@ function solve_stokes(domain::Int, msize::Int; use_mg::Bool = false)
 	println("Timeout set to: $(timeout_seconds) seconds")
 	start_solve_time = time()
 
-	# Wrap GMRES in a timeout mechanism
-	solve_task = @async begin
-		gmres(K, rhs, restrt; tol = tol, maxIter = maxIter, M = M, out = 1)
-	end
-
-	# Check for timeout
+	# Try direct solve first to get better error messages
 	xst, flag, err, iter, resvec = nothing, -99, Inf, 0, Float64[]
 	solve_completed = false
 
-	while !solve_completed && (time() - start_solve_time) < timeout_seconds
-		if istaskdone(solve_task)
-			try
-				xst, flag, err, iter, resvec = fetch(solve_task)
-				solve_completed = true
-			catch e
-				println("ERROR: GMRES failed with exception: $e")
-				break
-			end
-		else
-			sleep(1.0)  # Check every second
-			elapsed = time() - start_solve_time
-			if elapsed > 30 && elapsed % 30 < 1  # Log every 30 seconds after first 30 seconds
-				println("  GMRES still running... elapsed time: $(round(elapsed, digits=1))s")
-			end
+	try
+		println("Attempting direct GMRES solve...")
+		@time xst, flag, err, iter, resvec = gmres(K, rhs, restrt; tol = tol, maxIter = maxIter, M = M, out = 1)
+		solve_time = time() - start_solve_time
+		println("GMRES completed successfully in $(round(solve_time, digits=2)) seconds!")
+		solve_completed = true
+	catch direct_error
+		println("Direct GMRES failed: $(typeof(direct_error))")
+		println("Error message: $direct_error")
+
+		# Print more detailed error information
+		if isa(direct_error, BoundsError)
+			println("This is likely a dimension mismatch in the system.")
+			println("Check that matrix and vector dimensions are compatible.")
+		elseif isa(direct_error, LinearAlgebra.SingularException)
+			println("Matrix is singular - system has no unique solution.")
+			println("Check boundary conditions and matrix assembly.")
+		elseif isa(direct_error, OutOfMemoryError)
+			println("Out of memory - try reducing mesh size.")
 		end
+
+		println("\n" * "="^60)
+		println("GMRES SOLVER FAILED")
+		println("="^60)
+		println("The GMRES solver crashed during execution.")
+		println("This suggests a fundamental problem with the system setup.")
+		println("\nDiagnostic suggestions:")
+		println("  • Verify matrix dimensions match RHS vector")
+		println("  • Check for singular or ill-conditioned matrices")
+		println("  • Try a smaller mesh size (msize=$(max(1, msize-1)))")
+		println("  • Enable multigrid preconditioning (use_mg=true)")
+		println("  • Verify boundary conditions are correctly applied")
+		error("GMRES solver failed during execution - see error details above")
 	end
 
-	if !solve_completed
-		println("ERROR: GMRES timed out after $(timeout_seconds) seconds")
-		println("Consider:")
-		println("  1. Using multigrid preconditioning (set use_mg=true)")
-		println("  2. Reducing mesh size")
-		println("  3. Checking matrix conditioning")
-		error("GMRES solver timeout - system may be ill-conditioned")
-	end
 
-	solve_time = time() - start_solve_time
-	println("Total solve time: $(round(solve_time, digits=2)) seconds")
 
 	# Report convergence results
 	println()

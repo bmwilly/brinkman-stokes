@@ -15,12 +15,12 @@ function square_stokes(msize)
     stokes_mats = stokes_q2p1(grid)
 
     bounds = {
-      "bound" => cavity_grid["bound"],
-      "bndxy" => cavity_grid["bndxy"],
-      "bnde" => cavity_grid["bnde"],
-      "obs" => cavity_grid["obs"]
+        "bound" => cavity_grid["bound"],
+        "bndxy" => cavity_grid["bndxy"],
+        "bnde" => cavity_grid["bnde"],
+        "obs" => cavity_grid["obs"],
     }
 
-    kparams = merge(stokes_mats, grid, bounds, {"msize" => msize})
+    return kparams = merge(stokes_mats, grid, bounds, {"msize" => msize})
 
 end

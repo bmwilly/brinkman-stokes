@@ -7,15 +7,15 @@
 #   f       RHS vector
 function streambc(f, kparams)
 
-  xy = kparams["xy"]; bound = kparams["bound"]
+    xy = kparams["xy"]; bound = kparams["bound"]
 
-  nvtx = length(f)
-  fx = f[1:nvtx]
+    nvtx = length(f)
+    fx = f[1:nvtx]
 
-  # set boundary condition
-  xbd = xy[bound, 1]
-  bcx = 0 * xbd
-  fx[bound] = bcx
-  fx
+    # set boundary condition
+    xbd = xy[bound, 1]
+    bcx = 0 * xbd
+    fx[bound] = bcx
+    return fx
 
 end

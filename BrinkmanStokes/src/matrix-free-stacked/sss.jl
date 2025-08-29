@@ -19,5 +19,5 @@ println("done")
 doplot = input("Create plot? (y/n): ")
 
 if doplot == "y"
-	flowplot(sol, kparams, domain)
+    flowplot(sol, kparams, domain)
 end

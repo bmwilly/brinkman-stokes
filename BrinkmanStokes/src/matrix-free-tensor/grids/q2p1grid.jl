@@ -12,21 +12,21 @@
 #     ee            element edge connection matrix
 function q2p1grid(grid)
 
-    x = grid["x"]; y = grid["y"]; xy = grid["xy"];
+    x = grid["x"]; y = grid["y"]; xy = grid["xy"]
     mv = grid["mv"]; bound = grid["bound"]
 
-  ## centroid coordinate vector
+    ## centroid coordinate vector
     xx = xy[:, 1]
     yy = xy[:, 2]
     nvtx = length(xx)
     nel = length(mv[:, 1])
 
-  ## recompute mid-side points in the case of stretched grids
-  # y-direction
+    ## recompute mid-side points in the case of stretched grids
+    # y-direction
     yv = yy
     ny = length(y)
 
-    for k = 2:2:ny
+    for k in 2:2:ny
         yold = y[k]
         ynew = 0.5 * (y[k + 1] + y[k - 1])
         l = findall(yy == yold)
@@ -34,11 +34,11 @@ function q2p1grid(grid)
         y[k] = ynew
     end
 
-  # x-direction
+    # x-direction
     xv = xx
     nx = length(x)
 
-    for k = 2:2:nx
+    for k in 2:2:nx
         xold = x[k]
         xnew = 0.5 * (x[k + 1] + x[k - 1])
         l = findall(xx == xold)
@@ -48,29 +48,29 @@ function q2p1grid(grid)
 
     xy = [xv yv]
 
-  # centroid coordinates
+    # centroid coordinates
     xc = zeros(nel, 1)
     yc = zeros(nel, 1)
-    for ielem = 1:nel
+    for ielem in 1:nel
         xc[ielem] = mean(xx[mv[ielem, 1:4]])
         yc[ielem] = mean(yy[mv[ielem, 1:4]])
     end
 
     xyp = [xc yc]
 
-  # compute edge to edge connection array ee
+    # compute edge to edge connection array ee
     np = nel
-  # initialize global matrices
+    # initialize global matrices
     adj = spzeros(nvtx, nvtx)
     ee = []
 
-    grid_out = {
-    "x" => x,
-    "y" => y,
-    "xy" => xy,
-    "xyp" => xyp,
-    "ee" => ee,
-    "mv" => mv
-  }
+    return grid_out = {
+        "x" => x,
+        "y" => y,
+        "xy" => xy,
+        "xyp" => xyp,
+        "ee" => ee,
+        "mv" => mv,
+    }
 
 end

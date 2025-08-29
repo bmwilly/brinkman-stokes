@@ -63,5 +63,5 @@ function qshape(s, t)
     dpsidt[8] = ellx[1] * delly[2]
     dpsidt[9] = ellx[2] * delly[2]
 
-    (psi, dpsids, dpsidt)
+    return (psi, dpsids, dpsidt)
 end

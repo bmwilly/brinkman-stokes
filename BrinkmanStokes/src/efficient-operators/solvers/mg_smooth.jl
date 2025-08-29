@@ -13,7 +13,7 @@ function mg_smooth(As, level, sweeps, smooth, stype)
 
     Qs = Array{Dict}(undef, Int(level))
 
-    for i = level:-1:2
+    for i in level:-1:2
         A = As[i]["matrix"]
         N = size(A, 1)
         n = sqrt(N)
@@ -25,11 +25,11 @@ function mg_smooth(As, level, sweeps, smooth, stype)
 
             if sweeps >= 2
                 Q2 = diagm(diag(A, 0)) +
-                     diagm(diag(A, -n), -n) +
-                     diagm(diag(A, n), n) +
-                     diagm(diag(A, -n - 1), -n - 1) +
-                     diagm(diag(A, -1), -1) +
-                     diagm(diag(A, n - 1), n - 1)
+                    diagm(diag(A, -n), -n) +
+                    diagm(diag(A, n), n) +
+                    diagm(diag(A, -n - 1), -n - 1) +
+                    diagm(diag(A, -1), -1) +
+                    diagm(diag(A, n - 1), n - 1)
 
                 (L2, U2) = lu(Q2)
 
@@ -39,11 +39,11 @@ function mg_smooth(As, level, sweeps, smooth, stype)
 
                     if sweeps == 4
                         Q4 = diagm(diag(A, 0)) +
-                             diagm(diag(A, -n), -n) +
-                             diagm(diag(A, n), n) +
-                             diagm(diag(A, n + 1), n + 1) +
-                             diagm(diag(A, 1), 1) +
-                             diagm(diag(A, -n + 1), -n + 1)
+                            diagm(diag(A, -n), -n) +
+                            diagm(diag(A, n), n) +
+                            diagm(diag(A, n + 1), n + 1) +
+                            diagm(diag(A, 1), 1) +
+                            diagm(diag(A, -n + 1), -n + 1)
 
                         (L4, U4) = lu(Q4)
 
@@ -110,6 +110,6 @@ function mg_smooth(As, level, sweeps, smooth, stype)
 
     end # for loop
 
-    Qs
+    return Qs
 
 end

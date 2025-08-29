@@ -17,12 +17,12 @@ function fbc(domain, kparams)
     # get boundary
     xbd = xy[bound, 1]; ybd = xy[bound, 2]
     if domain == 1
-      (bcx, bcy) = regcavity_flow(xbd, ybd)
-      af(bc, kparams) = afun(bc, kparams)
+        (bcx, bcy) = regcavity_flow(xbd, ybd)
+        af(bc, kparams) = afun(bc, kparams)
     elseif domain == 2
-      (bcx, bcy) = poiseuille_flow(xbd, ybd)
-      # af(bc, kparams) = ho_afun_nobc(bc, kparams)
-      af(bc, kparams) = ho_afun(bc, kparams)
+        (bcx, bcy) = poiseuille_flow(xbd, ybd)
+        # af(bc, kparams) = ho_afun_nobc(bc, kparams)
+        af(bc, kparams) = ho_afun(bc, kparams)
     end
 
     # impose boundary conditions
@@ -36,11 +36,11 @@ function fbc(domain, kparams)
     w -= btfun(bc, kparams)
 
     wx = w[1:nvtx]
-    wy = w[nvtx + 1:nu]
-    wp = w[nu + 1:nu + np]
+    wy = w[(nvtx + 1):nu]
+    wp = w[(nu + 1):(nu + np)]
 
     wx[bound] = bcx
     wy[bound] = bcy
 
-    w = vec([wx; wy])
+    return w = vec([wx; wy])
 end

@@ -67,109 +67,109 @@ xy = stokes_grid["xy"]    # Corrected velocity coordinates
 [`cavity_domain`](@ref), [`stokes_q2p1`](@ref)
 """
 function q2p1grid(grid::Dict)
-	# Extract velocity grid data
-	x = copy(grid["x"])
-	y = copy(grid["y"])
-	xy = copy(grid["xy"])
-	mv = grid["mv"]
-	bound = grid["bound"]
+    # Extract velocity grid data
+    x = copy(grid["x"])
+    y = copy(grid["y"])
+    xy = copy(grid["xy"])
+    mv = grid["mv"]
+    bound = grid["bound"]
 
-	# Grid dimensions
-	nvtx = size(xy, 1)        # Number of velocity nodes
-	nel = size(mv, 1)         # Number of elements
-	nx, ny = length(x), length(y)
+    # Grid dimensions
+    nvtx = size(xy, 1)        # Number of velocity nodes
+    nel = size(mv, 1)         # Number of elements
+    nx, ny = length(x), length(y)
 
-	println("Generating Q2-P1 grid from Q2 velocity grid")
-	println("  Velocity nodes: $(nvtx)")
-	println("  Elements: $(nel)")
-	println("  Grid size: $(nx)×$(ny)")
+    println("Generating Q2-P1 grid from Q2 velocity grid")
+    println("  Velocity nodes: $(nvtx)")
+    println("  Elements: $(nel)")
+    println("  Grid size: $(nx)×$(ny)")
 
-	# Correct mid-side points for stretched grids
-	println("  Correcting mid-side node positions...")
+    # Correct mid-side points for stretched grids
+    println("  Correcting mid-side node positions...")
 
-	# Extract coordinate arrays for easier manipulation
-	xx = xy[:, 1]
-	yy = xy[:, 2]
+    # Extract coordinate arrays for easier manipulation
+    xx = xy[:, 1]
+    yy = xy[:, 2]
 
-	# Correct y-direction mid-side points
-	for k in 2:2:ny
-		y_old = y[k]
-		y_new = 0.5 * (y[k+1] + y[k-1])  # True geometric center
+    # Correct y-direction mid-side points
+    for k in 2:2:ny
+        y_old = y[k]
+        y_new = 0.5 * (y[k + 1] + y[k - 1])  # True geometric center
 
-		# Find and update all nodes with this y-coordinate
-		node_indices = findall(yy .≈ y_old)
-		yy[node_indices] .= y_new
-		y[k] = y_new
-	end
+        # Find and update all nodes with this y-coordinate
+        node_indices = findall(yy .≈ y_old)
+        yy[node_indices] .= y_new
+        y[k] = y_new
+    end
 
-	# Correct x-direction mid-side points
-	for k in 2:2:nx
-		x_old = x[k]
-		x_new = 0.5 * (x[k+1] + x[k-1])  # True geometric center
+    # Correct x-direction mid-side points
+    for k in 2:2:nx
+        x_old = x[k]
+        x_new = 0.5 * (x[k + 1] + x[k - 1])  # True geometric center
 
-		# Find and update all nodes with this x-coordinate
-		node_indices = findall(xx .≈ x_old)
-		xx[node_indices] .= x_new
-		x[k] = x_new
-	end
+        # Find and update all nodes with this x-coordinate
+        node_indices = findall(xx .≈ x_old)
+        xx[node_indices] .= x_new
+        x[k] = x_new
+    end
 
-	# Update coordinate matrix with corrected positions
-	xy = [xx yy]
+    # Update coordinate matrix with corrected positions
+    xy = [xx yy]
 
-	# Generate pressure node coordinates (element centroids)
-	println("  Computing pressure node coordinates...")
+    # Generate pressure node coordinates (element centroids)
+    println("  Computing pressure node coordinates...")
 
-	xc = zeros(nel)
-	yc = zeros(nel)
+    xc = zeros(nel)
+    yc = zeros(nel)
 
-	for ielem in 1:nel
-		# Get corner node coordinates for this element
-		corner_nodes = mv[ielem, 1:4]  # Q2 corner nodes
+    for ielem in 1:nel
+        # Get corner node coordinates for this element
+        corner_nodes = mv[ielem, 1:4]  # Q2 corner nodes
 
-		# Compute centroid of corner nodes
-		xc[ielem] = mean(xx[corner_nodes])
-		yc[ielem] = mean(yy[corner_nodes])
-	end
+        # Compute centroid of corner nodes
+        xc[ielem] = mean(xx[corner_nodes])
+        yc[ielem] = mean(yy[corner_nodes])
+    end
 
-	xyp = [xc yc]  # Pressure node coordinate matrix
+    xyp = [xc yc]  # Pressure node coordinate matrix
 
-	# Element-to-element connectivity (currently not implemented)
-	# This would be useful for advanced algorithms but is computationally expensive
-	# to compute and not currently needed
+    # Element-to-element connectivity (currently not implemented)
+    # This would be useful for advanced algorithms but is computationally expensive
+    # to compute and not currently needed
 
-	println("  Computing element connectivity...")
-	ee = Int[]  # Placeholder - could implement adjacency matrix if needed
+    println("  Computing element connectivity...")
+    ee = Int[]  # Placeholder - could implement adjacency matrix if needed
 
-	# The following commented code shows how element connectivity could be computed:
-	# adj = spzeros(nvtx, nvtx)
-	#
-	# # Build adjacency matrix based on shared edges
-	# for el in 1:nel
-	#     nodes = mv[el, :]
-	#     # Add connections for each edge
-	#     adj[nodes[1], nodes[2]] = el  # Bottom edge
-	#     adj[nodes[2], nodes[3]] = el  # Right edge
-	#     adj[nodes[3], nodes[4]] = el  # Top edge
-	#     adj[nodes[4], nodes[1]] = el  # Left edge
-	# end
-	#
-	# # Extract element neighbors from adjacency matrix
-	# ee = zeros(Int, nel, 4)  # 4 neighbors per element
-	# for el in 1:nel
-	#     # Find neighboring elements for each edge
-	#     # Implementation would go here...
-	# end
+    # The following commented code shows how element connectivity could be computed:
+    # adj = spzeros(nvtx, nvtx)
+    #
+    # # Build adjacency matrix based on shared edges
+    # for el in 1:nel
+    #     nodes = mv[el, :]
+    #     # Add connections for each edge
+    #     adj[nodes[1], nodes[2]] = el  # Bottom edge
+    #     adj[nodes[2], nodes[3]] = el  # Right edge
+    #     adj[nodes[3], nodes[4]] = el  # Top edge
+    #     adj[nodes[4], nodes[1]] = el  # Left edge
+    # end
+    #
+    # # Extract element neighbors from adjacency matrix
+    # ee = zeros(Int, nel, 4)  # 4 neighbors per element
+    # for el in 1:nel
+    #     # Find neighboring elements for each edge
+    #     # Implementation would go here...
+    # end
 
-	println("Q2-P1 grid generation complete")
-	println("  Pressure nodes: $(nel)")
-	println("  Mid-side corrections applied")
+    println("Q2-P1 grid generation complete")
+    println("  Pressure nodes: $(nel)")
+    println("  Mid-side corrections applied")
 
-	# Return updated grid with pressure information
-	return Dict(
-		"x" => x,      # Corrected x-coordinate vector
-		"y" => y,      # Corrected y-coordinate vector
-		"xy" => xy,    # Corrected velocity node coordinates
-		"xyp" => xyp,  # Pressure node coordinates
-		"ee" => ee,     # Element connectivity (empty)
-	)
+    # Return updated grid with pressure information
+    return Dict(
+        "x" => x,      # Corrected x-coordinate vector
+        "y" => y,      # Corrected y-coordinate vector
+        "xy" => xy,    # Corrected velocity node coordinates
+        "xyp" => xyp,  # Pressure node coordinates
+        "ee" => ee,     # Element connectivity (empty)
+    )
 end

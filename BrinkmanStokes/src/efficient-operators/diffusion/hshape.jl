@@ -5,5 +5,5 @@ function hshape(r, s, p)
     dtdr = rand(nn, 1)
     dtds = rand(nn, 1)
 
-    t, dtdr, dtds
+    return t, dtdr, dtds
 end

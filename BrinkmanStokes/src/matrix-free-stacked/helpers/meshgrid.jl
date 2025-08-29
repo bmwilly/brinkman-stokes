@@ -4,7 +4,7 @@ function meshgrid(vx::AbstractVector{T}, vy::AbstractVector{T}) where {T}
     m, n = length(vy), length(vx)
     vx = reshape(vx, 1, n)
     vy = reshape(vy, m, 1)
-    (repeat(vx, m, 1), repeat(vy, 1, n))
+    return (repeat(vx, m, 1), repeat(vy, 1, n))
 end
 
 function meshgrid(vx::AbstractVector{T}, vy::AbstractVector{T}, vz::AbstractVector{T}) where {T}
@@ -15,12 +15,12 @@ function meshgrid(vx::AbstractVector{T}, vy::AbstractVector{T}, vz::AbstractVect
     om = ones(Int, m)
     on = ones(Int, n)
     oo = ones(Int, o)
-    (vx[om, :, oo], vy[:, on, oo], vz[om, on, :])
+    return (vx[om, :, oo], vy[:, on, oo], vz[om, on, :])
 end
 
 function meshgrid(vx, vy)
     m, n = length(vy), length(vx)
     vx = reshape(vx, 1, n)
     vy = reshape(vy, m, 1)
-    (repeat(vx, m, 1), repeat(vy, 1, n))
+    return (repeat(vx, m, 1), repeat(vy, 1, n))
 end

@@ -20,5 +20,5 @@ function grid_node_num(nelemx, nelemy, p)
     #   error("invalide element type ...aborted...")
     # end
     # node_num
-    (p * nelemx + 1) * (p * nelemy + 1)
+    return (p * nelemx + 1) * (p * nelemy + 1)
 end

@@ -31,7 +31,7 @@ function mv_fun(msize)
     toc()
 
     tic()
-    for cnt = 1:100
+    for cnt in 1:100
         u = rand(size(K, 1))
         w = K * u
     end

@@ -10,9 +10,11 @@ xy = kparams["xy"]; xyp = kparams["xyp"]
 nvtx = length(xy[:, 1]); nu = 2nvtx; np = 3length(xyp[:, 1])
 
 K = u -> kfunbc(u, kparams)
-KK = LinearOperator(nu+np, Float64, K)
+KK = LinearOperator(nu + np, Float64, K)
 
-@time for cnt = 1:100; u = vec(rand(nu + np, 1)); w = KK*u; end
+@time for cnt in 1:100
+    u = vec(rand(nu + np, 1)); w = KK * u
+end
 
-w,nflops = K(vec(rand(nu + np, 1)))
+w, nflops = K(vec(rand(nu + np, 1)))
 println("nflops: $(nflops)")

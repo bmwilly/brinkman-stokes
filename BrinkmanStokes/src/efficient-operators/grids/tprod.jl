@@ -13,8 +13,8 @@ function tprod(quadrule)
 
     # build 2D quadrature on the reference square
     k = 1
-    for i = 1:nGauss_1D
-        for j = 1:nGauss_1D
+    for i in 1:nGauss_1D
+        for j in 1:nGauss_1D
             w[k] = quadrule["w"][i] * quadrule["w"][j]
             x[k, 1] = quadrule["x"][i]
             x[k, 2] = quadrule["x"][j]
@@ -22,5 +22,5 @@ function tprod(quadrule)
         end
     end
 
-    quadrule2D = {"w" => w, "x" => x}
+    return quadrule2D = {"w" => w, "x" => x}
 end

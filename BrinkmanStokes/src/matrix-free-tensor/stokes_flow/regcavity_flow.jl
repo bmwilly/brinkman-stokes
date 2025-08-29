@@ -7,6 +7,6 @@ function regcavity_flow(xbd, ybd)
     bcx = 0 * xbd; bcy = 0 * xbd
     k = findall((ybd .== 1) .& (xbd .> -1) .& (xbd .< 1))
     bcx[k] = (1 .- xbd[k] .* xbd[k]) .* (1 .+ xbd[k] .* xbd[k])
-    (bcx, bcy)
+    return (bcx, bcy)
 
 end

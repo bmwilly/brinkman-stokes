@@ -9,6 +9,6 @@ function backwardstep_bc(xbd, ybd)
     bc[k] = 2ybd[k] .* ybd[k] .* (1 - 2ybd[k] / 3)
     k = findall(ybd .== 1)
     bc[k] = 2 / 3
-    bc
+    return bc
 
 end

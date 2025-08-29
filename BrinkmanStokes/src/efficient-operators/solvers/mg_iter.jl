@@ -15,27 +15,27 @@ include("mg_post.jl")
 # 	x 				result of multigrid steps
 function mg_iter(As, x0, f, smooth_data, level, npre, npost, sweeps)
 
-	A = As[level]["matrix"]
-	P = As[level]["prolong"]
+    A = As[level]["matrix"]
+    P = As[level]["prolong"]
 
-	if level == 2
-		x = A\f
-	else
-		# presmooth
-		x = mg_pre(A, x0, f, npre, smooth_data, level, sweeps)
+    if level == 2
+        x = A \ f
+    else
+        # presmooth
+        x = mg_pre(A, x0, f, npre, smooth_data, level, sweeps)
 
-		# restrict residual
-		r = f - A*x
-		rc = P'*r
+        # restrict residual
+        r = f - A * x
+        rc = P' * r
 
-		# coarse grid correction
-		cc = mg_iter(As, zeros(size(rc)), rc, smooth_data, level - 1, npre, npost, sweeps)
-		x = x + P*cc
+        # coarse grid correction
+        cc = mg_iter(As, zeros(size(rc)), rc, smooth_data, level - 1, npre, npost, sweeps)
+        x = x + P * cc
 
-		# postsmooth
-		x = mg_post(A, x, f, npost, smooth_data, level, sweeps)
-	end
+        # postsmooth
+        x = mg_post(A, x, f, npost, smooth_data, level, sweeps)
+    end
 
-	x
+    return x
 
 end

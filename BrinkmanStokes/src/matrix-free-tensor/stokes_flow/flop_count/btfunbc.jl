@@ -25,7 +25,7 @@ function btfunbc(u, kparams)
     nel = length(mv[:, 1])
     mp = [[1:3:3nel] [2:3:3nel] [3:3:3nel]]
 
-    up = u[nu+1:nu+np]
+    up = u[(nu + 1):(nu + np)]
     bxes = squeeze(bxe[1, :, :], 1)
     byes = squeeze(bye[1, :, :], 1)
 
@@ -39,7 +39,7 @@ function btfunbc(u, kparams)
     # @parallel for worker = 1:nworkers()
 
     # for e = (nelworker*worker - nelworker + 1):(nelworker*worker)
-    for e = 1:nel
+    for e in 1:nel
         ind3 = mp[e, :]'
         ind9 = mv[e, :]'
         indbd = findall(in(bound), ind9)
@@ -59,7 +59,7 @@ function btfunbc(u, kparams)
         nflops += m * (2n - 1)
 
         w[ind9] += wepx'
-        w[ind9+nvtx] += wepy'
+        w[ind9 + nvtx] += wepy'
 
         nflops += length(wepx')
         nflops += length(wepy')
@@ -67,5 +67,5 @@ function btfunbc(u, kparams)
 
     # end # parallel
 
-    vec(w), nflops
+    return vec(w), nflops
 end

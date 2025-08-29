@@ -84,7 +84,7 @@ function stokes_q2p1(grid)
     # inner loop over elements
     xlv = zeros(nel, 4)
     ylv = zeros(nel, 4)
-    for ivtx = 1:4
+    for ivtx in 1:4
         xlv[:, ivtx] = x[mv[:, ivtx]]
         ylv[:, ivtx] = y[mv[:, ivtx]]
     end
@@ -99,7 +99,7 @@ function stokes_q2p1(grid)
     bbye = zeros(nel, 9, 9)
 
     # loop over Gauss points
-    for igpt = 1:nngpt
+    for igpt in 1:nngpt
         sigpt = s[igpt]
         tigpt = t[igpt]
         wght = wt[igpt]
@@ -108,22 +108,22 @@ function stokes_q2p1(grid)
         (jac, invjac, phi, dphidx, dphidy) = deriv(sigpt, tigpt, xlv, ylv)
         (psi, dpsidx, dpsidy) = qderiv(sigpt, tigpt, xlv, ylv)
         (chi, dchidx, dchidy) = lderiv(sigpt, tigpt, xlv, ylv)
-        for j = 1:9
-            for i = 1:9
+        for j in 1:9
+            for i in 1:9
                 ae[:, i, j] += wght * dpsidx[:, i] .* dpsidx[:, j] .* invjac[:]
                 ae[:, i, j] += wght * dpsidy[:, i] .* dpsidy[:, j] .* invjac[:]
                 ge[:, i, j] += wght * psi[:, i] .* psi[:, j] .* jac[:]
                 bbxe[:, i, j] -= wght * psi[:, i] .* dpsidx[:, j]
                 bbye[:, i, j] -= wght * psi[:, i] .* dpsidy[:, j]
             end
-            for i = 1:3
+            for i in 1:3
                 bxe[:, i, j] -= wght * chi[:, i] .* dpsidx[:, j]
                 bye[:, i, j] -= wght * chi[:, i] .* dpsidy[:, j]
             end
         end
 
-        for j = 1:3
-            for i = 1:3
+        for j in 1:3
+            for i in 1:3
                 qe[:, i, j] += wght * chi[:, i] .* chi[:, j] .* jac[:]
             end
         end
@@ -131,9 +131,9 @@ function stokes_q2p1(grid)
 
     ## element assembly into global matrices
     # component velocity matrices
-    for krow = 1:9
+    for krow in 1:9
         nrow = mv[:, krow]
-        for kcol = 1:9
+        for kcol in 1:9
             ncol = mv[:, kcol]
             A += sparse(nrow, ncol, ae[:, krow, kcol], nu, nu)
             A += sparse(nrow .+ nvtx, ncol .+ nvtx, ae[:, krow, kcol], nu, nu)
@@ -142,7 +142,7 @@ function stokes_q2p1(grid)
             BBx += sparse(nrow, ncol, bbxe[:, krow, kcol], nvtx, nvtx)
             BBy += sparse(nrow, ncol, bbye[:, krow, kcol], nvtx, nvtx)
         end
-        for kcol = 1:3
+        for kcol in 1:3
             ncol = mp[:, kcol]
             Bx += sparse(ncol, nrow, bxe[:, kcol, krow], np, nvtx)
             By += sparse(ncol, nrow, bye[:, kcol, krow], np, nvtx)
@@ -153,9 +153,9 @@ function stokes_q2p1(grid)
     B = [Bx By]
 
     # pressure matrices
-    for krow = 1:3
+    for krow in 1:3
         nrow = mp[:, krow]
-        for kcol = 1:3
+        for kcol in 1:3
             ncol = mp[:, kcol]
             Q += sparse(nrow, ncol, qe[:, krow, kcol], np, np)
         end
@@ -163,7 +163,7 @@ function stokes_q2p1(grid)
 
     println("done")
 
-    mats = Dict(
+    return mats = Dict(
         "A" => A,
         "B" => B,
         "G" => G,

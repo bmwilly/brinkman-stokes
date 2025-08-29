@@ -32,7 +32,7 @@ function flowplot(sol, domain)
 
     # compute auxilliary quantities
     u = xst[1:nu]
-    p = xst[nu+1:end]
+    p = xst[(nu + 1):end]
     # f = [By -Bx] * u
     # (Asv, fsv) = streambc(Asv, f, xy, bound, domain)
     # phi = Asv\fsv
@@ -44,7 +44,7 @@ function flowplot(sol, domain)
 
     ## plot velocity
     ux = reshape(u[1:nvtx], length(x), length(y))'
-    uy = reshape(u[nvtx+1:end], length(x), length(y))'
+    uy = reshape(u[(nvtx + 1):end], length(x), length(y))'
     figure()
     streamplot(x, y, ux, uy, density = 2, color = ux)
     colorbar()
@@ -79,7 +79,7 @@ function flowplot(sol, domain)
     # z = reshape(phi, length(x), length(y))'
     # p4 = plot(x = x, y = y, z = z, Geom.contour);
 
-    if domain == 1
+    return if domain == 1
         ## plot pressure
         # p = p[1:3:end]
         # zp = reshape(p, length(xp), length(yp))'

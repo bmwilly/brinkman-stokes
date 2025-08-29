@@ -30,17 +30,17 @@ function qderiv(s, t, xl, yl)
     jac = copy(zerov)
     invjac = copy(zerov)
 
-    for ivtx = 1:4
-        dxds[:] += xl[:,ivtx] .* onev * dphids[ivtx]
-        dxdt[:] += xl[:,ivtx] .* onev * dphidt[ivtx]
-        dyds[:] += yl[:,ivtx] .* onev * dphids[ivtx]
-        dydt[:] += yl[:,ivtx] .* onev * dphidt[ivtx]
+    for ivtx in 1:4
+        dxds[:] += xl[:, ivtx] .* onev * dphids[ivtx]
+        dxdt[:] += xl[:, ivtx] .* onev * dphidt[ivtx]
+        dyds[:] += yl[:, ivtx] .* onev * dphids[ivtx]
+        dydt[:] += yl[:, ivtx] .* onev * dphidt[ivtx]
     end
 
     jac[:] = dxds[:] .* dydt[:] - dxdt[:] .* dyds[:]
 
     # check element Jacobian
-    if any(jac .< 1e-9)
+    if any(jac .< 1.0e-9)
         println("Bad element warning ...")
         if any(jac .<= 0)
             error("singular Jacobian ... aborted ...")
@@ -53,12 +53,12 @@ function qderiv(s, t, xl, yl)
     dpsidx = zeros(nel, 9)
     dpsidy = zeros(nel, 9)
 
-    for ivtx = 1:9
+    for ivtx in 1:9
         psi[:, ivtx] = psie[ivtx] * onev
         dpsidx[:, ivtx] = dpsids[ivtx] .* dydt[:] - dpsidt[ivtx] .* dyds[:]
         dpsidy[:, ivtx] = -dpsids[ivtx] .* dxdt[:] + dpsidt[ivtx] .* dxds[:]
     end
 
-    (psi, dpsidx, dpsidy)
+    return (psi, dpsidx, dpsidy)
 
 end

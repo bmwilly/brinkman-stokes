@@ -35,7 +35,7 @@ function flowplot2(sol, domain)
 
     # compute auxiliary quantities
     u = xst[1:nu]
-    p = xst[nu+1:end]
+    p = xst[(nu + 1):end]
     f = [By -Bx] * u
     (Asv, fsv) = streambc(Asv, f, xy, bound, domain)
     phi = Asv \ fsv
@@ -80,7 +80,7 @@ function flowplot2(sol, domain)
     #   z[KK] = NaN
     # end
 
-    plot(x = x, y = y, z = z, Geom.contour)
+    return plot(x = x, y = y, z = z, Geom.contour)
 
     # (X, Y) = meshgrid(x, y)
     # # xysol = griddata(xy[:, 1], xy[:, 2], phi, X, Y)

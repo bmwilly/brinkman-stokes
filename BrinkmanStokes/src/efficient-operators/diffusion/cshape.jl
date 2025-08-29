@@ -65,5 +65,5 @@ function cshape(s, t)
 
     # three-dimensional shape function
 
-    (psi, dpsids, dpsidt)
+    return (psi, dpsids, dpsidt)
 end

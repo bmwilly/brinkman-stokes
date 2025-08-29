@@ -9,8 +9,8 @@ function q3grid(nelemx, nelemy)
     element = 0
     element_node = zeros(Int, 16, nelemx * nelemy)
 
-    for j = 1:nelemy
-        for i = 1:nelemx
+    for j in 1:nelemy
+        for i in 1:nelemx
             base = (j - 1) * 3 * (3 * nelemx + 1) + 3i - 2
             element += 1
 
@@ -34,5 +34,5 @@ function q3grid(nelemx, nelemy)
         end
     end
 
-    element_node'
+    return element_node'
 end

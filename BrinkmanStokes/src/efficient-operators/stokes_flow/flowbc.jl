@@ -21,14 +21,14 @@ function flowbc(a, b, f, g, xy, bound, domain)
     nullcol = spzeros(nvtx, nbd)
     nullpcol = spzeros(np, nbd)
     Ax = a[1:nvtx, 1:nvtx]
-    Ay = a[nvtx + 1:nu, nvtx + 1:nu]
+    Ay = a[(nvtx + 1):nu, (nvtx + 1):nu]
     Bx = b[1:np, 1:nvtx]
-    By = b[1:np, nvtx + 1:nu]
+    By = b[1:np, (nvtx + 1):nu]
     fx = f[1:nvtx]
-    fy = f[nvtx + 1:nu]
+    fy = f[(nvtx + 1):nu]
     gz = g
 
-  # set boundary condition
+    # set boundary condition
     xbd = xy[bound, 1]; ybd = xy[bound, 2]
     if domain == 1
         (bcx, bcy) = regcavity_flow(xbd, ybd)
@@ -36,7 +36,7 @@ function flowbc(a, b, f, g, xy, bound, domain)
         (bcx, bcy) = poiseuille_flow(xbd, ybd)
     end
 
-  # impose boundary condition
+    # impose boundary condition
     fx -= Ax[:, bound] * bcx
     fy -= Ay[:, bound] * bcy
     gz -= Bx[:, bound] * bcx
@@ -65,6 +65,6 @@ function flowbc(a, b, f, g, xy, bound, domain)
     bz = [Bx By]
     fz = [fx; fy]
 
-    (az, bz, fz, gz)
+    return (az, bz, fz, gz)
 
 end

@@ -27,5 +27,5 @@ function shape(s, t)
     dphidt[3] = 0.25 * (s + 1)
     dphidt[4] = -0.25 * (s - 1)
 
-    (phi, dphids, dphidt)
+    return (phi, dphids, dphidt)
 end

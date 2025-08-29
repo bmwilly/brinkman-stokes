@@ -6,9 +6,9 @@ function gauss_source(s, t, xl, yl)
     xx = zeros(nel, 1)
     yy = zeros(nel, 1)
     (phie, dphids, dphidt) = shape(s, t)
-    for ivtx = 1:4
+    for ivtx in 1:4
         xx += phie[ivtx] * xl[:, ivtx]
         yy += phie[ivtx] * yl[:, ivtx]
     end
-    ff = unit_rhs(xx, yy, nel)
+    return ff = unit_rhs(xx, yy, nel)
 end

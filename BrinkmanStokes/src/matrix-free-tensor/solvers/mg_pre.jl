@@ -11,73 +11,73 @@
 # 	xs 				result of presmoothing applied to x0
 function mg_pre(A, params, xs0, f, ns, Qs, level, sweeps)
 
-	xs = xs0
-	if ns == 0
-		return xs
-	end
+    xs = xs0
+    if ns == 0
+        return xs
+    end
 
-	L1 = Qs[level]["L1"];	U1 = Qs[level]["U1"]
-	L2 = Qs[level]["L2"];	U2 = Qs[level]["U2"]
-	L3 = Qs[level]["L3"];	U3 = Qs[level]["U3"]
-	L4 = Qs[level]["L4"];	U4 = Qs[level]["U4"]
+    L1 = Qs[level]["L1"];    U1 = Qs[level]["U1"]
+    L2 = Qs[level]["L2"];    U2 = Qs[level]["U2"]
+    L3 = Qs[level]["L3"];    U3 = Qs[level]["U3"]
+    L4 = Qs[level]["L4"];    U4 = Qs[level]["U4"]
 
-	r = f - A(xs, params)
-	r1,ignore = gmres(u -> L1(u, params), r, 100)
-	r2,ignore = gmres(u -> U1(u, params), r1, 100)
-	xs += r2
-	r = f - A(xs, params)
+    r = f - A(xs, params)
+    r1, ignore = gmres(u -> L1(u, params), r, 100)
+    r2, ignore = gmres(u -> U1(u, params), r1, 100)
+    xs += r2
+    r = f - A(xs, params)
 
-	if sweeps >= 2
-		r1,ignore = gmres(u -> L2(u, params), r, 100)
-		r2,ignore = gmres(u -> U2(u, params), r1, 100)
-		xs += r2
-		r = f - A(xs, params)
+    if sweeps >= 2
+        r1, ignore = gmres(u -> L2(u, params), r, 100)
+        r2, ignore = gmres(u -> U2(u, params), r1, 100)
+        xs += r2
+        r = f - A(xs, params)
 
-		if sweeps >= 3
-			r1,ignore = gmres(u -> L3(u, params), r, 100)
-			r2,ignore = gmres(u -> U3(u, params), r1, 100)
-			xs += r2
-			r = f - A(xs, params)
+        if sweeps >= 3
+            r1, ignore = gmres(u -> L3(u, params), r, 100)
+            r2, ignore = gmres(u -> U3(u, params), r1, 100)
+            xs += r2
+            r = f - A(xs, params)
 
-			if sweeps >= 4
-				r1,ignore = gmres(u -> L4(u, params), r, 100)
-				r2,ignore = gmres(u -> U4(u, params), r1, 100)
-				xs += r2
-			end
-		end
-	end
+            if sweeps >= 4
+                r1, ignore = gmres(u -> L4(u, params), r, 100)
+                r2, ignore = gmres(u -> U4(u, params), r1, 100)
+                xs += r2
+            end
+        end
+    end
 
-	if ns > 1
-		k = 1
-		while k < ns
-			r = f - A(xs, params)
-			r1,ignore = gmres(u -> L1(u, params), r, 100)
-			r2,ignore = gmres(u -> U1(u, params), r1, 100)
-			xs += r2
-			r = f - A(xs, params)
+    if ns > 1
+        k = 1
+        while k < ns
+            r = f - A(xs, params)
+            r1, ignore = gmres(u -> L1(u, params), r, 100)
+            r2, ignore = gmres(u -> U1(u, params), r1, 100)
+            xs += r2
+            r = f - A(xs, params)
 
-			if sweeps >= 2
-				r1,ignore = gmres(u -> L2(u, params), r, 100)
-				r2,ignore = gmres(u -> U2(u, params), r1, 100)
-				xs += r2
-				r = f - A(xs, params)
+            if sweeps >= 2
+                r1, ignore = gmres(u -> L2(u, params), r, 100)
+                r2, ignore = gmres(u -> U2(u, params), r1, 100)
+                xs += r2
+                r = f - A(xs, params)
 
-				if sweeps >= 3
-					r1,ignore = gmres(u -> L3(u, params), r, 100)
-					r2,ignore = gmres(u -> U3(u, params), r1, 100)
-					xs += r2
-					r = f - A(xs, params)
+                if sweeps >= 3
+                    r1, ignore = gmres(u -> L3(u, params), r, 100)
+                    r2, ignore = gmres(u -> U3(u, params), r1, 100)
+                    xs += r2
+                    r = f - A(xs, params)
 
-					if sweeps >= 4
-						r1,ignore = gmres(u -> L4(u, params), r, 100)
-						r2,ignore = gmres(u -> U4(u, params), r1, 100)
-						xs += r2
-					end
-				end
-			end
-			k += 1
-		end
-	end
+                    if sweeps >= 4
+                        r1, ignore = gmres(u -> L4(u, params), r, 100)
+                        r2, ignore = gmres(u -> U4(u, params), r1, 100)
+                        xs += r2
+                    end
+                end
+            end
+            k += 1
+        end
+    end
 
-	xs
+    return xs
 end

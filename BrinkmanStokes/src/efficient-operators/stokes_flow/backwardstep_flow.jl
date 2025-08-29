@@ -4,9 +4,9 @@
 #   ybd       y coordinate vector
 function backwardstep_flow(xbd, ybd)
 
-    bcx = 0 * xbd; bcy = 0 * xbd;
+    bcx = 0 * xbd; bcy = 0 * xbd
     k = findall(xbd .== -1)
     bcx[k] = 4ybd[k] .* (1 - ybd[k])
-    (bcx, bcy)
+    return (bcx, bcy)
 
 end

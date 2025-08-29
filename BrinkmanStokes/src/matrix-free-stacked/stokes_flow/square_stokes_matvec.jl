@@ -13,7 +13,7 @@ function square_stokes_matvec(msize)
     nel = int(np^2)
 
     # y-direction
-    yy = [1 / np:1 / np:1]
+    yy = [(1 / np):(1 / np):1]
     ypos = [0, yy]
     yneg = -yy[length(yy):-1:1]
     y = [yneg, ypos]'
@@ -30,8 +30,8 @@ function square_stokes_matvec(msize)
     ky = 1
     mel = 0
     mv = zeros(Int64, nel, 9)
-    for j = 1:np
-        for i = 1:np
+    for j in 1:np
+        for i in 1:np
             mref = (n + 1) * (ky - 1) + kx
             mel += 1
             nvv = zeros(9)
@@ -53,37 +53,37 @@ function square_stokes_matvec(msize)
 
     # compute boundary vertices and edges
     # four boundary edges
-    k1 = findall(xy[:,2] .== -1)
+    k1 = findall(xy[:, 2] .== -1)
     e1 = []
-    for k = 1:mel
-        if any(mv[k,5] .== k1)
+    for k in 1:mel
+        if any(mv[k, 5] .== k1)
             e1 = [e1, k]
         end
     end
     ef1 = ones(size(e1))
 
-    k2 = findall((xy[:,1] .== 1) .& (xy[:,2] .< 1) .& (xy[:,2] .> -1))
+    k2 = findall((xy[:, 1] .== 1) .& (xy[:, 2] .< 1) .& (xy[:, 2] .> -1))
     e2 = []
-    for k = 1:mel
-        if any(mv[k,6] .== k2)
+    for k in 1:mel
+        if any(mv[k, 6] .== k2)
             e2 = [e2, k]
         end
     end
     ef2 = 2 * ones(size(e2))
 
-    k3 = findall(xy[:,2] .== 1)
+    k3 = findall(xy[:, 2] .== 1)
     e3 = []
-    for k = 1:mel
-        if any(mv[k,7] .== k3)
+    for k in 1:mel
+        if any(mv[k, 7] .== k3)
             e3 = [e3, k]
         end
     end
     ef3 = 3 * ones(size(e3))
 
-    k4 = findall((xy[:,1] .== -1) .& (xy[:,2] .< 1) .& (xy[:,2] .> -1))
+    k4 = findall((xy[:, 1] .== -1) .& (xy[:, 2] .< 1) .& (xy[:, 2] .> -1))
     e4 = []
-    for k = 1:mel
-        if any(mv[k,8] .== k4)
+    for k in 1:mel
+        if any(mv[k, 8] .== k4)
             e4 = [e4, k]
         end
     end
@@ -109,7 +109,7 @@ function square_stokes_matvec(msize)
     yv = yy
     ny = length(y)
 
-    for k = 2:2:ny
+    for k in 2:2:ny
         yold = y[k]
         ynew = 0.5 * (y[k + 1] + y[k - 1])
         l = findall(yy == yold)
@@ -121,7 +121,7 @@ function square_stokes_matvec(msize)
     xv = xx
     nx = length(x)
 
-    for k = 2:2:nx
+    for k in 2:2:nx
         xold = x[k]
         xnew = 0.5 * (x[k + 1] + x[k - 1])
         l = findall(xx == xold)
@@ -134,7 +134,7 @@ function square_stokes_matvec(msize)
     # centroid coordinates
     xc = zeros(nel, 1)
     yc = zeros(nel, 1)
-    for ielem = 1:nel
+    for ielem in 1:nel
         xc[ielem] = mean(xx[mv[ielem, 1:4]])
         yc[ielem] = mean(yy[mv[ielem, 1:4]])
     end
@@ -153,6 +153,6 @@ function square_stokes_matvec(msize)
     # stokes q2-p1 matrix generator
     (ae, bxe, bye, bbxe, bbye) = stokes_q2p1(xy, xyp, mv)
 
-    (xy, xyp, mv, bound, ae, bxe, bye, bbxe, bbye)
+    return (xy, xyp, mv, bound, ae, bxe, bye, bbxe, bbye)
 
 end

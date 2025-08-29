@@ -10,7 +10,7 @@ function findobsXY(obs, X, Y, bndxy)
 
     KK = Int[]
     if size(obs, 1) > 0
-        for i = 1:size(obs, 1)
+        for i in 1:size(obs, 1)
             xl = minimum(bndxy[:, 1][obs[i, :]])
             xr = maximum(bndxy[:, 1][obs[i, :]])
             yb = minimum(bndxy[:, 2][obs[i, :]])
@@ -20,5 +20,5 @@ function findobsXY(obs, X, Y, bndxy)
         end
     end
 
-    KK
+    return KK
 end

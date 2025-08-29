@@ -32,21 +32,21 @@ function stokes_q2p1(grid)
     s = zeros(nngpt, 1)
     t = zeros(nngpt, 1)
     wt = zeros(nngpt, 1)
-    gpt = sqrt(0.6);
-    s[1] = -gpt; t[1] = -gpt; wt[1]=25/81;
-    s[2] =  gpt; t[2] = -gpt; wt[2]=25/81;
-    s[3] =  gpt; t[3] =  gpt; wt[3]=25/81;
-    s[4] = -gpt; t[4] =  gpt; wt[4]=25/81;
-    s[5] =  0.0; t[5] = -gpt; wt[5]=40/81;
-    s[6] =  gpt; t[6] =  0.0; wt[6]=40/81;
-    s[7] =  0.0; t[7] =  gpt; wt[7]=40/81;
-    s[8] = -gpt; t[8] =  0.0; wt[8]=40/81;
-    s[9] =  0.0; t[9] =  0.0; wt[9]=64/81;
+    gpt = sqrt(0.6)
+    s[1] = -gpt; t[1] = -gpt; wt[1] = 25 / 81
+    s[2] = gpt; t[2] = -gpt; wt[2] = 25 / 81
+    s[3] = gpt; t[3] = gpt; wt[3] = 25 / 81
+    s[4] = -gpt; t[4] = gpt; wt[4] = 25 / 81
+    s[5] = 0.0; t[5] = -gpt; wt[5] = 40 / 81
+    s[6] = gpt; t[6] = 0.0; wt[6] = 40 / 81
+    s[7] = 0.0; t[7] = gpt; wt[7] = 40 / 81
+    s[8] = -gpt; t[8] = 0.0; wt[8] = 40 / 81
+    s[9] = 0.0; t[9] = 0.0; wt[9] = 64 / 81
 
     # inner loop over elements
     xlv = zeros(nel, 4)
     ylv = zeros(nel, 4)
-    for ivtx = 1:4
+    for ivtx in 1:4
         xlv[:, ivtx] = x[mv[:, ivtx]]
         ylv[:, ivtx] = y[mv[:, ivtx]]
     end
@@ -61,7 +61,7 @@ function stokes_q2p1(grid)
     bbye = zeros(nel, 9, 9)
 
     # loop over Gauss points
-    for igpt = 1:nngpt
+    for igpt in 1:nngpt
         sigpt = s[igpt]
         tigpt = t[igpt]
         wght = wt[igpt]
@@ -70,24 +70,24 @@ function stokes_q2p1(grid)
         (jac, invjac, phi, dphidx, dphidy) = deriv(sigpt, tigpt, xlv, ylv)
         (psi, dpsidx, dpsidy) = qderiv(sigpt, tigpt, xlv, ylv)
         (chi, dchidx, dchidy) = lderiv(sigpt, tigpt, xlv, ylv)
-        for j = 1:9
-            for i = 1:9
+        for j in 1:9
+            for i in 1:9
                 ae[:, i, j] += wght * dpsidx[:, i] .* dpsidx[:, j] .* invjac[:]
                 ae[:, i, j] += wght * dpsidy[:, i] .* dpsidy[:, j] .* invjac[:]
                 ge[:, i, j] += wght * psi[:, i] .* psi[:, j] .* jac[:]
                 bbxe[:, i, j] -= wght * psi[:, i] .* dpsidx[:, j]
                 bbye[:, i, j] -= wght * psi[:, i] .* dpsidy[:, j]
             end
-            for i = 1:3
+            for i in 1:3
                 bxe[:, i, j] -= wght * chi[:, i] .* dpsidx[:, j]
                 bye[:, i, j] -= wght * chi[:, i] .* dpsidy[:, j]
             end
         end
 
-        for j = 1:3
-          for i = 1:3
-            qe[:, i, j] += wght * chi[:, i] .* chi[:, j] .* jac[:]
-          end
+        for j in 1:3
+            for i in 1:3
+                qe[:, i, j] += wght * chi[:, i] .* chi[:, j] .* jac[:]
+            end
         end
 
     end # end of Gauss point loop
@@ -102,14 +102,14 @@ function stokes_q2p1(grid)
     bbxe = squeeze(bbxe[1, :, :], 1)
     bbye = squeeze(bbye[1, :, :], 1)
 
-    elem_mats = {
-      "ae" => ae,
-      "bxe" => bxe,
-      "bye" => bye,
-      "ge" => ge,
-      "qe" => qe,
-      "bbxe" => bbxe,
-      "bbye" => bbye
+    return elem_mats = {
+        "ae" => ae,
+        "bxe" => bxe,
+        "bye" => bye,
+        "ge" => ge,
+        "qe" => qe,
+        "bbxe" => bbxe,
+        "bbye" => bbye,
     }
 
 end

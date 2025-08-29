@@ -6,11 +6,11 @@
 # ITERAPP is designed for use by iterative methods.
 function iterapp(op, afun, atype, afcnstr, x, varargin)
 
-	Af = isa(A, Function) ? A : x -> A * x
-	# if isequal(atype, "matrix")
-	if isa(atype, Function)
-		if (nargin >= 6) && isequal(varargin[end], "notransp")
-			# Add your code here
-		end
-	end
+    Af = isa(A, Function) ? A : x -> A * x
+    # if isequal(atype, "matrix")
+    return if isa(atype, Function)
+        if (nargin >= 6) && isequal(varargin[end], "notransp")
+            # Add your code here
+        end
+    end
 end

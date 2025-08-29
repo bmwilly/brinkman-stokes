@@ -55,6 +55,6 @@ function q2shape(r, s)
     dtds[8] = -8.0 * (r - 1.0) * (r - 0.5) * (2.0 * s - 1.0)
     dtds[9] = 16.0 * r * (r - 1.0) * (2.0 * s - 1.0)
 
-    t, dtdr, dtds
+    return t, dtdr, dtds
 
 end

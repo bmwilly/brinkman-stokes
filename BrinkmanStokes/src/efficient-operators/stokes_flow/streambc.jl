@@ -19,7 +19,7 @@ function streambc(a, f, xy, bound, domain)
     Ax = a[1:nvtx, 1:nvtx]
     fx = f[1:nvtx]
 
-  # set boundary condition
+    # set boundary condition
     xbd = xy[bound, 1]
     ybd = xy[bound, 2]
     if domain == 1
@@ -37,6 +37,6 @@ function streambc(a, f, xy, bound, domain)
     Ax[bound, :] = nullrow
     Ax += spdiagm(0 => vec(dA))
     fx[bound] = bc
-    (Ax, fx)
+    return (Ax, fx)
 
 end

@@ -29,27 +29,31 @@ function obstacle_domain()
     # "obs" and/or "sbnde" can be absent if there is no obstacle in the problem and/or only uniform grid is needed
 
     if nc == 3
-        bndxy = float([
-            0 -1
-            8 -1
-            8 1
-            0 1
-            1.5 -0.5
-            2.5 -0.5
-            2.5 0.5
-            1.5 0.5
-        ])
+        bndxy = float(
+            [
+                0 -1
+                8 -1
+                8 1
+                0 1
+                1.5 -0.5
+                2.5 -0.5
+                2.5 0.5
+                1.5 0.5
+            ]
+        )
     else
-        bndxy = float([
-            0 -1
-            8 -1
-            8 1
-            0 1
-            1.75 -0.25
-            2.25 -0.25
-            2.25 0.25
-            1.75 0.25
-        ])
+        bndxy = float(
+            [
+                0 -1
+                8 -1
+                8 1
+                0 1
+                1.75 -0.25
+                2.25 -0.25
+                2.25 0.25
+                1.75 0.25
+            ]
+        )
     end
 
     bnde = [
@@ -70,9 +74,9 @@ function obstacle_domain()
     # compute mesh size h and uniform x, y coordinate (problem nonspecific)
     h =
         min(
-            maximum(bndxy[:, 2]) - minimum(bndxy[:, 2]),
-            maximum(bndxy[:, 1]) - minimum(bndxy[:, 1]),
-        ) / n
+        maximum(bndxy[:, 2]) - minimum(bndxy[:, 2]),
+        maximum(bndxy[:, 1]) - minimum(bndxy[:, 1]),
+    ) / n
     x = [minimum(bndxy[:, 1]):h:maximum(bndxy[:, 1])]
     y = [minimum(bndxy[:, 2]):h:maximum(bndxy[:, 2])]
 
@@ -98,7 +102,7 @@ function obstacle_domain()
     # compute boundary vertices and edges (problem nonspecific)
     (bound, mbound) = findboundary(bndxy, bnde, xy, mv)
 
-    obstacle_grid = {
+    return obstacle_grid = {
         "mv" => mv,
         "xy" => xy,
         "bound" => bound,

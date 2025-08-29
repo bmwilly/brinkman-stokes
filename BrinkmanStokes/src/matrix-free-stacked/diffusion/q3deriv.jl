@@ -42,11 +42,11 @@ function q3deriv(s, t, xl, yl)
     #     dydt[:] += yl[:,ivtx] .* onev * dphidt[ivtx]
     # end
 
-    for ivtx = 1:9
-        dxds[:] += xl[:,ivtx] .* onev * dchids[ivtx]
-        dxdt[:] += xl[:,ivtx] .* onev * dchidt[ivtx]
-        dyds[:] += yl[:,ivtx] .* onev * dchids[ivtx]
-        dydt[:] += yl[:,ivtx] .* onev * dchidt[ivtx]
+    for ivtx in 1:9
+        dxds[:] += xl[:, ivtx] .* onev * dchids[ivtx]
+        dxdt[:] += xl[:, ivtx] .* onev * dchidt[ivtx]
+        dyds[:] += yl[:, ivtx] .* onev * dchids[ivtx]
+        dydt[:] += yl[:, ivtx] .* onev * dchidt[ivtx]
     end
 
     # for ivtx = 1:16
@@ -72,12 +72,12 @@ function q3deriv(s, t, xl, yl)
     dchidx = zeros(nel, 16)
     dchidy = zeros(nel, 16)
 
-    for ivtx = 1:16
+    for ivtx in 1:16
         chi[:, ivtx] = chie[ivtx] * onev
         dchidx[:, ivtx] = dchids[ivtx] .* dydt[:] - dchidt[ivtx] .* dyds[:]
         dchidy[:, ivtx] = -dchids[ivtx] .* dxdt[:] + dchidt[ivtx] .* dxds[:]
     end
 
-    (jac, invjac, chi, dchidx, dchidy)
+    return (jac, invjac, chi, dchidx, dchidy)
 
 end

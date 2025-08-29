@@ -13,7 +13,7 @@ function gauleg(a, b, n)
         w = 2
     else
         c = zeros(n - 1, 1)
-        for i = 1:(n-1)
+        for i in 1:(n - 1)
             c[i] = i / sqrt(4 * i * i - 1)
         end
         c = vec(c)
@@ -29,6 +29,6 @@ function gauleg(a, b, n)
     x = xm + xl * x
     w = w * xl
 
-    quadrule = {"w" => w, "x" => x}
+    return quadrule = {"w" => w, "x" => x}
 
 end

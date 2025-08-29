@@ -11,13 +11,13 @@ function kfunbc(u, kparams, domain)
     nvtx = length(xy[:, 1]); nu = 2nvtx; np = 3length(xyp[:, 1])
 
     if domain == 1
-      A = LinearOperator(nu+np, Float64, u -> afunbc(u, kparams))
+        A = LinearOperator(nu + np, Float64, u -> afunbc(u, kparams))
     elseif domain == 2
-      A = LinearOperator(nu+np, Float64, u -> ho_afun(u, kparams))
+        A = LinearOperator(nu + np, Float64, u -> ho_afun(u, kparams))
     end
-    B = LinearOperator(nu+np, Float64, u -> bfunbc(u, kparams))
-    Bt = LinearOperator(nu+np, Float64, u -> btfunbc(u, kparams))
+    B = LinearOperator(nu + np, Float64, u -> bfunbc(u, kparams))
+    Bt = LinearOperator(nu + np, Float64, u -> btfunbc(u, kparams))
 
-    w = A*u + B*u + Bt*u
+    return w = A * u + B * u + Bt * u
 
 end

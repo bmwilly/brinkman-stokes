@@ -24,17 +24,17 @@ dydt = copy(zerov)
 jac = copy(zerov)
 invjac = copy(zerov)
 
-for ivtx = 1:4
+for ivtx in 1:4
     dxds[:] += xl[:, ivtx] .* onev * dphids[ivtx]
     dxdt[:] += xl[:, ivtx] .* onev * dphidt[ivtx]
     dyds[:] += yl[:, ivtx] .* onev * dphids[ivtx]
     dydt[:] += yl[:, ivtx] .* onev * dphidt[ivtx]
 end
 
-jac[:] = dxds[:].*dydt[:] - dxdt[:].*dyds[:]
+jac[:] = dxds[:] .* dydt[:] - dxdt[:] .* dyds[:]
 
 # check element jacobian
-if any(jac .< 1e-9)
+if any(jac .< 1.0e-9)
     println("Bad element warning...")
     if any(jac .<= 0.0)
         error("singular Jacobian ... aborted ...")
@@ -47,7 +47,7 @@ phi = zeros(nel, 4)
 dphidx = zeros(nel, 4)
 dphidy = zeros(nel, 4)
 
-for ivtx = 1:4
+for ivtx in 1:4
     phi[:, ivtx] = phie[ivtx] * onev
     dphidx[:, ivtx] = dphids[ivtx] .* dydt[:] - dphidt[ivtx] .* dyds[:]
     dphidy[:, ivtx] = -dphids[ivtx] .* dxdt[:] + dphidt[ivtx] .* dxds[:]

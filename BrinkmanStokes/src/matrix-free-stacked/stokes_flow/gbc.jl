@@ -14,9 +14,9 @@ function gbc(domain, kparams)
     # get boundary
     xbd = xy[bound, 1]; ybd = xy[bound, 2]
     if domain == 1
-      (bcx, bcy) = regcavity_flow(xbd, ybd)
+        (bcx, bcy) = regcavity_flow(xbd, ybd)
     elseif domain == 2
-      (bcx, bcy) = poiseuille_flow(xbd, ybd)
+        (bcx, bcy) = poiseuille_flow(xbd, ybd)
     end
 
     # impose boundary conditions
@@ -27,5 +27,5 @@ function gbc(domain, kparams)
 
     bc = [bccx; bccy; zeros(np, 1)]
     w -= bfun(bc, kparams)
-    w = vec(w[1:np])
+    return w = vec(w[1:np])
 end

@@ -25,9 +25,11 @@ rhs = vec([fst; gst])
 
 ## compute solution
 K = [Ast Bst'; Bst spzeros(np, np)]
-n,m = size(K)
+n, m = size(K)
 
-tic(); for cnt = 1:100; u = rand(size(Ast, 1)); w = Ast*u; end
+tic(); for cnt in 1:100
+    u = rand(size(Ast, 1)); w = Ast * u
+end
 etoc = toc()
 
 # # mesh sizes

@@ -11,45 +11,45 @@ reload("stokes_flow/agal_diag.jl")
 # 	Qs 				dict containing smoothing operator in factored form
 function mg_smooth(As, level, sweeps, smooth, stype)
 
-	Qs = Array(Dict{}, int(level))
+    Qs = Array(Dict{}, int(level))
 
-	for i = level:-1:2
-		A = As[i]["matrix"]
-		params = As[i]["mat_params"]
+    for i in level:-1:2
+        A = As[i]["matrix"]
+        params = As[i]["mat_params"]
 
-		# line Gauss-Seidel
-		if stype == 2
-			#TODO
+        # line Gauss-Seidel
+        if stype == 2
+            #TODO
 
-		# point smoothers
-		else
+            # point smoothers
+        else
 
-			#ILU
-			if smooth == 3
-				#TODO
+            #ILU
+            if smooth == 3
+                #TODO
 
-			# point Gauss-Seidel
-			elseif smooth == 2
-				#TODO
+                # point Gauss-Seidel
+            elseif smooth == 2
+                #TODO
 
-			# point damped Jacobi
-			else
-				omega = 8/9 # relaxation factor
-				L1 = (u, params) -> u
-				U1 = (u, params) -> (1/omega) * A(u, params)
-				L2 = u -> zeros(length(u), 1)
-				U2 = L2; L3 = L2; U3 = L2; L4 = L2; U4 = L2
-			end
-		end
+                # point damped Jacobi
+            else
+                omega = 8 / 9 # relaxation factor
+                L1 = (u, params) -> u
+                U1 = (u, params) -> (1 / omega) * A(u, params)
+                L2 = u -> zeros(length(u), 1)
+                U2 = L2; L3 = L2; U3 = L2; L4 = L2; U4 = L2
+            end
+        end
 
-		qs = {
-			"L1" => L1, "L2" => L2, "L3" => L3, "L4" => L4,
-			"U1" => U1, "U2" => U2, "U3" => U3, "U4" => U4
-		}
-		Qs[i] = qs
+        qs = {
+            "L1" => L1, "L2" => L2, "L3" => L3, "L4" => L4,
+            "U1" => U1, "U2" => U2, "U3" => U3, "U4" => U4,
+        }
+        Qs[i] = qs
 
-	end # for loop
+    end # for loop
 
-	Qs
+    return Qs
 
 end

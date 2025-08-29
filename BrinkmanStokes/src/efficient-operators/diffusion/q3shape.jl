@@ -102,5 +102,5 @@ function q3shape(r, s)
     dtds[15] = -(243.0 / 4.0) * ra * rb * rd * dabc
     dtds[16] = (81.0 / 4.0) * ra * rb * rc * dabc
 
-    t, dtdr, dtds
+    return t, dtdr, dtds
 end

@@ -8,7 +8,7 @@ function mg_afunbc_diag(u, mparams)
     aes = squeeze(ae[1, :, :], 1)
     w = zeros(length(u), 1)
 
-    for e = 1:nel
+    for e in 1:nel
         ind = ev[e, :]'
         indbd = findall(in(bound), ind)
         indint = setdiff(int(linspace(1, 4, 4)), indbd)
@@ -33,6 +33,6 @@ function mg_afunbc_diag(u, mparams)
 
     end
 
-    vec(w)
+    return vec(w)
 
 end

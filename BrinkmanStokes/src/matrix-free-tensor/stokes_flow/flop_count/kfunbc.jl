@@ -22,10 +22,10 @@ function kfunbc(u, kparams)
     # B = LinearOperator(nu+np, Float64, B)
     # Bt = LinearOperator(nu+np, Float64, Bt)
 
-    wa,na = A(u); wb,nb = B(u); wbt,nbt = Bt(u)
+    wa, na = A(u); wb, nb = B(u); wbt, nbt = Bt(u)
     w = wa + wb + wbt
     nflops = na + nb + nbt
-    w,nflops
+    return w, nflops
 
     # wa = afunbc(u, kparams);
     # wb = bfunbc(u, kparams);

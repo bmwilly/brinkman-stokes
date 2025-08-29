@@ -11,19 +11,19 @@ reload("solvers/mg_afunbc.jl")
 # 	Agal 			discrete diffusion operator
 function mg_diff_setup(x, y)
 
-	n = length(x) - 1; np = n / 2; nq = n / 4
+    n = length(x) - 1; np = n / 2; nq = n / 4
     nel = int(np^2); nvtx = (n + 1) * (n + 1)
-	(X, Y) = meshgrid(x, y)
-	xx = reshape(X', nvtx, 1)
-	yy = reshape(Y', nvtx, 1)
-	xy = [xx[:] yy[:]]
+    (X, Y) = meshgrid(x, y)
+    xx = reshape(X', nvtx, 1)
+    yy = reshape(Y', nvtx, 1)
+    xy = [xx[:] yy[:]]
 
-	# assemply process
-	kx = 1; ky = 1; mel = 0
-	mv = zeros(Int64, nel, 9)
+    # assemply process
+    kx = 1; ky = 1; mel = 0
+    mv = zeros(Int64, nel, 9)
     mp = zeros(Int64, nel, 4)
-    for j = 1:np
-        for i = 1:np
+    for j in 1:np
+        for i in 1:np
             mref = (n + 1) * (ky - 1) + kx
             pref = (np + 1) * (j - 1) + i
             mel += 1
@@ -52,38 +52,38 @@ function mg_diff_setup(x, y)
 
     # compute boundary vertices and edges
     # four boundary edges
-    k1 = findall(xy[:,2] .== -1)
+    k1 = findall(xy[:, 2] .== -1)
     e1 = Int[]
-    for k = 1:mel
-        if any(mv[k,5] .== k1)
-						push!(e1, k)
+    for k in 1:mel
+        if any(mv[k, 5] .== k1)
+            push!(e1, k)
         end
     end
     ef1 = ones(size(e1))
 
-    k2 = findall((xy[:,1] .== 1) .& (xy[:,2] .< 1) .& (xy[:,2] .> -1))
+    k2 = findall((xy[:, 1] .== 1) .& (xy[:, 2] .< 1) .& (xy[:, 2] .> -1))
     e2 = Int[]
-    for k = 1:mel
-        if any(mv[k,6] .== k2)
-						push!(e2, k)
+    for k in 1:mel
+        if any(mv[k, 6] .== k2)
+            push!(e2, k)
         end
     end
     ef2 = 2 * ones(size(e2))
 
-    k3 = findall(xy[:,2] .== 1)
+    k3 = findall(xy[:, 2] .== 1)
     e3 = Int[]
-    for k = 1:mel
-        if any(mv[k,7] .== k3)
-						push!(e3, k)
+    for k in 1:mel
+        if any(mv[k, 7] .== k3)
+            push!(e3, k)
         end
     end
     ef3 = 3 * ones(size(e3))
 
-    k4 = findall((xy[:,1] .== -1) .& (xy[:,2] .< 1) .& (xy[:,2] .> -1))
+    k4 = findall((xy[:, 1] .== -1) .& (xy[:, 2] .< 1) .& (xy[:, 2] .> -1))
     e4 = Int[]
-    for k = 1:mel
-        if any(mv[k,8] .== k4)
-						push!(e4, k)
+    for k in 1:mel
+        if any(mv[k, 8] .== k4)
+            push!(e4, k)
         end
     end
     ef4 = 4 * ones(size(e4))
@@ -94,6 +94,6 @@ function mg_diff_setup(x, y)
     # set up matrices for Q1 approximation
     (ev, ebound) = mg_q1grid(x, y, xy, mv, bound, mbound)
     ae, f = mg_q1diff(xy, ev)
-		mparams = {"xy" => xy, "ev" => ev, "bound" => bound, "ae" => ae}
+    return mparams = {"xy" => xy, "ev" => ev, "bound" => bound, "ae" => ae}
 
 end

@@ -5,5 +5,5 @@
 # output
 #   element_num     number of elements in the grid
 function grid_element_num(nelemx, nelemy)
-  nelemx * nelemy
+    return nelemx * nelemy
 end

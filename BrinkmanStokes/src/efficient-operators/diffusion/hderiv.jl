@@ -30,7 +30,7 @@ function hderiv(s, t, xl, yl)
     jac = copy(zerov)
     invjac = copy(zerov)
 
-    for ivtx = 1:ninel
+    for ivtx in 1:ninel
         dxds[:] += xl[:, ivtx] .* onev * dpsids[ivtx]
         dxdt[:] += xl[:, ivtx] .* onev * dpsidt[ivtx]
         dyds[:] += yl[:, ivtx] .* onev * dpsids[ivtx]
@@ -53,12 +53,12 @@ function hderiv(s, t, xl, yl)
     dpsidx = zeros(nel, nn)
     dpsidy = zeros(nel, nn)
 
-    for ivtx = 1:nn
+    for ivtx in 1:nn
         psi[:, ivtx] = psie[ivtx] * onev
         dpsidx[:, ivtx] = dpsids[ivtx] .* dydt[:] - dpsidt[ivtx] .* dyds[:]
         dpsidy[:, ivtx] = -dpsids[ivtx] .* dxdt[:] + dpsidt[ivtx] .* dxds[:]
     end
 
-    (jac, invjac, psi, dpsidx, dpsidy)
+    return (jac, invjac, psi, dpsidx, dpsidy)
 
 end

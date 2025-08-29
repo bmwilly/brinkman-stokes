@@ -6,7 +6,7 @@ include("mv_fun.jl")
 
 # orders = [2, 3, 4];
 # msizes = [1]
-msizes = [4,5,6]
+msizes = [4, 5, 6]
 # msizes = [2,3,4]
 
 # mesh sizes
@@ -39,8 +39,8 @@ msizes = [4,5,6]
 order = 2; dim = 3;
 mtimes = Float64[];
 for msize in msizes
-  t = hos_homg(order, msize, dim)
-  push!(mtimes, t)
+    t = hos_homg(order, msize, dim)
+    push!(mtimes, t)
 end
 #
 # Gadfly.plot(

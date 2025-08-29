@@ -6,9 +6,9 @@ function hosbc(a, f, xy, bound)
     nbd = length(bound)
     nullcol = spzeros(nvtx, nbd)
     Ax = a[1:nvtx, 1:nvtx]
-    Ay = a[nvtx+1:nu, nvtx+1:nu]
+    Ay = a[(nvtx + 1):nu, (nvtx + 1):nu]
     fx = f[1:nvtx]
-    fy = f[nvtx+1:nu]
+    fy = f[(nvtx + 1):nu]
 
     # set boundary condition
     xbd = xy[bound, 1]
@@ -38,5 +38,5 @@ function hosbc(a, f, xy, bound)
     az = [Ax spzeros(nvtx, nvtx); spzeros(nvtx, nvtx) Ay]
     fz = [fx; fy]
 
-    (az, fz)
+    return (az, fz)
 end

@@ -17,20 +17,20 @@ Generate standardized output directory path for the given implementation.
 - `String`: Full path to output directory
 """
 function get_output_dir(implementation::String, domain::Int, msize::Int; subdir::String = "")
-	# Get BrinkmanStokes root directory (assumes this file is in src/)
-	repo_root = dirname(@__DIR__)
+    # Get BrinkmanStokes root directory (assumes this file is in src/)
+    repo_root = dirname(@__DIR__)
 
-	# Build path: BrinkmanStokes/output/{implementation}/domain={domain}/size={msize}/{subdir}
-	output_path = joinpath(repo_root, "output", implementation, "domain=$domain", "size=$msize")
+    # Build path: BrinkmanStokes/output/{implementation}/domain={domain}/size={msize}/{subdir}
+    output_path = joinpath(repo_root, "output", implementation, "domain=$domain", "size=$msize")
 
-	if !isempty(subdir)
-		output_path = joinpath(output_path, subdir)
-	end
+    if !isempty(subdir)
+        output_path = joinpath(output_path, subdir)
+    end
 
-	# Ensure directory exists
-	mkpath(output_path)
+    # Ensure directory exists
+    mkpath(output_path)
 
-	return output_path
+    return output_path
 end
 
 """
@@ -49,6 +49,6 @@ Generate standardized output file path for the given implementation.
 - `String`: Full path to output file
 """
 function get_output_file(implementation::String, domain::Int, msize::Int, filename::String; subdir::String = "")
-	output_dir = get_output_dir(implementation, domain, msize; subdir = subdir)
-	return joinpath(output_dir, filename)
+    output_dir = get_output_dir(implementation, domain, msize; subdir = subdir)
+    return joinpath(output_dir, filename)
 end

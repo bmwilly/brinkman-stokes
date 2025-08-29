@@ -11,18 +11,18 @@ function findboundary(bndxy, bnde, xy, mv)
 
     bound = Int[]
     mbound = []
-    for i = 1:size(bnde, 1)
+    for i in 1:size(bnde, 1)
         if bnde[i, 3] == 1
             if bndxy[bnde[i, 1], 1] .== bndxy[bnde[i, 2], 1]
                 yl = min(bndxy[bnde[i, 1], 2], bndxy[bnde[i, 2], 2])
                 yu = max(bndxy[bnde[i, 1], 2], bndxy[bnde[i, 2], 2])
                 k = findall(
                     (xy[:, 1] .== bndxy[bnde[i, 1], 1]) .&
-                    (xy[:, 2] .< yu) .&
-                    (xy[:, 2] .> yl),
+                        (xy[:, 2] .< yu) .&
+                        (xy[:, 2] .> yl),
                 )
                 bound = vcat(bound, k)
-                for j = 1:size(mv, 1)
+                for j in 1:size(mv, 1)
                     if any(mv[j, 6] .== k)
                         if mbound == []
                             mbound = [j 2]
@@ -43,11 +43,11 @@ function findboundary(bndxy, bnde, xy, mv)
                 xu = max(bndxy[bnde[i, 1], 1], bndxy[bnde[i, 2], 1])
                 k = findall(
                     (xy[:, 2] .== bndxy[bnde[i, 1], 2]) .&
-                    (xy[:, 1] .<= xu) .&
-                    (xy[:, 1] .>= xl),
+                        (xy[:, 1] .<= xu) .&
+                        (xy[:, 1] .>= xl),
                 )
                 bound = vcat(bound, k)
-                for j = 1:size(mv, 1)
+                for j in 1:size(mv, 1)
                     if any(mv[j, 5] .== k)
                         if mbound == []
                             mbound = [j 1]
@@ -68,6 +68,6 @@ function findboundary(bndxy, bnde, xy, mv)
     end
 
     bound = sort(bound)
-    (bound, mbound)
+    return (bound, mbound)
 
 end

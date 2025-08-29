@@ -25,8 +25,8 @@ function bfunbc(u, kparams)
     nel = length(mv[:, 1])
     mp = [[1:3:3nel] [2:3:3nel] [3:3:3nel]]
 
-    ux = u[1:nu/2]
-    uy = u[nu/2+1:nu]
+    ux = u[1:(nu / 2)]
+    uy = u[(nu / 2 + 1):nu]
     bxes = squeeze(bxe[1, :, :], 1)
     byes = squeeze(bye[1, :, :], 1)
 
@@ -40,7 +40,7 @@ function bfunbc(u, kparams)
 
 
     # for e = (nelworker*worker - nelworker + 1):(nelworker*worker)
-    for e = 1:nel
+    for e in 1:nel
         ind9 = mv[e, :]'
         indbd = findall(in(bound), ind9)
         indint = setdiff(int(linspace(1, 9, 9)), indbd)
@@ -69,5 +69,5 @@ function bfunbc(u, kparams)
 
     # end
 
-    vec(w), nflops
+    return vec(w), nflops
 end

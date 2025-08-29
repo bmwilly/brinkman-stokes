@@ -41,27 +41,27 @@ function mg_q1diff(xy, ev)
     # inner loop over elements
     xlv = zeros(nel, 4)
     ylv = zeros(nel, 4)
-    for ivtx = 1:4
+    for ivtx in 1:4
         xlv[:, ivtx] = x[ev[:, ivtx]]
         ylv[:, ivtx] = y[ev[:, ivtx]]
     end
 
     # loop over 2x2 Gauss points
-    for igpt = 1:4
+    for igpt in 1:4
         sigpt = s[igpt]
         tigpt = t[igpt]
 
         # evaluate derivatives, etc
         (jac, invjac, phi, dphidx, dphidy) = deriv(sigpt, tigpt, xlv, ylv)
-        for j = 1:4
-            for i = 1:4
+        for j in 1:4
+            for i in 1:4
                 ae[:, i, j] += dphidx[:, i] .* dphidx[:, j] .* invjac[:]
                 ae[:, i, j] += dphidy[:, i] .* dphidy[:, j] .* invjac[:]
             end
         end
     end # Gauss point loop
 
-    ae, f
+    return ae, f
 
     # # assemble global matrix and source vector
     # for krow = 1:4

@@ -17,36 +17,36 @@ function square_stokes(msize)
     stokes_mats = stokes_q2p1(stokes_grid)
 
     bounds = {
-      "bound" => cavity_grid["bound"],
-      "bndxy" => cavity_grid["bndxy"],
-      "bnde" => cavity_grid["bnde"],
-      "obs" => cavity_grid["obs"]
+        "bound" => cavity_grid["bound"],
+        "bndxy" => cavity_grid["bndxy"],
+        "bnde" => cavity_grid["bnde"],
+        "obs" => cavity_grid["obs"],
     }
 
-    order = 2; dim = 2;
+    order = 2; dim = 2
     nelems = [2^(msize)]
     m = Mesh.Hexmesh(tuple(repeat(nelems, 1, dim)...), Xform.identity)
     dof = prod([m.nelems...] * order .+ 1)
-    Mesh.set_order(m, order);
-    refel = Refel(m.dim, order);
-    dof = prod([m.nelems...] * order .+ 1);
-    ne = prod([m.nelems...]);
+    Mesh.set_order(m, order)
+    refel = Refel(m.dim, order)
+    dof = prod([m.nelems...] * order .+ 1)
+    ne = prod([m.nelems...])
     # storage for indices and values
-    NP = (order + 1)^m.dim;
-    NPNP = NP * NP;
-    bdy = Mesh.get_boundary_node_indices(m, order);
+    NP = (order + 1)^m.dim
+    NPNP = NP * NP
+    bdy = Mesh.get_boundary_node_indices(m, order)
 
     params = {
-      "mesh" => m,
-      "order" => order,
-      "dof" => dof,
-      "ne" => ne,
-      "NP" => NP,
-      "bdy" => bdy,
-      "refel" => refel,
-      "mv" => mv
+        "mesh" => m,
+        "order" => order,
+        "dof" => dof,
+        "ne" => ne,
+        "NP" => NP,
+        "bdy" => bdy,
+        "refel" => refel,
+        "mv" => mv,
     }
 
-    kparams = merge(stokes_mats, stokes_grid, bounds, params, {"msize" => msize})
+    return kparams = merge(stokes_mats, stokes_grid, bounds, params, {"msize" => msize})
 
 end

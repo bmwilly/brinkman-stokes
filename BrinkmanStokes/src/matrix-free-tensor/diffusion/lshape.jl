@@ -24,5 +24,5 @@ function lshape(s, t)
     dchidt[2] = 0.0
     dchidt[3] = 1.0
 
-    (chi, dchids, dchidt)
+    return (chi, dchids, dchidt)
 end

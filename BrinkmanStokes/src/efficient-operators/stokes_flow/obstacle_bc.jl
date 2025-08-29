@@ -5,9 +5,9 @@
 function obstacle_bc(xbd, ybd)
 
     bc = 0 * xbd
-    k = findall(xbd .== 0); bc[k] = ybd[k].^3 / 3
+    k = findall(xbd .== 0); bc[k] = ybd[k] .^ 3 / 3
     k = findall(ybd .== 1); bc[k] = 2 / 3
     k = findall(ybd .== -1); bc[k] = -2 / 3
-    bc
+    return bc
 
 end

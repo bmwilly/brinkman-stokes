@@ -10,7 +10,7 @@ function cavity_domain_q3()
     nel = Int(np^2)
 
     # y-direction
-    yy = [1/np:1/np:1]
+    yy = [(1 / np):(1 / np):1]
     ypos = [0, yy]
     yneg = -yy[length(yy):-1:1]
     y = [yneg, ypos]'
@@ -27,8 +27,8 @@ function cavity_domain_q3()
     ky = 1
     mel = 0
     mv = zeros(Int64, nel, 16)
-    for j = 1:np
-        for i = 1:np
+    for j in 1:np
+        for i in 1:np
             mref = (n + 1) * (ky - 1) + kx
             mel += 1
             nvv = zeros(16)
@@ -52,7 +52,7 @@ function cavity_domain_q3()
     # four boundary edges
     k1 = findall(xy[:, 2] .== -1)
     e1 = Int[]
-    for k = 1:mel
+    for k in 1:mel
         if any(mv[k, 5] .== k1)
             push!(e1, k)
         end
@@ -61,7 +61,7 @@ function cavity_domain_q3()
 
     k2 = findall((xy[:, 1] .== 1) .& (xy[:, 2] .< 1) .& (xy[:, 2] .> -1))
     e2 = Int[]
-    for k = 1:mel
+    for k in 1:mel
         if any(mv[k, 6] .== k2)
             push!(e2, k)
         end
@@ -70,7 +70,7 @@ function cavity_domain_q3()
 
     k3 = findall(xy[:, 2] .== 1)
     e3 = Int[]
-    for k = 1:mel
+    for k in 1:mel
         if any(mv[k, 7] .== k3)
             push!(e3, k)
         end
@@ -79,7 +79,7 @@ function cavity_domain_q3()
 
     k4 = findall((xy[:, 1] .== -1) .& (xy[:, 2] .< 1) .& (xy[:, 2] .> -1))
     e4 = Int[]
-    for k = 1:mel
+    for k in 1:mel
         if any(mv[k, 8] .== k4)
             push!(e4, k)
         end
@@ -100,7 +100,7 @@ function cavity_domain_q3()
     obs = []
     sbnde = [1 2 3 4]
 
-    cavity_grid = {
+    return cavity_grid = {
         "mv" => mv,
         "xy" => xy,
         "bound" => bound,

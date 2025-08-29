@@ -10,57 +10,68 @@ using SparseArrays
 # 	f 				rhs vector
 function mg_q1diff(xy, ev)
 
-    x = xy[:, 1]; y = xy[:, 2]
-    nvtx = length(x)
-    nel = length(ev[:, 1])
-    lx = maximum(x) - minimum(x); ly = maximum(y) - minimum(y)
-    hx = maximum(diff(x)); hy = maximum(diff(y))
+	x = xy[:, 1]
+	y = xy[:, 2]
+	nvtx = length(x)
+	nel = length(ev[:, 1])
+	lx = maximum(x) - minimum(x)
+	ly = maximum(y) - minimum(y)
+	hx = maximum(diff(x))
+	hy = maximum(diff(y))
 
-    # initialize global matrices
-    a = spzeros(nvtx, nvtx)
-    r = spzeros(nvtx, nvtx)
-    f = zeros(nvtx, 1)
-    ae = zeros(nel, 4, 4)
+	# initialize global matrices
+	a = spzeros(nvtx, nvtx)
+	r = spzeros(nvtx, nvtx)
+	f = zeros(nvtx, 1)
+	ae = zeros(nel, 4, 4)
 
-    # set up 2x2 Gauss points
-    s = zeros(4, 1); t = zeros(4, 1)
-    gpt = 1.0 / sqrt(3.0)
-    s[1] = -gpt;  t[1] = -gpt
-    s[2] = gpt;  t[2] = -gpt
-    s[3] = gpt;  t[3] = gpt
-    s[4] = -gpt;  t[4] = gpt
+	# set up 2x2 Gauss points
+	s = zeros(4, 1)
+	t = zeros(4, 1)
+	gpt = 1.0 / sqrt(3.0)
+	s[1] = -gpt
+	t[1] = -gpt
+	s[2] = gpt
+	t[2] = -gpt
+	s[3] = gpt
+	t[3] = gpt
+	s[4] = -gpt
+	t[4] = gpt
 
-    # inner loop over elements
-    xlv = zeros(nel, 4); ylv = zeros(nel, 4)
-    for ivtx in 1:4
-        xlv[:, ivtx] = x[ev[:, ivtx]]
-        ylv[:, ivtx] = y[ev[:, ivtx]]
-    end
+	# inner loop over elements
+	xlv = zeros(nel, 4)
+	ylv = zeros(nel, 4)
+	for ivtx in 1:4
+		xlv[:, ivtx] = x[ev[:, ivtx]]
+		ylv[:, ivtx] = y[ev[:, ivtx]]
+	end
 
-    # loop over 2x2 Gauss points
-    for igpt in 1:4
-        sigpt = s[igpt]
-        tigpt = t[igpt]
+	# loop over 2x2 Gauss points
+	for igpt in 1:4
+		sigpt = s[igpt]
+		tigpt = t[igpt]
 
-        # evaluate derivatives, etc
-        (jac, invjac, phi, dphidx, dphidy) = deriv(sigpt, tigpt, xlv, ylv)
-        for j in 1:4
-            for i in 1:4
-                ae[:, i, j] += dphidx[:, i] .* dphidx[:, j] .* invjac[:]
-                ae[:, i, j] += dphidy[:, i] .* dphidy[:, j] .* invjac[:]
-            end
-        end
-    end # Gauss point loop
+		# evaluate derivatives, etc
+		(jac, invjac, phi, dphidx, dphidy) = deriv(sigpt, tigpt, xlv, ylv)
+		for j in 1:4
+			for i in 1:4
+				ae[:, i, j] += dphidx[:, i] .* dphidx[:, j] .* invjac[:]
+				ae[:, i, j] += dphidy[:, i] .* dphidy[:, j] .* invjac[:]
+			end
+		end
+	end # Gauss point loop
 
-    # assemble global matrix and source vector
-    for krow in 1:4
-        nrow = Int(ev[:, krow])
-        for kcol in 1:4
-            ncol = Int(ev[:, kcol])
-            a += sparse(nrow, ncol, ae[:, krow, kcol], nvtx, nvtx)
-        end
-    end
+	# assemble global matrix and source vector
+	for iel in 1:nel
+		for krow in 1:4
+			nrow = ev[iel, krow]
+			for kcol in 1:4
+				ncol = ev[iel, kcol]
+				a[nrow, ncol] += ae[iel, krow, kcol]
+			end
+		end
+	end
 
-    return (a, r, f)
+	return (a, r, f)
 
 end

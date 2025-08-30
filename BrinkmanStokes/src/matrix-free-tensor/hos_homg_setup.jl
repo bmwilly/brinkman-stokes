@@ -23,7 +23,7 @@ function hos_homg_setup(order, msize, dim)
 	(detJac, Jac) = Mesh.geometric_factors(m, refel, pts)
 	eMat = Mesh.element_stiffness(m, 1, refel, detJac, Jac)
 
-	params = {
+	params = Dict(
 		"mesh" => m,
 		"order" => order,
 		"dof" => dof,
@@ -31,6 +31,6 @@ function hos_homg_setup(order, msize, dim)
 		"NP" => NP,
 		"bdy" => bdy,
 		"eMat" => eMat,
-	}
+	)
 	return params
 end

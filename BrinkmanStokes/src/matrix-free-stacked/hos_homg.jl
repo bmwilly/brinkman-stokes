@@ -35,7 +35,7 @@ function hos_homg(order, msize, dim)
 		idxs[e, :] = idx
 	end
 
-	params = {
+	params = Dict(
 		"mesh" => m,
 		"order" => order,
 		"dof" => dof,
@@ -46,7 +46,7 @@ function hos_homg(order, msize, dim)
 		"refel" => refel,
 		"mv" => mv,
 		"idxs" => idxs,
-	}
+	)
 
 	# A = LinearOperator(2dof, Float64, u -> ho_afun(u, params))
 	# A = LinearOperator(2dof, Float64, u -> ho_afun_square(u, params))

@@ -126,7 +126,7 @@ function stokes_q2p1(grid)
 	bbxe = squeeze(bbxe[1, :, :], 1)
 	bbye = squeeze(bbye[1, :, :], 1)
 
-	return {
+	return Dict(
 		"ae" => ae,
 		"bxe" => bxe,
 		"bye" => bye,
@@ -134,6 +134,6 @@ function stokes_q2p1(grid)
 		"qe" => qe,
 		"bbxe" => bbxe,
 		"bbye" => bbye,
-	}
+	)
 
 end

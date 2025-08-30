@@ -10,7 +10,7 @@ function obstacle_stokes()
 	grid = q2p1grid(obstacle_grid)
 
 	# stokes q2-p1 matrix generator
-	stokes_grid = merge(grid, {"mv" => obstacle_grid["mv"]})
+	stokes_grid = merge(grid, Dict("mv" => obstacle_grid["mv"]))
 	stokes_mats = stokes_q2p1(stokes_grid)
 
 	bounds = {

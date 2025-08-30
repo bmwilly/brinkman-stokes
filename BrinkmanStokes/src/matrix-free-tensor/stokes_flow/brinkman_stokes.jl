@@ -18,7 +18,7 @@ function brinkman_stokes(msize)
 	channel_grid = channel_domain(msize) # Q2 grid for channel domain
 	grid = q2p1grid(channel_grid)
 	mv = channel_grid["mv"]
-	stokes_grid = merge(grid, {"mv" => mv})
+	stokes_grid = merge(grid, Dict("mv" => mv))
 	stokes_mats = stokes_q2p1(stokes_grid) # stokes element matrices
 
 	bounds = {
@@ -84,7 +84,7 @@ function brinkman_stokes(msize)
 	A = LinearOperator(2dof, Float64, u -> ho_afun(u, params))
 	G = LinearOperator(2dof, Float64, u -> ho_gfun(u, params))
 
-	mats = merge(stokes_mats, stokes_grid, bounds, params, {"A" => A, "G" => G})
+	mats = merge(stokes_mats, stokes_grid, bounds, params, Dict("A" => A, "G" => G))
 	return mats
 
 end

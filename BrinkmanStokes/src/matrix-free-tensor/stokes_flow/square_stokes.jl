@@ -21,7 +21,7 @@ function square_stokes(msize)
 		"obs" => cavity_grid["obs"],
 	}
 
-	kparams = merge(stokes_mats, grid, bounds, {"msize" => msize})
+	kparams = merge(stokes_mats, grid, bounds, Dict("msize" => msize))
 	return kparams
 
 end

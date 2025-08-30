@@ -3,5 +3,6 @@
 #   xbd       x boundary coordinate vector
 #   ybd       y boundary coordinate vector
 function poiseuille_bc(xbd, ybd)
-    return bc = ybd .* (1 - ybd .* ybd / 3) + (2 / 3)
+	bc = ybd .* (1 - ybd .* ybd / 3) + (2 / 3)
+	return bc
 end

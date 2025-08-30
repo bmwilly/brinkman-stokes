@@ -105,6 +105,7 @@ function mg_diff_setup(x, y)
 	(A, M, fdummy) = mg_q1diff(xy, ev)
 
 	# impose zero boundary conditions
-	return Agal = mg_zerobc(A, xy, bound)
+	Agal = mg_zerobc(A, xy, bound)
+	return Agal
 
 end

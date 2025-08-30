@@ -10,27 +10,33 @@
 # w           Q * u
 function qfun(u, kparams)
 
-    xy = kparams["xy"]; xyp = kparams["xyp"]; mv = kparams["mv"]; bound = kparams["bound"]
-    qe = kparams["qe"]
+	xy = kparams["xy"]
+	xyp = kparams["xyp"]
+	mv = kparams["mv"]
+	bound = kparams["bound"]
+	qe = kparams["qe"]
 
-    nvtx = length(xy[:, 1]); nu = 2nvtx; np = 3length(xyp[:, 1])
-    nel = length(mv[:, 1])
-    mp = [[1:3:3nel] [2:3:3nel] [3:3:3nel]]
-    qes = share(qe)
-    w = zeros(nu + np)
+	nvtx = length(xy[:, 1])
+	nu = 2nvtx
+	np = 3length(xyp[:, 1])
+	nel = length(mv[:, 1])
+	mp = [[1:3:3nel] [2:3:3nel] [3:3:3nel]]
+	qes = share(qe)
+	w = zeros(nu + np)
 
-    n, m = size(mp)
-    U = zeros(m, n)
+	n, m = size(mp)
+	U = zeros(m, n)
 
-    for e in 1:nel
-        ind = vec(mp[e, :]') + nu
-        U[:, e] = u[ind]
-    end
-    W = qes * U
-    for e in 1:nel
-        ind = vec(mp[e, :]') + nu
-        w[ind] += W[:, e]
-    end
+	for e in 1:nel
+		ind = vec(mp[e, :]') + nu
+		U[:, e] = u[ind]
+	end
+	W = qes * U
+	for e in 1:nel
+		ind = vec(mp[e, :]') + nu
+		w[ind] += W[:, e]
+	end
 
-    return w = vec(w[(nu + 1):(nu + np)])
+	w = vec(w[(nu+1):(nu+np)])
+	return w
 end

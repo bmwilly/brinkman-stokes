@@ -83,7 +83,7 @@ function assemble_poisson(grid, mu)
 	grid.L[grid.Boundary] = 0
 
 	# propagate to lower grids
-	return if structof(grid.Coarse) == Grid
+	if structof(grid.Coarse) == Grid
 		if structof(mu) != Function && isinteger(mu)
 			harmonic = 0
 			if (grid.Mesh.dim == 2)
@@ -121,13 +121,14 @@ end
 function use_linearized_smoothers(grid)
 	grid.linear_smoother = true
 	(grid.K_lin, M) = Mesh.assemble_poisson_linearized(grid.Mesh, grid.Mesh.order)
-	return if (structof(grid.Coarse) == Grid)
+	if (structof(grid.Coarse) == Grid)
 		use_linearized_smoothers(grid.Coarse)
 	end
 end
 
 function set_stiffness(grid, K)
-	return grid.K = K
+	grid.K = K
+	return grid.K
 end
 
 # compute the residual
@@ -260,14 +261,14 @@ end
 
 function set_coeff(grid, mu)
 	Mesh.set_coeff(grid.Mesh, mu)
-	return if (structof(grid.Coarse) == Grid)
+	if (structof(grid.Coarse) == Grid)
 		Mesh.set_coeff(grid.Coarse.Mesh, mu)
 	end
 end
 
 function set_smoother(grid, sm)
 	grid.smoother = sm
-	return if (structof(grid.Coarse) == Grid)
+	if (structof(grid.Coarse) == Grid)
 		set_smoother(grid.Coarse, sm)
 	end
 end

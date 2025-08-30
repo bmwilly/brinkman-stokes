@@ -29,6 +29,7 @@ function m_st_mg(x_it, mparams)
 
 	zp = diag(mparams["Q"]) .\ rp
 
-	return x_it = [zvx; zvy; zp]
+	x_it = [zvx; zvy; zp]
+	return x_it
 
 end

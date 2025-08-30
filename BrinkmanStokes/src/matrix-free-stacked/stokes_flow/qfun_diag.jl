@@ -10,19 +10,24 @@
 # w           Q * u
 function qfun_diag(u, kparams)
 
-    xy = kparams["xy"]; xyp = kparams["xyp"]; mv = kparams["mv"]; bound = kparams["bound"]
-    qe = kparams["qe"]
+	xy = kparams["xy"]
+	xyp = kparams["xyp"]
+	mv = kparams["mv"]
+	bound = kparams["bound"]
+	qe = kparams["qe"]
 
-    nvtx = length(xy[:, 1]); nu = 2nvtx; np = 3length(xyp[:, 1])
-    nel = length(mv[:, 1])
-    mp = [[1:3:3nel] [2:3:3nel] [3:3:3nel]]
-    qes = squeeze(qe[1, :, :], 1)
-    w = zeros(nu + np)
+	nvtx = length(xy[:, 1])
+	nu = 2nvtx
+	np = 3length(xyp[:, 1])
+	nel = length(mv[:, 1])
+	mp = [[1:3:3nel] [2:3:3nel] [3:3:3nel]]
+	qes = squeeze(qe[1, :, :], 1)
+	w = zeros(nu + np)
 
-    for e in 1:nel
-        ind = vec(mp[e, :]') + nu
-        w[ind] += diagm(diag(qes)) * u[ind]
-    end
+	for e in 1:nel
+		ind = vec(mp[e, :]') + nu
+		w[ind] += diagm(diag(qes)) * u[ind]
+	end
 
-    return w = vec(w[(nu + 1):(nu + np)])
+	return vec(w[(nu+1):(nu+np)])
 end

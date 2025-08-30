@@ -21,12 +21,12 @@ function brinkman_stokes(msize)
 	stokes_grid = merge(grid, Dict("mv" => mv))
 	stokes_mats = stokes_q2p1(stokes_grid) # stokes element matrices
 
-	bounds = {
+	bounds = Dict(
 		"bound" => channel_grid["bound"],
 		"bndxy" => channel_grid["bndxy"],
 		"bnde" => channel_grid["bnde"],
 		"obs" => channel_grid["obs"],
-	}
+	)
 
 	# brinkman obstacles
 	centers = [
@@ -69,7 +69,7 @@ function brinkman_stokes(msize)
 	NPNP = NP * NP
 	bdy = Mesh.get_boundary_node_indices(m, order)
 
-	params = {
+	params = Dict(
 		"mesh" => m,
 		"order" => order,
 		"dof" => dof,
@@ -79,7 +79,7 @@ function brinkman_stokes(msize)
 		"refel" => refel,
 		"centers" => centers,
 		"mv" => mv,
-	}
+	)
 
 	A = LinearOperator(2dof, Float64, u -> ho_afun(u, params))
 	G = LinearOperator(2dof, Float64, u -> ho_gfun(u, params))

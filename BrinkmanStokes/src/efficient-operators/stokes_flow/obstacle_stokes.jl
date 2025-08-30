@@ -13,12 +13,12 @@ function obstacle_stokes()
 	stokes_grid = merge(grid, Dict("mv" => obstacle_grid["mv"]))
 	stokes_mats = stokes_q2p1(stokes_grid)
 
-	bounds = {
+	bounds = Dict(
 		"bound" => obstacle_grid["bound"],
 		"bndxy" => obstacle_grid["bndxy"],
 		"bnde" => obstacle_grid["bnde"],
 		"obs" => obstacle_grid["obs"],
-	}
+	)
 	mats = merge(stokes_mats, grid, bounds)
 	return mats
 

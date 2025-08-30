@@ -16,12 +16,12 @@ function square_stokes(msize)
 	stokes_grid = merge(grid, Dict("mv" => mv))
 	stokes_mats = stokes_q2p1(stokes_grid)
 
-	bounds = {
+	bounds = Dict(
 		"bound" => cavity_grid["bound"],
 		"bndxy" => cavity_grid["bndxy"],
 		"bnde" => cavity_grid["bnde"],
 		"obs" => cavity_grid["obs"],
-	}
+	)
 
 	order = 2
 	dim = 2
@@ -37,7 +37,7 @@ function square_stokes(msize)
 	NPNP = NP * NP
 	bdy = Mesh.get_boundary_node_indices(m, order)
 
-	params = {
+	params = Dict(
 		"mesh" => m,
 		"order" => order,
 		"dof" => dof,
@@ -46,7 +46,7 @@ function square_stokes(msize)
 		"bdy" => bdy,
 		"refel" => refel,
 		"mv" => mv,
-	}
+	)
 
 	kparams = merge(stokes_mats, stokes_grid, bounds, params, Dict("msize" => msize))
 	return kparams

@@ -41,7 +41,7 @@ function hos_homg(order, msize, dim)
 	(detJac, Jac) = Mesh.geometric_factors(m, refel, pts)
 	eMat = Mesh.element_stiffness(m, 1, refel, detJac, Jac)
 
-	params = {
+	params = Dict(
 		"mesh" => m,
 		"order" => order,
 		"dof" => dof,
@@ -49,7 +49,7 @@ function hos_homg(order, msize, dim)
 		"NP" => NP,
 		"bdy" => bdy,
 		"eMat" => eMat,
-	}
+	)
 
 	A = LinearOperator(2dof, Float64, u -> ho_afun(u, params))
 	tic()

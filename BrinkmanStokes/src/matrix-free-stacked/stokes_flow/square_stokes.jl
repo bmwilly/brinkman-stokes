@@ -13,7 +13,7 @@ function square_stokes(msize)
 
 	# stokes q2-p1 matrix generator
 	mv = cavity_grid["mv"]
-	stokes_grid = merge(grid, {"mv" => mv})
+	stokes_grid = merge(grid, Dict("mv" => mv))
 	stokes_mats = stokes_q2p1(stokes_grid)
 
 	bounds = {
@@ -48,7 +48,7 @@ function square_stokes(msize)
 		"mv" => mv,
 	}
 
-	kparams = merge(stokes_mats, stokes_grid, bounds, params, {"msize" => msize})
+	kparams = merge(stokes_mats, stokes_grid, bounds, params, Dict("msize" => msize))
 	return kparams
 
 end

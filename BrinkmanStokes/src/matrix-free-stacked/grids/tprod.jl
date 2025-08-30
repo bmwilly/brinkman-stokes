@@ -22,6 +22,6 @@ function tprod(quadrule)
 		end
 	end
 
-	quadrule2D = {"w" => w, "x" => x}
+	quadrule2D = Dict("w" => w, "x" => x)
 	return quadrule2D
 end

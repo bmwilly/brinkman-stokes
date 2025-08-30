@@ -29,7 +29,7 @@ function gauleg(a, b, n)
 	x = xm + xl * x
 	w = w * xl
 
-	quadrule = {"w" => w, "x" => x}
+	quadrule = Dict("w" => w, "x" => x)
 	return quadrule
 
 end

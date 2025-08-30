@@ -99,7 +99,7 @@ function mg_diff_setup(x, y)
 	# set up matrices for Q1 approximation
 	(ev, ebound) = mg_q1grid(x, y, xy, mv, bound, mbound)
 	ae, f = mg_q1diff(xy, ev)
-	mparams = {"xy" => xy, "ev" => ev, "bound" => bound, "ae" => ae}
+	mparams = Dict("xy" => xy, "ev" => ev, "bound" => bound, "ae" => ae)
 	return mparams
 
 end
